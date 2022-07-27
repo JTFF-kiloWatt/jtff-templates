@@ -105,8 +105,8 @@ OnDemandTankersConfig = {
             morse = 'AR7',
         },
         orbit = {
-            heading = 192,
-            length = 40,
+            heading = 190,
+            length = 30,
         },
         freq = 276.2,
         modex = 029,
