@@ -136,6 +136,22 @@ SkynetConfig = {
                     },
                 },
             }
+        },
+        gci_border = "NAME-BORDER",
+        gci = {
+            {
+                airport = AIRBASE.PersianGulf.Bandar_Abbas_Intl,
+                templatePrefixes = { "Mig29", "F14" },
+                numberOfAircraftAvailable = 8
+            }, {
+                airport = AIRBASE.PersianGulf.Bandar_e_Jask_airfield,
+                templatePrefixes = { "F4", "F5" },
+                numberOfAircraftAvailable = 5
+            }, {
+                airport = AIRBASE.PersianGulf.Bandar_Lengeh,
+                templatePrefixes = { "Mig21" },
+                numberOfAircraftAvailable = 3
+            }
         }
     },
     {
