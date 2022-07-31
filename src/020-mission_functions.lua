@@ -996,6 +996,32 @@ function deactivateSkynet(param)
     MESSAGE:NewType(string.format("Skynet of %s is desactivated", iadsConfig.name), MESSAGE.Type.Information):ToBlue()
 end
 
+function activateGCI(param)
+    local iadsConfig = param[1]
+    local skynetIADSObject = param[2]
+    local parentMenu = param[3]
+    debug_msg(string.format("IADS - GCI activation for %s", iadsConfig.name))
+
+    DetectionSetGroup = SET_GROUP:New()
+    skynetIADSObject:addMooseSetGroup(DetectionSetGroup)
+    Detection = DETECTION_AREAS:New( DetectionSetGroup, 30000 )
+    A2ADispatcher = AI_A2A_DISPATCHER:New( Detection )
+    A2ADispatcher:SetEngageRadius() -- 100000 is the default value.
+    A2ADispatcher:SetGciRadius(100000)
+    CCCPBorderZone = ZONE_POLYGON:New( iadsConfig.gci_border , GROUP:FindByName( iadsConfig.gci_border ) )
+    A2ADispatcher:SetBorderZone( CCCPBorderZone )
+
+    A2ADispatcher:SetDefaultTakeoffFromRunway()
+    A2ADispatcher:SetDefaultLandingAtRunway()
+
+    for index, gci_group in ipairs(iadsConfig.gci) do
+        gci_group_name = string.format("GCI_%s", gci_group.airport)
+        debug_msg(string.format("GCI - Group %s", gci_group_name))
+        A2ADispatcher:SetSquadron( gci_group_name,    gci_group.airport, gci_group.templatePrefixes, gci_group.numberOfAircraftAvailable )
+        A2ADispatcher:SetSquadronGci( gci_group_name, 1000, 3000 )
+    end
+end
+
 function activateSkynet(param)
     local iadsConfig = param[1]
     local skynetIADSObject = param[2]
@@ -1165,6 +1191,10 @@ function activateSkynet(param)
             parentMenu, skynetUpdateDisplay, {skynetIADSObject, 'contacts', false})
     local CommandIADSActivate = MENU_MISSION_COMMAND:New("Disable Skynet",
             parentMenu, deactivateSkynet, { iadsConfig, skynetIADSObject, parentMenu })
+    if (type(iadsConfig.gci) == "table") then
+        local CommandGCIActivate = MENU_COALITION_COMMAND:New(iadsConfig.benefit_coalition, "GCI Activation",
+                parentMenu, activateGCI, { iadsConfig, skynetIADSObject, parentMenu })
+    end
     MESSAGE:NewType(string.format("Skynet of %s activate in 60 secondes", iadsConfig.name), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
 end
 
