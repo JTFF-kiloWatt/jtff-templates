@@ -1173,7 +1173,8 @@ TrainingRangeConfig = {
                 unit_name = "R63B Hard Target",
                 precision = 15
             }
-        }
+        },
+        targetsheetpath = "C:/rangeboss-targetsheets"
     },
     {
         name = "64C",
@@ -1219,7 +1220,8 @@ TrainingRangeConfig = {
                 unit_name = "R64CM17",
                 precision = 15
             }
-        }
+        },
+        targetsheetpath = "C:/rangeboss-targetsheets"
     },
 }
 

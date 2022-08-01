@@ -129,7 +129,8 @@ TrainingRangeConfig = {
                 unit_name = "Cercle A Akamas-2",
                 precision = 25
             }
-        }
+        },
+        targetsheetpath = "C:/rangeboss-targetsheets"
     },
     {
         name = "Incirlik",

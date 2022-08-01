@@ -68,6 +68,7 @@ TrainingRangeConfig = {
                 unit_name = "Cercle A Akamas-2",
                 precision = 50
             }
-        }
+        },
+        targetsheetpath = "C:/rangeboss-targetsheets"
     }
 }
