@@ -47,6 +47,10 @@ AirBossConfig = {
             marshall = 'MarshallRelay',
             lso = 'LSORelay',
         },
+        voices = {
+            marshall = 'Gabriella', --Gabriella , FF or Raynor
+            lso = 'FF' --FF or Raynor
+        },
         singlecarrier = false,
         operationsstatspath = "C:/airboss-stats",
         operationstrapsheetpath = "C:/airboss-trapsheets"
@@ -126,6 +130,10 @@ AirBossConfig = {
         releayunit = {
             marshall = 'MarshallRelay-73',
             lso = 'LSORelay-73',
+        },
+        voices = {
+            marshall = 'FF',
+            lso = 'Raynor'
         },
         singlecarrier = false,
         operationsstatspath = "C:/airboss-stats",
