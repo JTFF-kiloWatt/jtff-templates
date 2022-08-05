@@ -40,3 +40,7 @@ jobs:
           JTFF_FTP_SECRET_JSON: ${{ secrets.VF84_FTP_SECRET_JSON }}
         run: |
           npm run jtff-upload
+      - name: 'Discord notification'
+        env:
+          DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
+        uses: Ilshidur/action-discord@master
