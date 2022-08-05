@@ -14,8 +14,8 @@ FoxRangesConfig= {
     {
         name = '79th-South',
         enable = true,
-        safeZoneName = 'training-pvp-safezone',
-        launchZoneName = 'training-pvp-safezone',
+        safeZoneName = 'LCD-03 training-pvp-safezone',
+        launchZoneName = 'LCD-03 training-pvp-safezone',
         --safeZoneGroupName = 'engage zone Red-1',
         --launchZoneGroupName = 'engage zone Red-1',
         debug = false,
