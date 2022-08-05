@@ -1,4 +1,4 @@
-env.info('*** MOOSE GITHUB Commit Hash ID: 2022-07-07T06:41:56.0000000Z-f6e673c2bbe80951c0eb1c83546da7e169120e1a ***')
+env.info('*** MOOSE GITHUB Commit Hash ID: 2022-07-31T07:17:36.0000000Z-73493c3a237bfa30d6eb62a0d33080156882e206 ***')
 env.info('*** MOOSE STATIC INCLUDE START *** ')
 ENUMS={}
 ENUMS.ROE={
@@ -5468,6 +5468,16 @@ self.Positionable:DeactivateBeacon(Duration)
 end
 return self
 end
+function BEACON:ActivateLink4(Frequency,Morse,Duration)
+self:F({Frequency=Frequency,Morse=Morse,Duration=Duration})
+local UnitID=self.Positionable:GetID()
+self:T2({"LINK4 BEACON started!"})
+self.Positionable:CommandActivateLink4(Frequency,UnitID,Morse)
+if Duration then
+self.Positionable:DeactivateLink4(Duration)
+end
+return self
+end
 function BEACON:AATACAN(TACANChannel,Message,Bearing,BeaconDuration)
 self:F({TACANChannel,Message,Bearing,BeaconDuration})
 local IsValid=true
@@ -10297,7 +10307,8 @@ function SET_GROUP:FindNearestGroupFromPointVec2(PointVec2)
 self:F2(PointVec2)
 local NearestGroup=nil
 local ClosestDistance=nil
-for ObjectID,ObjectData in pairs(self.Set)do
+local Set=self:GetAliveSet()
+for ObjectID,ObjectData in pairs(Set)do
 if NearestGroup==nil then
 NearestGroup=ObjectData
 ClosestDistance=PointVec2:DistanceFromPointVec2(ObjectData:GetCoordinate())
@@ -12743,7 +12754,7 @@ local MZoneName=MZone:GetName()
 if self.Filter.Prefixes then
 local MZonePrefix=false
 for ZonePrefixId,ZonePrefix in pairs(self.Filter.Prefixes)do
-self:T3({"Prefix:",string.find(MZoneName,ZonePrefix,1),ZonePrefix})
+self:T2({"Prefix:",string.find(MZoneName,ZonePrefix,1),ZonePrefix})
 if string.find(MZoneName,ZonePrefix,1)then
 MZonePrefix=true
 end
@@ -18895,10 +18906,26 @@ self:SetCommand(CommandActivateICLS)
 end
 return self
 end
+function CONTROLLABLE:CommandActivateLink4(Frequency,UnitID,Callsign,Delay)
+local CommandActivateLink4={
+id="ActivateLink4",
+params={
+["frequency "]=Frequency*1000,
+["unitId"]=UnitID,
+["name"]=Callsign,
+}
+}
+if Delay and Delay>0 then
+SCHEDULER:New(nil,self.CommandActivateLink4,{self},Delay)
+else
+self:SetCommand(CommandActivateLink4)
+end
+return self
+end
 function CONTROLLABLE:CommandDeactivateBeacon(Delay)
 local CommandDeactivateBeacon={id='DeactivateBeacon',params={}}
 if Delay and Delay>0 then
-SCHEDULER:New(nil,self.CommandActivateBeacon,{self},Delay)
+SCHEDULER:New(nil,self.CommandDeactivateBeacon,{self},Delay)
 else
 self:SetCommand(CommandDeactivateBeacon)
 end
@@ -18910,6 +18937,15 @@ if Delay and Delay>0 then
 SCHEDULER:New(nil,self.CommandDeactivateICLS,{self},Delay)
 else
 self:SetCommand(CommandDeactivateICLS)
+end
+return self
+end
+function CONTROLLABLE:CommandDeactivateLink4(Delay)
+local CommandDeactivateLink4={id='DeactivateLink4',params={}}
+if Delay and Delay>0 then
+SCHEDULER:New(nil,self.CommandDeactivateLink4,{self},Delay)
+else
+self:SetCommand(CommandDeactivateLink4)
 end
 return self
 end
@@ -22031,6 +22067,20 @@ return DCSUnit
 end
 return nil
 end
+function UNIT:GetAltitude(FromGround)
+local DCSUnit=Unit.getByName(self.UnitName)
+if DCSUnit then
+local altitude=0
+local point=DCSUnit:getPoint()
+altitude=point.y
+if FromGround then
+local land=land.getHeight({x=point.x,y=point.z})or 0
+altitude=altitude-land
+end
+return altitude
+end
+return nil
+end
 function UNIT:ReSpawnAt(Coordinate,Heading)
 self:T(self:Name())
 local SpawnGroupTemplate=UTILS.DeepCopy(_DATABASE:GetGroupTemplateFromUnitName(self:Name()))
@@ -23292,6 +23342,8 @@ AIRBASE.SouthAtlantic={
 ["Ushuaia"]="Ushuaia",
 ["Ushuaia_Helo_Port"]="Ushuaia Helo Port",
 ["Punta_Arenas"]="Punta Arenas",
+["Pampa_Guanaco"]="Pampa Guanaco",
+["San_Julian"]="San Julian",
 }
 AIRBASE.TerminalType={
 Runway=16,
