@@ -5,11 +5,6 @@
 -- The DO SCRIPT assert(loadfile())() is preferred because then HypeMan can be updated and modified
 -- and applied to all .miz files without having to modify each individually.
 
--- HypeMan requires JSON.lua from here http://regex.info/blog/lua/json in C:\HypeMan
--- TODO - can this be loaded with loadfile()?
-local JSONLibPath = hypemanInstallPath.."/JSON.lua"
-JSON = (loadfile(JSONLibPath))() -- one-time load of the routines
-
 HypeMan = {}
 -- Configuration Options
 local HypeManAnnounceTakeoffs = false
@@ -50,10 +45,10 @@ HypeManHitTable = {}
 -- HypeMan.sendBotMessage('Roses are Red.  Violets are blue.  I only wrote this poem to test my Discord Bot.')
 
 HypeMan.sendBotTable = function(tbl)
-	-- env.info(msg)  -- for debugging
-	local tbl_json_txt = JSON:encode(tbl)   
-	socket.try(HypeMan.UDPSendSocket:sendto(tbl_json_txt, '127.0.0.1', 10081))
-	-- msg = nil  -- setting to nil in attempt to debug why message queue seems to grow
+    -- env.info(msg)  -- for debugging
+    local tbl_json_txt = net.lua2json(tbl)
+    socket.try(HypeMan.UDPSendSocket:sendto(tbl_json_txt, '127.0.0.1', 10081))
+    -- msg = nil  -- setting to nil in attempt to debug why message queue seems to grow
 end
 
 HypeMan.sendBotMessage  = function(msg)
