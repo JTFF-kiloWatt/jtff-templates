@@ -37,6 +37,13 @@ function switchGroupImmortalStatus(group)
     MESSAGE:NewType("Immortal status of your group : " .. tostring(status) , MESSAGE.Type.Update):ToGroup(group)
 end
 
+function switchGroupAirbossSubtitlesStatus(group)
+    for index, airbossObject in ipairs(AIRBOSSArray) do
+        for playerindex, player in ipairs(group:GetPlayerUnits()) do
+            airbossObject:_SubtitlesOnOff(player:Name())
+        end
+    end
+end
 
 function give_bra_of_air_group(param)
     local target_group = param[1]
@@ -252,18 +259,6 @@ function spawnRecoveryTankerEscort(escortSpawnObject,customconfig)
     end
 end
 
-function EnterRecovery(objAirboss, Case)
-    --local shipID = UNIT:FindByName(objAirboss.carrier:Name()):GetDCSObject():getID()
-    timer.scheduleFunction(
-            function()
-                trigger.action.outSound("Airboss Soundfiles/BossRecoverAircraft.ogg")
-                trigger.action.outText(objAirboss.customconfig.alias..': Recovery started Case '..Case..'...', 30)
-            end,
-            {},
-            timer.getTime() + 10
-    )
-end
-
 function detectShitHotBreak(objAirboss)
     local clientData={}
     local player_name=""
@@ -300,7 +295,7 @@ function detectShitHotBreak(objAirboss)
 
                 if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
                     -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
-                    trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
+                    --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
                     local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
                     HypeMan.sendBotMessage(sh_message_to_discord)
                     Play_SH_Sound:ToAll()

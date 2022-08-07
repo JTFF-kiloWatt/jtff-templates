@@ -26,6 +26,9 @@ function Set_CLIENT:OnEventPlayerEnterAircraft(EventData)
         debug_msg(string.format("Add Immortal Menu for group [%s], player name [%s]",EventData.IniGroupName , EventData.IniPlayerName))
         BASE:SetState( EventData.IniGroup, "isImmortal", false )
         MENU_GROUP_COMMAND:New( EventData.IniGroup, "Switch immortal status", GroupMenu, switchGroupImmortalStatus, EventData.IniGroup )
+        --if #AIRBOSSArray > 0 then
+        --    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Switch Airboss subtitles", GroupMenu, switchGroupAirbossSubtitlesStatus, EventData.IniGroup )
+        --end
     end
 end
 function Set_CLIENT:OnEventRefueling(EventData)
