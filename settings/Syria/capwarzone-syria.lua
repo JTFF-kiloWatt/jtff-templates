@@ -1,145 +1,163 @@
 WarCAPConfig = {
     {
-        enable = false,
+        enable = true,
         coalitionCAP = coalition.side.RED,
-        name = 'Russian Defense',
-        debug = true,
-        borderZoneGroupName = 'border-russia',
+        name = 'Syria Defense',
+        debug = false,
+        borderZoneGroupName = 'border-syria',
         --borderZoneName = 'red_north_patrol_zone',
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
         ewrPrefixes = {
-            "EW_RUS",
-            "108"
+            "EWR_SYR"
         },
         CAPBases = {
             {
-                baseName = AIRBASE.Caucasus.Novorossiysk,
+                baseName = AIRBASE.Syria.Tabqa,
                 patrolSquadrons = {
                     {
                         enable = true,
-                        groupName = "CAP-RU-1",
+                        groupName = "CAP-SY-Mig21",
                         groupForce = 2,
-                        groupNumber = 2,
-                        patrolInAirNumber = 1,
-                        patrolZoneGroupName = "patrol_Dombass"
+                        groupNumber = 7,
+                        patrolInAirNumber = 2,
+                        patrolZoneName = "patrol-tabqa"
                     }
                 },
                 interceptSquadrons = {
                     {
                         enable = true,
-                        groupName = "INT-RU-1",
+                        groupName = "INT-SY-MIG29",
                         groupForce = 2,
-                        groupNumber = 2
+                        groupNumber = 3
                     }
                 }
             },
             {
-                baseName = AIRBASE.Caucasus.Gelendzhik,
+                baseName = AIRBASE.Syria.Tiyas,
                 patrolSquadrons = {
                     {
                         enable = true,
-                        groupName = "CAP-RU-1",
-                        groupForce = 2,
-                        groupNumber = 2,
-                        patrolInAirNumber = 1,
-                        patrolZoneGroupName = "patrol_South_Russia"
-                    }
-                },
-                interceptSquadrons = {
-                    {
-                        enable = true,
-                        groupName = "INT-RU-1",
-                        groupForce = 2,
-                        groupNumber = 2
-                    }
-                }
-            },
-            {
-                baseName = AIRBASE.Caucasus.Anapa_Vityazevo,
-                patrolSquadrons = {
-                    {
-                        enable = false,
-                        groupName = "CAP-RU-1",
-                        groupForce = 2,
-                        groupNumber = 2,
-                        patrolInAirNumber = 1,
-                        patrolZoneGroupName = "patrol_Dombass"
-                    }
-                },
-                interceptSquadrons = {
-                    {
-                        enable = false,
-                        groupName = "INT-RU-2",
-                        groupForce = 2,
-                        groupNumber = 4
-                    }
-                }
-            },
-            {
-                baseName = AIRBASE.Caucasus.Krasnodar_Center,
-                patrolSquadrons = {
-                    {
-                        enable = true,
-                        groupName = "CAP-RU-2",
-                        groupForce = 4,
-                        groupNumber = 6,
-                        patrolInAirNumber = 2
-                    }
-                },
-                interceptSquadrons = {
-                    {
-                        enable = true,
-                        groupName = "INT-RU-2",
-                        groupForce = 2,
-                        groupNumber = 2
-                    }
-                }
-            },
-            {
-                baseName = AIRBASE.Caucasus.Sochi_Adler,
-                patrolSquadrons = {
-                    {
-                        enable = true,
-                        groupName = "CAP-RU-2",
+                        groupName = "CAP-SY-Mig23",
                         groupForce = 2,
                         groupNumber = 6,
-                        patrolInAirNumber = 2,
-                        patrolZoneGroupName = "patrol_South_Russia"
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-tiyas"
+                    }
+                },
+                interceptSquadrons = {}
+            },
+            {
+                baseName = AIRBASE.Syria.Marj_Ruhayyil,
+                patrolSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "CAP-SY-Mig21",
+                        groupForce = 2,
+                        groupNumber = 6,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-marj"
+                    },
+                    {
+                        enable = true,
+                        groupName = "CAP-SY-Mig23",
+                        groupForce = 2,
+                        groupNumber = 6,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-marj"
                     }
                 },
                 interceptSquadrons = {
                     {
-                        enable = false,
-                        groupName = "INT-RU-2",
+                        enable = true,
+                        groupName = "INT-SY-MIG25",
+                        groupForce = 2,
+                        groupNumber = 1
+                    }
+                }
+            },
+            {
+                baseName = AIRBASE.Syria.Mezzeh,
+                patrolSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "CAP-SY-Mig29A-27ER",
+                        groupForce = 2,
+                        groupNumber = 4,
+                        patrolInAirNumber = 1
+                    }
+                },
+                interceptSquadrons = {}
+            },
+            {
+                baseName = AIRBASE.Syria.Thalah,
+                patrolSquadrons = {},
+                interceptSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "INT-SY-MIG29",
+                        groupForce = 2,
+                        groupNumber = 1
+                    }
+                }
+            },
+            {
+                baseName = AIRBASE.Syria.Kuweires,
+                patrolSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "CAP-SY-Mig29A-27ER",
+                        groupForce = 2,
+                        groupNumber = 4,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-bassel"
+                    }
+                },
+                interceptSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "INT-SY-MIG29",
                         groupForce = 2,
                         groupNumber = 2
                     }
                 }
             },
             {
-                baseName = "kusnetsov",
+                baseName = AIRBASE.Syria.Bassel_Al_Assad,
                 patrolSquadrons = {
                     {
                         enable = true,
-                        groupName = "CAP-RU-3",
-                        groupForce = 4,
-                        groupNumber = 8,
+                        groupName = "CAP-SY-Mig21",
+                        groupForce = 2,
+                        groupNumber = 16,
                         patrolInAirNumber = 2,
-                        patrolZoneName = "Patrol_Crimee"
+                        patrolZoneName = "patrol-bassel"
+                    },
+                    {
+                        enable = true,
+                        groupName = "CAP-RU-Su27",
+                        groupForce = 2,
+                        groupNumber = 3,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-bassel"
                     }
                 },
                 interceptSquadrons = {
                     {
-                        enable = true,
-                        groupName = "INT-RU-3",
+                        enable = false,
+                        groupName = "INT-SY-MIG29",
+                        groupForce = 2,
+                        groupNumber = 2
+                    },
+                    {
+                        enable = false,
+                        groupName = "INT-RU-MIG29",
                         groupForce = 2,
                         groupNumber = 2
                     }
                 }
             }
-
         },
         skill = 'Excellent',
         capParameters = {

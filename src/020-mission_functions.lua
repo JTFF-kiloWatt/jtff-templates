@@ -375,6 +375,7 @@ function startCapWarZone(objCapWarZone)
     objCapWarZone.objDispatcher:SetGciRadius(UTILS.NMToMeters(objCapWarZone.customconfig.gciRadius or UTILS.MetersToNM(200000)))
     objCapWarZone.objDispatcher:SetDefaultTakeoffFromParkingHot()
     objCapWarZone.objDispatcher:SetDefaultLandingAtRunway()
+    objCapWarZone.objDispatcher:SetDefaultFuelThreshold(0.30)
     objCapWarZone.objDispatcher:SetDefaultCapRacetrack(
             UTILS.NMToMeters(20),
             UTILS.NMToMeters(40),
@@ -443,8 +444,8 @@ function startCapWarZone(objCapWarZone)
                 objCapWarZone.objDispatcher:SetSquadronCapInterval(
                         "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
                         capsqnconfig.patrolInAirNumber,
-                        180,
-                        600,
+                        8*60,
+                        13*60,
                         1
                 )
             end
