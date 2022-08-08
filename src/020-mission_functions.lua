@@ -37,6 +37,13 @@ function switchGroupImmortalStatus(group)
     MESSAGE:NewType("Immortal status of your group : " .. tostring(status) , MESSAGE.Type.Update):ToGroup(group)
 end
 
+function switchGroupAirbossSubtitlesStatus(group)
+    for index, airbossObject in ipairs(AIRBOSSArray) do
+        for playerindex, player in ipairs(group:GetPlayerUnits()) do
+            airbossObject:_SubtitlesOnOff(player:Name())
+        end
+    end
+end
 
 function give_bra_of_air_group(param)
     local target_group = param[1]
@@ -252,18 +259,6 @@ function spawnRecoveryTankerEscort(escortSpawnObject,customconfig)
     end
 end
 
-function EnterRecovery(objAirboss, Case)
-    --local shipID = UNIT:FindByName(objAirboss.carrier:Name()):GetDCSObject():getID()
-    timer.scheduleFunction(
-            function()
-                trigger.action.outSound("Airboss Soundfiles/BossRecoverAircraft.ogg")
-                trigger.action.outText(objAirboss.customconfig.alias..': Recovery started Case '..Case..'...', 30)
-            end,
-            {},
-            timer.getTime() + 10
-    )
-end
-
 function detectShitHotBreak(objAirboss)
     local clientData={}
     local player_name=""
@@ -300,7 +295,7 @@ function detectShitHotBreak(objAirboss)
 
                 if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
                     -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
-                    trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
+                    --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
                     local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
                     HypeMan.sendBotMessage(sh_message_to_discord)
                     Play_SH_Sound:ToAll()
@@ -375,6 +370,7 @@ function startCapWarZone(objCapWarZone)
     objCapWarZone.objDispatcher:SetGciRadius(UTILS.NMToMeters(objCapWarZone.customconfig.gciRadius or UTILS.MetersToNM(200000)))
     objCapWarZone.objDispatcher:SetDefaultTakeoffFromParkingHot()
     objCapWarZone.objDispatcher:SetDefaultLandingAtRunway()
+    objCapWarZone.objDispatcher:SetDefaultFuelThreshold(0.30)
     objCapWarZone.objDispatcher:SetDefaultCapRacetrack(
             UTILS.NMToMeters(20),
             UTILS.NMToMeters(40),
@@ -443,8 +439,8 @@ function startCapWarZone(objCapWarZone)
                 objCapWarZone.objDispatcher:SetSquadronCapInterval(
                         "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
                         capsqnconfig.patrolInAirNumber,
-                        180,
-                        600,
+                        8*60,
+                        13*60,
                         1
                 )
             end
@@ -825,6 +821,14 @@ function markGroupOnMap(param)
     end
 end
 
+function SpawnRangesDelay(param)
+    local rangeConfig = param[2]
+    local subRangeConfig = param[3]
+    local delay = param[4] or 10
+    MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToBlue()
+    TIMER:New(SpawnRanges, param):Start(delay)
+end
+
 function SpawnRanges(param)
     local radioCommandSubRange = param[1]
     local rangeConfig = param[2]
@@ -928,6 +932,14 @@ function SpawnRanges(param)
     MESSAGE:NewType(string.format("Units in range %s(%s) in place", rangeName, subRangeName), MESSAGE.Type.Information)
         :ToBlue()
     markGroupOnMap({groupsToSpawn, rangeConfig.benefit_coalition})
+end
+
+function SpawnFacRangesDelay(param)
+    local facRangeConfig = param[2]
+    local facSubRangeConfig = param[3]
+    local delay = param[4] or 10
+    MESSAGE:NewType(string.format("Warning, FAC in range %s(%s) will spawn in %d sec", facRangeConfig.name, facSubRangeConfig.name, delay), MESSAGE.Type.Update):ToBlue()
+    TIMER:New(SpawnFacRanges, param):Start(delay)
 end
 
 function SpawnFacRanges(param)
@@ -1198,6 +1210,13 @@ function activateSkynet(param)
     MESSAGE:NewType(string.format("Skynet of %s activate in 60 secondes", iadsConfig.name), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
 end
 
+function SpawnIADSDelayed(param)
+    local iadsConfig = param[2]
+    local delay = param[4] or 10
+    MESSAGE:NewType(string.format("Warning, IADS Units %s will spawn in %d sec", iadsConfig.name, delay), MESSAGE.Type.Update):ToBlue()
+    TIMER:New(SpawnIADS, param):Start(delay)
+end
+
 function SpawnIADS(param)
     local parentMenu = param[1]
     local iadsConfig = param[2]
@@ -1280,11 +1299,12 @@ function AddTargetsFunction(radioCommandSubRange, rangeConfig, subRangeConfig)
             rangeConfig.benefit_coalition,
             "Spawn",
             radioCommandSubRange,
-            SpawnRanges,
+            SpawnRangesDelay,
             {
                 radioCommandSubRange,
                 rangeConfig,
                 subRangeConfig,
+                15,
                 AddTargetsFunction
             }
     )
@@ -1295,11 +1315,12 @@ function AddFacFunction(radioCommandSubRange, facRangeConfig, facSubRangeConfig)
             facRangeConfig.benefit_coalition,
             "Spawn",
             radioCommandSubRange,
-            SpawnFacRanges,
+            SpawnFacRangesDelay,
             {
                 radioCommandSubRange,
                 facRangeConfig,
                 facSubRangeConfig,
+                10,
                 AddFacFunction
             }
     )
@@ -1307,7 +1328,7 @@ end
 
 function AddIADSFunction(parentMenu, iadsconfig, skynetIADSObject)
     local RadioCommandAdd = MENU_MISSION_COMMAND:New("Spawn", parentMenu,
-        SpawnIADS, { parentMenu, iadsconfig, skynetIADSObject})
+            SpawnIADSDelayed, { parentMenu, iadsconfig, skynetIADSObject, 15})
 end
 
 function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAnchorCoord, askedOrbitHeading, askedOrbitLeg)

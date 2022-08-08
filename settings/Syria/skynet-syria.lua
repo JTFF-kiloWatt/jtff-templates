@@ -7,7 +7,7 @@ SkynetConfig = {
         nodes = {
             {
                 connection = "Node_Aleppo",
-                ewrs = {"EWR_Kuweires"},
+                ewrs = {"EWR_SYR_Kuweires"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Aleppo",
@@ -24,7 +24,7 @@ SkynetConfig = {
                 }
             }, {
                 connection = "Node_Latakia",
-                ewrs = {"EWR_Latakia"},
+                ewrs = {"EWR_SYR_Latakia"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Latakia",
@@ -38,7 +38,7 @@ SkynetConfig = {
                 }
             }, {
                 connection = "Node_Baniyas",
-                ewrs = {"EWR_Baniyas"},
+                ewrs = {"EWR_SYR_Baniyas"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Tartus",
@@ -52,7 +52,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Hama",
-                ewrs = {"EWR_Hama"},
+                ewrs = {"EWR_SYR_Hama"},
                 sites = {
                     {
                         sam = "SAM-SA-5-Baniyas",
@@ -63,7 +63,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Tiyas",
-                ewrs = {"EWR_Tiyas"},
+                ewrs = {"EWR_SYR_Tiyas"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Tiyas",
@@ -77,7 +77,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Homs",
-                ewrs = {"EWR_Damascus_North"},
+                ewrs = {"EWR_SYR_Damascus_North"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Homs",
@@ -100,7 +100,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Damascus",
-                ewrs = {"EWR_Damascus_West", "EWR_Sayqal"},
+                ewrs = {"EWR_SYR_Damascus_West", "EWR_SYR_Sayqal"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Marj",
@@ -129,7 +129,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Thalah",
-                ewrs = {"EWR_Thalah"},
+                ewrs = {"EWR_SYR_Thalah"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Thalah",
@@ -146,7 +146,7 @@ SkynetConfig = {
         nodes = {
             {
                 connection = "Node_Aleppo",
-                ewrs = {"EWR_Kuweires"},
+                ewrs = {"EWR_SYR_Kuweires"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Aleppo",
@@ -165,7 +165,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Latakia",
-                ewrs = {"EWR_Latakia"},
+                ewrs = {"EWR_SYR_Latakia"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Latakia",
@@ -176,7 +176,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Baniyas",
-                ewrs = {"EWR_Baniyas"},
+                ewrs = {"EWR_SYR_Baniyas"},
                 sites = {
                     {
                         sam = "SAM-SA-2-Tartus",
@@ -187,7 +187,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Hama",
-                ewrs = {"EWR_Hama"},
+                ewrs = {"EWR_SYR_Hama"},
                 sites = {
                     {
                         sam = "SAM-SA-5-Tartus",
@@ -198,11 +198,11 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Tiyas",
-                ewrs = {"EWR_Tiyas"},
+                ewrs = {"EWR_SYR_Tiyas"},
                 sites = { "SAM-SA-2-Tiyas", "SAM-SA-3-SouthTiyas"},
             }, {
                 connection = "Node_Homs",
-                ewrs = {"EWR_Damascus_North"},
+                ewrs = {"EWR_SYR_Damascus_North"},
                 sites = {
                     "SAM-SA-2-Homs",
                     "SAM-SA-3-Homs",
@@ -211,7 +211,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Damascus",
-                ewrs = {"EWR_Damascus_West", "EWR_Sayqal"},
+                ewrs = {"EWR_SYR_Damascus_West", "EWR_SYR_Sayqal"},
                 sites = {
                     "SAM-SA-2-Damascus",
                     "SAM-SA-3-Damascus",
@@ -220,7 +220,7 @@ SkynetConfig = {
                 },
             }, {
                 connection = "Node_Thalah",
-                ewrs = {"EWR_Thalah"},
+                ewrs = {"EWR_SYR_Thalah"},
                 sites = {"SAM-SA-2-Thalah"},
             }
         }
@@ -233,7 +233,7 @@ SkynetConfig = {
         nodes = {
             {
                 connection = "IADS_QG_Bassel",
-                ewrs = {"EW_NorthBassel", "EW_SouthBassel"},
+                ewrs = {"EWR_SYR_NorthBassel", "EWR_SYR_SouthBassel"},
                 sites = {
                     {
                         sam = "SAM-SA-17M1-Bassel",

@@ -44,7 +44,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             for index,value in pairs(tankersArray) do
                 if ((value.customconfig.airboss_recovery == true) and (value.customconfig.groupName == airbossconfig.recoverytanker))then
                     objAirboss:SetRecoveryTanker(tankersArray[index])
-                    trigger.action.outText('Recovery Tanker configured : '..airbossconfig.recoverytanker, 30)
+                    objAirboss:MessageToMarshal('Recovery Tanker Setup : '..airbossconfig.recoverytanker, objAirboss.customconfig.alias, "", 30, false, 0)
                     break
                 end
             end
@@ -203,19 +203,18 @@ for index, airbossconfig in ipairs(AirBossConfig) do
 
 
         function objAirboss:OnAfterRecoveryStart(From, Event, To, Case, Offset)
-            EnterRecovery(self, Case)
-            trigger.action.outText(self.customconfig.alias..' : Event Start !',45)
+            self:MessageToMarshal('Recovery started Case '..Case..'...', self.customconfig.alias, "", 30, false, 10)
         end
 
         function objAirboss:OnAfterRecoveryStop(From, Event, To)
-            trigger.action.outText(self.customconfig.carriername..': Recovery finished.', 30)
+            self:MessageToMarshal('Recovery finished.', self.customconfig.alias, "", 30, false, 10)
             if (airbossconfig.recoveryops.mode == 'cyclic') then
                 if self.recoverywindow then
                     if ((timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*1/3, 0) > self.recoverywindow.STOP)
                             or (timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*3/3, 0) < self.recoverywindow.START)) then
                         if ((timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*3/3, 0)) >= (self:GetCoordinate():GetSunset(true) - 30*60)) then
                             --fin du prochain event apres la nuit aeronavale
-                            trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
+                            self:MessageToMarshal('switching to case III due to Naval Sunset on the next event !', self.customconfig.alias, "", 45, false, 0)
                             self:SetRecoveryCase(3)
                             self:SetMaxSectionSize(1)
                         else
@@ -238,13 +237,13 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                                 self.customconfig.menurecovery.windondeck,
                                 self.customconfig.menurecovery.uturn
                         )
-                        trigger.action.outText(self.customconfig.carriername..': Next Recovery in : '..UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes/3, 0)..' minutes', 30)
+                        self:MessageToMarshal('Next Recovery in : '..UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes/3, 0)..' minutes', self.customconfig.alias, "", 30, false, 0)
                         --LeaveRecovery(self)
                     end
                 else
                     if ((timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*3/3,0)) >= (self:GetCoordinate():GetSunset(true) - 30*60)) then
                         --fin du prochain event apres la nuit aeronavale
-                        trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
+                        self:MessageToMarshal('switching to case III due to Naval Sunset on the next event !', self.customconfig.alias, "", 45, false, 0)
                         self:SetRecoveryCase(3)
                         self:SetMaxSectionSize(1)
                     else
@@ -267,7 +266,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                             self.customconfig.menurecovery.windondeck,
                             self.customconfig.menurecovery.uturn
                     )
-                    trigger.action.outText(self.customconfig.carriername..': Next Recovery in : '..UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes/3, 0)..' minutes', 30)
+                    self:MessageToMarshal('Next Recovery in : '..UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes/3, 0)..' minutes', self.customconfig.alias, "", 30, false, 0)
                     --LeaveRecovery(self)
                 end
             end
@@ -293,10 +292,10 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         )
         AIRBOSSArray[compteur].scheduler = myscheduler
         AIRBOSSArray[compteur].schedulerID = myschedulerID
-        trigger.action.outText('INFO '..airbossconfig.alias..' : Naval sunset at '..UTILS.SecondsToClock((AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)), 75)
+        --trigger.action.outText('INFO '..airbossconfig.alias..' : Naval sunset at '..UTILS.SecondsToClock((AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)), 75)
         if (airbossconfig.recoveryops.mode == 'cyclic') then
             if ((timer.getAbsTime() + airbossconfig.recoveryops.cyclic.event_duration_minutes*60) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)) then
-                trigger.action.outText('switching to case III due to Naval Sunset on the next event !', 45)
+                self:MessageToMarshal('switching to case III due to Naval Sunset on the next event !', self.customconfig.alias, "", 45, false, 0)
                 AIRBOSSArray[compteur]:SetRecoveryCase(3)
                 AIRBOSSArray[compteur]:SetMaxSectionSize(1)
             else
