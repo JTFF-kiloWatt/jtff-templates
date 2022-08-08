@@ -75,4 +75,4 @@ It will prompt you for the miz file you want to inject the JTFF scripts into and
 
 ## inject additional JTFF-scripts in an already JTFF-scripted mission
 
-WIP...
+WIP... check Templatator2000 :)
