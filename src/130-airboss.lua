@@ -44,7 +44,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             for index,value in pairs(tankersArray) do
                 if ((value.customconfig.airboss_recovery == true) and (value.customconfig.groupName == airbossconfig.recoverytanker))then
                     objAirboss:SetRecoveryTanker(tankersArray[index])
-                    objAirboss:MessageToMarshal('Recovery Tanker Setup : '..airbossconfig.recoverytanker, objAirboss.customconfig.alias, "", 30, false, 0)
+                    objAirboss:MessageToMarshal('Recovery Tanker Setup : '..airbossconfig.recoverytanker, airbossconfig.alias, "", 30, false, 0)
                     break
                 end
             end
