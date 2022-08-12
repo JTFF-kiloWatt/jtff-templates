@@ -236,7 +236,7 @@ SkynetConfig = {
                 ewrs = {"EWR_SYR_NorthBassel", "EWR_SYR_SouthBassel"},
                 sites = {
                     {
-                        sam = "SAM-SA-17M1-Bassel",
+                        sam = "SAM-SA-2-Bassel",
                         harmDetectionChance = 65,
                         goLiveRangePercent = 60,
                         pdharmDetectionChance = 90,
@@ -248,6 +248,28 @@ SkynetConfig = {
                         goLiveRangePercent = 70,
                     }
 				},
+            }
+        }
+    },
+    {
+        name = "Iraki IADS",
+        enable = true,
+        benefit_coalition = coalition.side.BLUE,
+        headQuarter = {"IADS_QG_H3"},
+        nodes = {
+            {
+                connection = "IADS_QG_H3",
+                ewrs = {"EWR_IRK_H3"},
+                sites = {
+                    {
+                        sam = "H-3 SA-5",
+                        harmDetectionChance = 65,
+                        goLiveRangePercent = 60,
+                        pdharmDetectionChance = 90,
+                        actAsEw = false,
+                        pointDefenses = "SAM-SA-15-PD-H3"
+                    }
+                },
             }
         }
     }

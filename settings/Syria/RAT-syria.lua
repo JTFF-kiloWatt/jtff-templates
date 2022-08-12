@@ -244,8 +244,29 @@ RATConfig = {
     },
     {
         name = 'military',
-        enable = false,
-        aircrafts_groupconfigs = {}
+        enable = true,
+        aircrafts_groupconfigs = {
+            {
+                templatename = 'A-400M Incirlik-Akrotiri',
+                spawns = 1,
+                flightlevel = 150,
+                speed = 400,
+                inactive_timer = 600,
+                allow_immortal = false,
+                allow_invisible = false,
+                atcmessage_enable = false,
+                airbases_names = {
+                    departure = {
+                        AIRBASE.Syria.Incirlik,
+                        AIRBASE.Syria.Akrotiri
+                    },
+                    arrival = {
+                        AIRBASE.Syria.Akrotiri,
+                        AIRBASE.Syria.Incirlik
+                    }
+                }
+            }
+        }
     }
 }
 
