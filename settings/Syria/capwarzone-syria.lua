@@ -159,7 +159,6 @@ WarCAPConfig = {
                 }
             }
         },
-        skill = 'Excellent',
         capParameters = {
             patrolFloor = 20000,
             patrolCeiling = 40000,

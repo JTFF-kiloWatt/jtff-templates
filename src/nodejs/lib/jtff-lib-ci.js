@@ -231,9 +231,9 @@ function mizUpdateSettingsLuaFiles(zip, strTheatre) {
 async function mizUpdateSoundFolders(zip) {
     const folderArray = fs.readdirSync('resources/sounds');
     for (const folder of folderArray) {
-        if(zip.folder(new RegExp(folder)).length > 0 ) {
+        // if(zip.folder(new RegExp(folder)).length > 0 ) {
             await mizUpdateSingleSoundFolder(zip, folder);
-        }
+        // }
     }
 }
 

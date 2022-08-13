@@ -530,18 +530,66 @@ function destroyGroup(group_name)
 end
 
 function deleteSubRangeUnits(param)
+    --parameters :
+    --           1 : groups to be destroyed
+    --           2 : Root range config Object
+    --           3 : sub (or subsub) Range Config Object
+    --           4 : sub (or subsub) Radio Menu
+    --           5 : mute switch
     local groupsToSpawn = param[1]
     local rangeConfig = param[2]
     local subRangeConfig = param[3]
     local radioCommandSubRange = param[4]
+    local blnMute = param[5]
     for i = 1, #groupsToSpawn do
         destroyGroup(groupsToSpawn[i])
     end
     MESSAGE:NewType(string.format("Remove the site : %s-%s", rangeConfig.name, subRangeConfig.name),
         MESSAGE.Type.Information):ToBlue()
-    radioCommandSubRange:RemoveSubMenus()
+    if (not(blnMute)) then
+        sound2Bip:ToAll()
+    end
+    if radioCommandSubRange then
+        radioCommandSubRange:RemoveSubMenus()
+        addSubRangeRadioMenus(radioCommandSubRange, rangeConfig, subRangeConfig)
+    end
+end
 
-    AddTargetsFunction(radioCommandSubRange, rangeConfig, subRangeConfig)
+function deleteWholeRangeUnits(param)
+    local rangeConfig = param[1]
+    local rangeCoalitionMenu = param[2]
+    rangeCoalitionMenu:RemoveSubMenus()
+    if (rangeConfig.subRange ~= nil ) then
+        sound2Bip:ToAll()
+        MESSAGE:NewType(string.format("Removing the whole site : %s", rangeConfig.name),
+                MESSAGE.Type.Information):ToCoalition(rangeConfig.benefit_coalition)
+        for subIndex, subRangeConfig in ipairs(rangeConfig.subRange) do
+            local radioMenuSubRange = MENU_COALITION:New(rangeConfig.benefit_coalition, subRangeConfig.name, rangeCoalitionMenu)
+            if (subRangeConfig.subsubRange ~= nil) then
+                for subsubIndex, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
+                    local radioMenuSubSubRange     = MENU_COALITION:New(rangeConfig.benefit_coalition, subsubRangeConfig.name, radioMenuSubRange)
+                    deleteSubRangeUnits({
+                        subsubRangeConfig.groupsToSpawn,
+                        rangeConfig,
+                        subsubRangeConfig,
+                        nil,
+                        true
+                    })
+                    addSubRangeRadioMenus(radioMenuSubSubRange, rangeConfig, subsubRangeConfig)
+                end
+            else
+                deleteSubRangeUnits({
+                    subRangeConfig.groupsToSpawn,
+                    rangeConfig,
+                    subRangeConfig,
+                    nil,
+                    true
+                })
+                addSubRangeRadioMenus(radioMenuSubRange, rangeConfig, subRangeConfig)
+            end
+        end
+    end
+    AddWholeRangeCoalitionCommandMenus(rangeCoalitionMenu, rangeConfig)
 end
 
 function deleteIADSUnits(param)
@@ -822,12 +870,70 @@ function markGroupOnMap(param)
 end
 
 function SpawnRangesDelay(param)
+    --parameters :
+    --           1 : parent Radion Menu
+    --           2 : Root range config Object
+    --           3 : subRange config Object
+    --           4 : delay in s before sub (or subsub) range spawn
+    --           5 : function calling me (No Idea why we need that)
+    --           6 : boolean for sound warning play
     local rangeConfig = param[2]
     local subRangeConfig = param[3]
     local delay = param[4] or 10
-    MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToBlue()
+    local myfunc = param[5]
+    if ( param[6] ) then
+        sound2Bip:ToAll()
+    end
+    MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToAll()
     TIMER:New(SpawnRanges, param):Start(delay)
 end
+
+function SpawnWholeRangesDelay(param)
+    --parameters :
+    --           1 : parent Radio Menu
+    --           2 : Root range config Object
+    --           3 : delay in s before sub (or subsub) range spawn
+    --           4 : function calling me (No Idea why we need that)
+    --           5 : boolean for sound warning play
+    local parentRangeMenu = param[1]
+    local rangeConfig = param[2]
+    local delay = param[3] or 10
+    local myfunc = param[4]
+    parentRangeMenu:RemoveSubMenus()
+    if (rangeConfig.subRange) then
+        sound2Bip:ToAll()
+        for subIndex, subRangeConfig in ipairs(rangeConfig.subRange) do
+            local radioMenuSubRange     = MENU_COALITION:New(
+                    rangeConfig.benefit_coalition,
+                    subRangeConfig.name,
+                    parentRangeMenu
+            )
+            if (subRangeConfig.subsubRange) then
+                for subsubIndex, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
+                    local radioMenuSubSubRange     = MENU_COALITION:New(
+                            rangeConfig.benefit_coalition,
+                            subsubRangeConfig.name,
+                            radioMenuSubRange
+                    )
+                    SpawnRangesDelay({radioMenuSubSubRange,rangeConfig,subsubRangeConfig,delay,myfunc,false})
+                end
+            else
+                SpawnRangesDelay({radioMenuSubRange,rangeConfig,subRangeConfig,delay,myfunc, false})
+            end
+        end
+        local CommandZoneDetroy = MENU_COALITION_COMMAND:New(
+                rangeConfig.benefit_coalition,
+                "Delete whole Range",
+                parentRangeMenu,
+                deleteWholeRangeUnits,
+                {
+                    rangeConfig,
+                    parentRangeMenu
+                }
+        )
+    end
+end
+
 
 function SpawnRanges(param)
     local radioCommandSubRange = param[1]
@@ -901,7 +1007,7 @@ function SpawnRanges(param)
 
     radioCommandSubRange:RemoveSubMenus()
     local CommandZoneDetroy = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Delete", radioCommandSubRange,
-        deleteSubRangeUnits, {groupsToSpawn, rangeConfig, subRangeConfig, radioCommandSubRange})
+        deleteSubRangeUnits, {groupsToSpawn, rangeConfig, subRangeConfig, radioCommandSubRange, true})
     local ROE = MENU_COALITION:New(rangeConfig.benefit_coalition, "ROE", radioCommandSubRange)
     local ROEOpenFire = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Open Fire", ROE, setROE,
         {groupsToSpawn, ENUMS.ROE.OpenFire})
@@ -970,7 +1076,7 @@ function SpawnFacRanges(param)
 
     radioCommandSubRange:RemoveSubMenus()
     local CommandZoneDetroy = MENU_COALITION_COMMAND:New(facRangeConfig.benefit_coalition, "Delete", radioCommandSubRange,
-            deleteSubRangeUnits, { groupsToSpawn, facRangeConfig, facSubRangeConfig, radioCommandSubRange})
+            deleteSubRangeUnits, { groupsToSpawn, facRangeConfig, facSubRangeConfig, radioCommandSubRange, true})
     local CommandZoneFumigene = MENU_COALITION_COMMAND:New(facRangeConfig.benefit_coalition, "Smoke", radioCommandSubRange,
             smokeOnSubRange, { groupsToSpawn, facRangeConfig.benefit_coalition})
     local CommandZoneCoord = MENU_COALITION_COMMAND:New(facRangeConfig.benefit_coalition, "Coordinates",
@@ -1294,7 +1400,7 @@ function SpawnIADS(param)
     MESSAGE:NewType(string.format("IADS Units %s in place", iadsName), MESSAGE.Type.Information):ToBlue()
 end
 
-function AddTargetsFunction(radioCommandSubRange, rangeConfig, subRangeConfig)
+function addSubRangeRadioMenus(radioCommandSubRange, rangeConfig, subRangeConfig)
     local RadioCommandAdd = MENU_COALITION_COMMAND:New(
             rangeConfig.benefit_coalition,
             "Spawn",
@@ -1305,10 +1411,38 @@ function AddTargetsFunction(radioCommandSubRange, rangeConfig, subRangeConfig)
                 rangeConfig,
                 subRangeConfig,
                 15,
-                AddTargetsFunction
+                addSubRangeRadioMenus,
+                true
             }
     )
 end
+
+function AddWholeRangeCoalitionCommandMenus(radioCommandRange, rangeConfig)
+    local AddWholeRangeCommand = MENU_COALITION_COMMAND:New(
+            rangeConfig.benefit_coalition,
+            "Spawn Whole Range",
+            radioCommandRange,
+            SpawnWholeRangesDelay,
+            {
+                radioCommandRange,
+                rangeConfig,
+                15,
+                AddWholeRangeCoalitionCommandMenus
+            }
+    )
+    local DeleteWholeRangeCommand = MENU_COALITION_COMMAND:New(
+            rangeConfig.benefit_coalition,
+            "Delete whole Range",
+            radioCommandRange,
+            deleteWholeRangeUnits,
+            {
+                rangeConfig,
+                radioCommandRange
+            }
+    )
+    return {AddWholeRangeCommand, DeleteWholeRangeCommand}
+end
+
 
 function AddFacFunction(radioCommandSubRange, facRangeConfig, facSubRangeConfig)
     local RadioCommandAdd = MENU_COALITION_COMMAND:New(

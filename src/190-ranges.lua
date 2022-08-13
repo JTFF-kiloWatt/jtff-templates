@@ -20,12 +20,13 @@ for index, rangeconfig in ipairs(RangeConfig) do
                 if (subRangeConfig.subsubRange ~= nil) then
                     for index, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
                         local radioMenuSubSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name,   radioMenuSubRange)
-                        AddTargetsFunction(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
+                        addSubRangeRadioMenus(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
                     end
                 else
-                    AddTargetsFunction(radioMenuSubRange, rangeconfig, subRangeConfig)
+                    addSubRangeRadioMenus(radioMenuSubRange, rangeconfig, subRangeConfig)
                 end
             end
+            AddWholeRangeCoalitionCommandMenus(radioMenuForRange, rangeconfig)
         else
             local radioMenuForRange   =  MENU_COALITION:New( coalition.side.RED, rangeconfig.name , mainRadioMenuForRangesRed)
             for index, subRangeConfig in ipairs(rangeconfig.subRange) do
@@ -33,12 +34,13 @@ for index, rangeconfig in ipairs(RangeConfig) do
                 if (subRangeConfig.subsubRange ~= nil) then
                     for index, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
                         local radioMenuSubSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name,   radioMenuSubRange)
-                        AddTargetsFunction(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
+                        addSubRangeRadioMenus(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
                     end
                 else
-                    AddTargetsFunction(radioMenuSubRange, rangeconfig, subRangeConfig)
+                    addSubRangeRadioMenus(radioMenuSubRange, rangeconfig, subRangeConfig)
                 end
             end
+            AddWholeRangeCoalitionCommandMenus(radioMenuForRange, rangeconfig)
         end
     end
 end
