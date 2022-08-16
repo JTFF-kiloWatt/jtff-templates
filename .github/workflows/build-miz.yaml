@@ -41,8 +41,10 @@ jobs:
         run: |
           npm run jtff-upload
       - name: 'Discord notification'
+        env:
+          SNAPSGOT_ID: $GITHUB_RUN_NUMBER
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "New templates snapshot${{ env.GITHUB_RUN_NUMBER }} out !!!"
+          title: "New templates snapshot${{ env.SNAPSGOT_ID }} out !!!"
           description: "Build and upload new Template missions to : JTFF Server , VF84 Server, and Google Drive"
         uses: sarisia/actions-status-discord@v1.9.0
