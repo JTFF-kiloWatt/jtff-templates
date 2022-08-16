@@ -50,7 +50,7 @@ jobs:
           npm run jtff-upload
       - name: 'Discord notification'
         env:
-          SNAPSGOT_ID: $GITHUB_RUN_NUMBER
+          SNAPSGOT_ID: ${{ GITHUB_RUN_NUMBER }}
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           title: "New templates snapshot${{ env.SNAPSGOT_ID }} out !!!"
