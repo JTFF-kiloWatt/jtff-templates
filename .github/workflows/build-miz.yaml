@@ -5,10 +5,6 @@ on:
       - 'develop'
       - 'release/*.*.*'
 
-env:
-  SNAPSHOT_ID: GITHUB_RUN_NUMBER
-
-
 jobs:
   build-mission-files:
     runs-on: ubuntu-latest
@@ -48,6 +44,6 @@ jobs:
       - name: 'Discord notification'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
-          title: "New templates snapshot${{ env.SNAPSHOT_ID }} out !!!"
+          title: "New templates snapshot${{ github.run_number }} out !!!"
           description: "Build and upload new Template missions to : JTFF Server , VF84 Server, and Google Drive"
         uses: sarisia/actions-status-discord@v1.9.0
