@@ -196,7 +196,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
         missionObject['trigrules'],
         mapResourceObject,
         'Load Libraries',
-        ['010-root_menus.lua', '020-mission_functions.lua', 'hypeman.lua'],
+        ['010-root_menus.lua', '020-mission_functions.lua', 'hypeman.lua', 'Hercules_Cargo.lua'],
         16,
         '0xffff00ff'
     );
