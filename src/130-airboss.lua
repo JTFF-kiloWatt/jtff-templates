@@ -91,6 +91,28 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 airbossconfig.recoveryops.cyclic.event_duration_minutes = 60
             end
         end
+        if (airbossconfig.dl4) then
+            local cvUnit = UNIT:FindByName(airbossconfig.carriername)
+            cvUnit:SetCommand(
+                    {
+                        id = "ActivateLink4",
+                        params =
+                        {
+                            ["unitId"] = cvUnit:GetID(),
+                            ["frequency"] = airbossconfig.dl4.freq * 1000000
+                        },
+                    }
+            )
+            cvUnit:SetCommand(
+                    {
+                        id = "ActivateACLS",
+                        params =
+                        {
+                            ["unitId"] = cvUnit:GetID(),
+                        },
+                    }
+            )
+        end
         objAirboss.customconfig = airbossconfig
         --airbossCVN:Load(nil, "Greenie Board.csv")
         --airbossCVN:SetAutoSave(nil, "Greenie Board.csv")
@@ -295,7 +317,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         --trigger.action.outText('INFO '..airbossconfig.alias..' : Naval sunset at '..UTILS.SecondsToClock((AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)), 75)
         if (airbossconfig.recoveryops.mode == 'cyclic') then
             if ((timer.getAbsTime() + airbossconfig.recoveryops.cyclic.event_duration_minutes*60) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunset(true) - 30*60)) then
-                self:MessageToMarshal('switching to case III due to Naval Sunset on the next event !', self.customconfig.alias, "", 45, false, 0)
+                AIRBOSSArray[compteur]:MessageToMarshal('switching to case III due to Naval Sunset on the next event !', airbossconfig.alias, "", 45, false, 0)
                 AIRBOSSArray[compteur]:SetRecoveryCase(3)
                 AIRBOSSArray[compteur]:SetMaxSectionSize(1)
             else

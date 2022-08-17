@@ -25,6 +25,9 @@ AirBossConfig = {
             channel = 11,
             morse = 'RSVLSO',
         },
+        dl4 = {
+            freq = 336.000,
+        },
         freq = {
             base = 127.3,
             marshall = 127.5,

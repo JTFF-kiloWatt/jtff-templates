@@ -25,6 +25,9 @@ AirBossConfig = {
             channel = 11,
             morse = 'RSVLSO',
         },
+        dl4 = {
+            freq = 336.000,
+        },
         freq = {
             base = 127.3,
             marshall = 127.5,
@@ -109,6 +112,9 @@ AirBossConfig = {
         icls = {
             channel = 13,
             morse = 'WSNLSO',
+        },
+        dl4 = {
+            freq = 337.000,
         },
         freq = {
             base = 126.3,
