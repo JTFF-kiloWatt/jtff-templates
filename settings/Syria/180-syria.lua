@@ -72,3 +72,8 @@ trigger.action.effectSmokeBig(someZone, 1, 1)
 local someZone = trigger.misc.getZone('Deir ez-Zor Derrick-10').point
 someZone.y = land.getHeight({x = someZone.x, y = someZone.z})+85
 trigger.action.effectSmokeBig(someZone, 1, 1)
+
+-- -----------------------------------------------------------------------------
+-- |  Add EPLRS on EWR network
+-- -----------------------------------------------------------------------------
+GROUP:FindByName("Deir ez-Zor EWR"):CommandEPLRS(true)
