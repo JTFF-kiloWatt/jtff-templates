@@ -98,6 +98,15 @@ TrainingRangeConfig = {
     {
         name = "Akamas",
         enable = true,
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        instructionradio = {
+            unitname = "Foul Line",
+            freq = 251.75,
+        },
+        controlradio = {
+            unitname = "Foul Line",
+            freq = 250.25,
+        },
         targets = {
             {
                 type = "Strafepit",
@@ -130,11 +139,19 @@ TrainingRangeConfig = {
                 precision = 25
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
     },
     {
         name = "Incirlik",
         enable = true,
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        instructionradio = {
+            unitname = "Range INCIRLIK Target-3",
+            freq = 251.75,
+        },
+        controlradio = {
+            unitname = "Range INCIRLIK Target-3",
+            freq = 250.500,
+        },
         targets = {
             {
                 type = "Strafepit",

@@ -15,6 +15,18 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
         trainingRange:SetDefaultPlayerSmokeBomb(false)
         trainingRange:SetRangeRadius(0.2) -- bomb impact at more than 200m is out of range
         trainingRange:SetScoreBombDistance(100)-- bomb impact at more than 100m won't be taken into account
+        if (traingingrangeconfig.instructionradio) then
+            trainingRange:SetInstructorRadio(
+                    traingingrangeconfig.instructionradio.freq,
+                    traingingrangeconfig.instructionradio.unitname
+            )
+        end
+        if (traingingrangeconfig.controlradio) then
+            trainingRange:SetRangeControl(
+                    traingingrangeconfig.controlradio.freq,
+                    traingingrangeconfig.controlradio.unitname
+            )
+        end
         for index, subrangeTraining in ipairs(traingingrangeconfig.targets) do
             env.info('subrangeTraining type : ' .. subrangeTraining.type)
             if (subrangeTraining.type == "Strafepit") then
@@ -140,13 +152,10 @@ end
 
 ShootingEvent = EVENTHANDLER:New():HandleEvent(EVENTS.Shot)
 function ShootingEvent:OnEventShot(EventData)
-    if EventData.IniUnit:GetCoalitionName() == "Blue" then
-        if EventData.IniPlayerName ~= nil then
-            local PlayerUnit = EventData.IniUnit
-            playerAltForRangeData = PlayerUnit:GetAltitude()
-            playerPitchForRangeData = PlayerUnit:GetPitch()
-            playerHeadingForRangeData = math.floor(PlayerUnit:GetHeading())
-        end
-    elseif EventData.IniUnit:GetCoalitionName() == "Red" then
+    if EventData.IniPlayerName ~= nil then
+        local PlayerUnit = EventData.IniUnit
+        playerAltForRangeData = PlayerUnit:GetAltitude()
+        playerPitchForRangeData = PlayerUnit:GetPitch()
+        playerHeadingForRangeData = math.floor(PlayerUnit:GetHeading())
     end
 end

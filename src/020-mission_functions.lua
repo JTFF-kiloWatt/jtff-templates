@@ -1776,4 +1776,24 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
     return TankerGroup;
 end
 
+function findJTFFSoundModulePath()
+    -- **** Do not forget to inject a trailing slash ****
+    --TODO: try to detect if JTFF-Missions-Sound Mod is present or not
+    local userprofilepath = os.getenv("userprofile"):gsub("\\", "/")
+    local savedgamespath = userprofilepath .. '/Saved Games'
+    local dcsfoldername = 'DCS.openbeta'
+    return savedgamespath .. '/' .. dcsfoldername .. '/Sounds/JTFF-Missions/'
+end
+
+function getSoundFilesPrefix()
+    local strPrefix
+    if (use_jtff_sound_mod) then
+        strPrefix = findJTFFSoundModulePath()
+    else
+        strPrefix = ""
+    end
+    return strPrefix
+end
+
+
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')
