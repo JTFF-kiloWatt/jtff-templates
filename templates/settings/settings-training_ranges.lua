@@ -2,6 +2,15 @@ TrainingRangeConfig = {
     {
         name = "Akamas",
         enable = false,
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        instructionradio = {
+            unitname = "toto",
+            freq = 300,
+        },
+        controlradio = {
+            unitname = "toto",
+            freq = 300,
+        },
         targets = {
             {
                 type = "Strafepit",
@@ -19,6 +28,5 @@ TrainingRangeConfig = {
                 precision = 25
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
     }
 }

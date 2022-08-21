@@ -98,6 +98,15 @@ TrainingRangeConfig = {
     {
         name = "Akamas",
         enable = true,
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        instructionradio = {
+            unitname = "Static *Range Tower (Main)-1",
+            freq = 251.75,
+        },
+        controlradio = {
+            unitname = "Static *Range Tower (Main)-1",
+            freq = 250.25,
+        },
         targets = {
             {
                 type = "Strafepit",
@@ -130,11 +139,19 @@ TrainingRangeConfig = {
                 precision = 25
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
     },
     {
         name = "Incirlik",
         enable = true,
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        instructionradio = {
+            unitname = "Range INCIRLIK Target-7",
+            freq = 251.75,
+        },
+        controlradio = {
+            unitname = "Range INCIRLIK Target-7",
+            freq = 250.500,
+        },
         targets = {
             {
                 type = "Strafepit",

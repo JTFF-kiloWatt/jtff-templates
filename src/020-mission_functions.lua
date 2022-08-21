@@ -5,11 +5,6 @@
 -- Generic Spawn object functions
 --
 env.info('JTFF-SHAREDLIB: shared library loading...')
-DEBUG_MSG = false
-DEBUG_SQ_MSG = false
-DEBUG_DETECT_MSG = false
-map_marker = {}
-sead = SEAD:New({})
 
 function debug_msg(message)
     if DEBUG_MSG then
@@ -934,7 +929,6 @@ function SpawnWholeRangesDelay(param)
     end
 end
 
-
 function SpawnRanges(param)
     local radioCommandSubRange = param[1]
     local rangeConfig = param[2]
@@ -1443,7 +1437,6 @@ function AddWholeRangeCoalitionCommandMenus(radioCommandRange, rangeConfig)
     return {AddWholeRangeCommand, DeleteWholeRangeCommand}
 end
 
-
 function AddFacFunction(radioCommandSubRange, facRangeConfig, facSubRangeConfig)
     local RadioCommandAdd = MENU_COALITION_COMMAND:New(
             facRangeConfig.benefit_coalition,
@@ -1776,4 +1769,32 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
     return TankerGroup;
 end
 
+function findJTFFSoundModulePath()
+    -- **** Do not forget to inject a trailing slash ****
+    --TODO: try to detect if JTFF-Missions-Sound Mod is present or not
+    local userprofilepath = os.getenv("userprofile"):gsub("\\", "/")
+    local savedgamespath = userprofilepath .. '/Saved Games'
+    local dcsfoldername = 'DCS.openbeta'
+    return savedgamespath .. '/' .. dcsfoldername .. '/Sounds/JTFF-Missions/'
+end
+
+function getSoundFilesPrefix()
+    local strPrefix
+    if (use_jtff_sound_mod) then
+        strPrefix = findJTFFSoundModulePath()
+    else
+        strPrefix = ""
+    end
+    return strPrefix
+end
+
+DEBUG_MSG = false
+DEBUG_SQ_MSG = false
+DEBUG_DETECT_MSG = false
+
+sead = SEAD:New({})
+map_marker = {}
+soundFilesPrefix = getSoundFilesPrefix()
+
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')
+

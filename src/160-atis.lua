@@ -9,7 +9,7 @@ for index, atisconfig in ipairs(AtisConfig) do
         env.info('creation ATIS : '.. atisconfig.airfield..'...')
         local objAtis = ATIS:New(atisconfig.airfield, atisconfig.radio.freq, atisconfig.radio.modulation)
                             :SetImperialUnits()
-                            :SetSoundfilesPath('ATIS/ATIS Soundfiles/')
+                            :SetSoundfilesPath(soundFilesPrefix .. 'ATIS/ATIS Soundfiles/')
                             :SetSubtitleDuration(0)
                             :SetMapMarks(true)
         if (atisconfig.radio.relayunit) then
