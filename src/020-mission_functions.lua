@@ -5,11 +5,6 @@
 -- Generic Spawn object functions
 --
 env.info('JTFF-SHAREDLIB: shared library loading...')
-DEBUG_MSG = false
-DEBUG_SQ_MSG = false
-DEBUG_DETECT_MSG = false
-map_marker = {}
-sead = SEAD:New({})
 
 function debug_msg(message)
     if DEBUG_MSG then
@@ -934,7 +929,6 @@ function SpawnWholeRangesDelay(param)
     end
 end
 
-
 function SpawnRanges(param)
     local radioCommandSubRange = param[1]
     local rangeConfig = param[2]
@@ -1443,7 +1437,6 @@ function AddWholeRangeCoalitionCommandMenus(radioCommandRange, rangeConfig)
     return {AddWholeRangeCommand, DeleteWholeRangeCommand}
 end
 
-
 function AddFacFunction(radioCommandSubRange, facRangeConfig, facSubRangeConfig)
     local RadioCommandAdd = MENU_COALITION_COMMAND:New(
             facRangeConfig.benefit_coalition,
@@ -1795,5 +1788,13 @@ function getSoundFilesPrefix()
     return strPrefix
 end
 
+DEBUG_MSG = false
+DEBUG_SQ_MSG = false
+DEBUG_DETECT_MSG = false
+
+sead = SEAD:New({})
+map_marker = {}
+soundFilesPrefix = getSoundFilesPrefix()
 
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')
+

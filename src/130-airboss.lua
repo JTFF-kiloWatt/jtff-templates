@@ -24,8 +24,8 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetDefaultPlayerSkill(airbossconfig.difficulty) -- other options EASY / HARD
         if airbossconfig.wirecorrection then
             objAirboss:SetMPWireCorrection(airbossconfig.wirecorrection)
-        else
-            objAirboss:SetMPWireCorrection()
+        --else
+        --    objAirboss:SetMPWireCorrection()
         end
         if airbossconfig.operationsstatspath then
             objAirboss:Load(airbossconfig.operationsstatspath)
@@ -63,23 +63,23 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetSoundfilesFolder(soundFilesPrefix .. "AIRBOSS/Airboss Soundfiles/")
         if airbossconfig.voices.marshall then
             if airbossconfig.voices.marshall == "Raynor" then
-                objAirboss:SetVoiceOversMarshalByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Raynor')
+                objAirboss:SetVoiceOversMarshalByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Raynor/')
             elseif airbossconfig.voices.marshall == "Gabriella" then
-                    objAirboss:SetVoiceOversMarshalByGabriella(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Gabriella')
+                    objAirboss:SetVoiceOversMarshalByGabriella(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Gabriella/')
             elseif airbossconfig.voices.marshall == "FF" then
-                    objAirboss:SetVoiceOversMarshalByFF(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal FF')
+                    objAirboss:SetVoiceOversMarshalByFF(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal FF/')
             end
         else
-            objAirboss:SetVoiceOversMarshalByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Raynor')
+            objAirboss:SetVoiceOversMarshalByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack Marshal Raynor/')
         end
         if airbossconfig.voices.lso then
             if airbossconfig.voices.lso == "Raynor" then
-                objAirboss:SetVoiceOversLSOByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO Raynor')
+                objAirboss:SetVoiceOversLSOByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO Raynor/')
             elseif airbossconfig.voices.lso == "FF" then
-                    objAirboss:SetVoiceOversLSOByFF(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO FF')
+                    objAirboss:SetVoiceOversLSOByFF(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO FF/')
             end
         else
-            objAirboss:SetVoiceOversLSOByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO Raynor')
+            objAirboss:SetVoiceOversLSOByRaynor(soundFilesPrefix .. 'AIRBOSS/Airboss Soundpack LSO Raynor/')
         end
         objAirboss:SetDebugModeOFF()
         objAirboss.trapsheet = false

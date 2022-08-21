@@ -15,6 +15,7 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
         trainingRange:SetDefaultPlayerSmokeBomb(false)
         trainingRange:SetRangeRadius(0.2) -- bomb impact at more than 200m is out of range
         trainingRange:SetScoreBombDistance(100)-- bomb impact at more than 100m won't be taken into account
+        trainingRange:SetSoundfilesPath(soundFilesPrefix .. 'RANGE/Range Soundfiles/')
         if (traingingrangeconfig.instructionradio) then
             trainingRange:SetInstructorRadio(
                     traingingrangeconfig.instructionradio.freq,
@@ -141,7 +142,7 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
             text=text..string.format(" %s hit.", result.quality)  
             env.info(text)
             
-            env.info(JSON:encode(result))
+            env.info(net.lua2json(result))
             saveTargetSheet(player.playername, result, self.targetpath, self.targetprefix, self.rangename) 
             HypeMan.sendBotTable(result)
         end
