@@ -1063,6 +1063,7 @@ function SpawnFacRanges(param)
             else
                 groupSpawning = spawnGroup:Spawn()
             end
+            groupSpawning:SetCommandInvisible(true)
         else
             debug_msg(string.format("GROUP to spawn %s not found in mission", groupNameToSpawn))
         end
