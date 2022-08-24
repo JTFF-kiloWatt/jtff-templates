@@ -12,19 +12,23 @@ for index, facrangeconfig in ipairs(FACRangeConfig) do
         FACRangeArray[compteur] = {
             customconfig = facrangeconfig
         }
-    end
-    if (facrangeconfig.benefit_coalition == coalition.side.BLUE) then
-        local radioMenuForFACRange   =  MENU_COALITION:New( facrangeconfig.benefit_coalition, facrangeconfig.name , mainRadioMenuForFacRangesBlue)
-        for index, facSubRangeConfig in ipairs(facrangeconfig.subRange) do
-            local radioMenuFacSubRange = MENU_COALITION:New(facrangeconfig.benefit_coalition, facSubRangeConfig.name,   radioMenuForFACRange)
-            AddFacFunction(radioMenuFacSubRange, facrangeconfig, facSubRangeConfig)
+        if (facrangeconfig.benefit_coalition == coalition.side.BLUE) then
+            local radioMenuForFACRange   =  MENU_COALITION:New( facrangeconfig.benefit_coalition, facrangeconfig.name , mainRadioMenuForFacRangesBlue)
+            for index, facSubRangeConfig in ipairs(facrangeconfig.subRange) do
+                local radioMenuFacSubRange = MENU_COALITION:New(facrangeconfig.benefit_coalition, facSubRangeConfig.name,   radioMenuForFACRange)
+                AddFacFunction(radioMenuFacSubRange, facrangeconfig, facSubRangeConfig)
+            end
+        else
+            local radioMenuForFACRange =  MENU_COALITION:New( facrangeconfig.benefit_coalition, facrangeconfig.name , mainRadioMenuForFacRangesRed)
+            for index, facSubRangeConfig in ipairs(facrangeconfig.subRange) do
+                local radioMenuFacSubRange     = MENU_COALITION:New(facrangeconfig.benefit_coalition, facSubRangeConfig.name, radioMenuForFACRange)
+                AddFacFunction(radioMenuFacSubRange, facrangeconfig, facSubRangeConfig)
+            end
         end
-    else
-        local radioMenuForFACRange =  MENU_COALITION:New( facrangeconfig.benefit_coalition, facrangeconfig.name , mainRadioMenuForFacRangesRed)
-        for index, facSubRangeConfig in ipairs(facrangeconfig.subRange) do
-            local radioMenuFacSubRange     = MENU_COALITION:New(facrangeconfig.benefit_coalition, facSubRangeConfig.name, radioMenuForFACRange)
-            AddFacFunction(radioMenuFacSubRange, facrangeconfig, facSubRangeConfig)
-        end
     end
+end
 
+if compteur == 0 then
+    mainRadioMenuForFacRangesBlue:Remove()
+    mainRadioMenuForFacRangesRed:Remove()
 end
