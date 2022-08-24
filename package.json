@@ -4,7 +4,6 @@
   "description": "build jtff-template missions",
   "main": "none",
   "scripts": {
-    "test": "node src/nodejs/test.js",
     "jtff-version": "node src/nodejs/jtff-version.js",
     "jtff-release": "node src/nodejs/release.js",
     "jtff-nextversion": "node src/nodejs/prepare-nextversion.js",
