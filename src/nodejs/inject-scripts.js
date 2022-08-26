@@ -107,8 +107,11 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
     jtffci.mizUpdateSrcLuaFiles(zip);
     jtffci.mizUpdateLibLuaFiles(zip);
     // injection des fichiers son Generaux
-    const generalSoundFolder = zip.remove('General').folder('General');
-    await jtffci.addFilesToZip(generalSoundFolder, 'resources/sounds/General', fs.readdirSync('resources/sounds/General'));
+    // const generalSoundFolder = zip.remove('General').folder('General');
+    // await jtffci.addFilesToZip(generalSoundFolder, 'resources/sounds/General', fs.readdirSync('resources/sounds/General'));
+    // injection des fichiers son Misc
+    const generalSoundFolder = zip.remove('Misc').folder('Misc');
+    await jtffci.addFilesToZip(generalSoundFolder, 'resources/sounds/Misc', fs.readdirSync('resources/sounds/Misc'));
 
     const inputZip = await zip.generateAsync({
         type: 'nodebuffer',
@@ -347,8 +350,8 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             "/",
             path.basename(process.env.npm_config_mission)
         ].join(""));
-        const atisSoundFolder = zip.remove('ATIS').folder('ATIS');
-        await jtffci.addFilesToZip(atisSoundFolder, 'resources/sounds/ATIS', fs.readdirSync('resources/sounds/ATIS'));
+        // const atisSoundFolder = zip.remove('ATIS').folder('ATIS');
+        // await jtffci.addFilesToZip(atisSoundFolder, 'resources/sounds/ATIS', fs.readdirSync('resources/sounds/ATIS'));
         const inputZip = await zip.generateAsync({
             type: 'nodebuffer',
             streamFiles: true,
@@ -389,6 +392,10 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             {
                 file: "settings-capzone.lua",
                 objectName: "TrainingCAPConfig"
+            },
+            {
+                file: "settings-capwarzone.lua",
+                objectName: "WarCAPConfig"
             },
             {
                 file: "settings-foxzone.lua",
@@ -498,6 +505,10 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
                 objectName: "RangeConfig"
             },
             {
+                file: "settings-sams.lua",
+                objectName: "SamsConfig"
+            },
+            {
                 file: "settings-training_ranges.lua",
                 objectName: "TrainingRangeConfig"
             },
@@ -515,7 +526,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             missionObject['trigrules'],
             mapResourceObject,
             'Air To Ground',
-            ['190-ranges.lua', '193-training_ranges.lua', '196-fac_ranges.lua', '199-skynet.lua'],
+            ['190-ranges.lua', '191-sams.lua', '193-training_ranges.lua', '196-fac_ranges.lua', '199-skynet.lua'],
             29,
             '0xff0000ff'
         );

@@ -81,3 +81,8 @@ for index, capzoneconfig in ipairs(TrainingCAPConfig) do
         --CAPZoneArray[compteur]:Start()
     end
 end
+
+if compteur == 0 then
+    MenuCoalitionCAPZoneBlue:Remove()
+    MenuCoalitionCAPZoneRed:Remove()
+end

@@ -111,3 +111,8 @@ for index, awacsconfig in ipairs(AwacsConfig) do
         AwacsArray[compteur]:Start()
     end
 end
+
+if compteur == 0 then
+    MenuCoalitionAwacsBlue:Remove()
+    MenuCoalitionAwacsRed:Remove()
+end
