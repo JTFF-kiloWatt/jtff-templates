@@ -1,6 +1,6 @@
 WarCAPConfig = {
     {
-        enable = true,
+        enable = false,
         coalitionCAP = coalition.side.RED,
         name = 'Syria Defense',
         debug = false,
@@ -123,22 +123,48 @@ WarCAPConfig = {
                     }
                 }
             },
+        },
+        capParameters = {
+            patrolFloor = 20000,
+            patrolCeiling = 40000,
+            minPatrolSpeed = 250,
+            maxPatrolSpeed = 400,
+            minEngageSpeed = 250,
+            maxEngageSpeed = 900,
+            engageFloor = 5000,
+            engageCeiling = 55000
+        }
+    },
+    {
+        enable = true,
+        coalitionCAP = coalition.side.RED,
+        name = 'Alpha Airspace',
+        debug = false,
+        borderZoneGroupName = 'border-syria',
+        --borderZoneName = 'red_north_patrol_zone',
+        detectionGroupingRadius = 15,
+        engageRadius = 100,
+        gciRadius = 300,
+        ewrPrefixes = {
+            "EWR_SYR"
+        },
+        CAPBases = {
             {
-                baseName = AIRBASE.Syria.Bassel_Al_Assad,
+                baseName = AIRBASE.Syria.Hama,
                 patrolSquadrons = {
                     {
                         enable = true,
-                        groupName = "CAP-SY-Mig21",
+                        groupName = "CAP-RU-Mig29S",
                         groupForce = 2,
-                        groupNumber = 16,
-                        patrolInAirNumber = 2,
+                        groupNumber = 6,
+                        patrolInAirNumber = 1,
                         patrolZoneName = "patrol-bassel"
                     },
                     {
                         enable = true,
                         groupName = "CAP-RU-Su27",
                         groupForce = 2,
-                        groupNumber = 3,
+                        groupNumber = 6,
                         patrolInAirNumber = 1,
                         patrolZoneName = "patrol-bassel"
                     }
@@ -148,7 +174,7 @@ WarCAPConfig = {
                         enable = false,
                         groupName = "INT-SY-MIG29",
                         groupForce = 2,
-                        groupNumber = 2
+                        groupNumber = 3
                     },
                     {
                         enable = false,
@@ -169,5 +195,66 @@ WarCAPConfig = {
             engageFloor = 5000,
             engageCeiling = 55000
         }
-    }
+    },
+    {
+        enable = true,
+        coalitionCAP = coalition.side.RED,
+        name = 'Bravo Airspace',
+        debug = false,
+        borderZoneGroupName = 'border-syria',
+        --borderZoneName = 'red_north_patrol_zone',
+        detectionGroupingRadius = 15,
+        engageRadius = 100,
+        gciRadius = 300,
+        ewrPrefixes = {
+            "EWR_SYR"
+        },
+        CAPBases = {
+            {
+                baseName = AIRBASE.Syria.Bassel_Al_Assad,
+                patrolSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "CAP-RU-Mig29S",
+                        groupForce = 2,
+                        groupNumber = 6,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-bassel"
+                    },
+                    {
+                        enable = true,
+                        groupName = "CAP-RU-Su27",
+                        groupForce = 2,
+                        groupNumber = 6,
+                        patrolInAirNumber = 1,
+                        patrolZoneName = "patrol-bassel"
+                    }
+                },
+                interceptSquadrons = {
+                    {
+                        enable = false,
+                        groupName = "INT-SY-MIG29",
+                        groupForce = 2,
+                        groupNumber = 3
+                    },
+                    {
+                        enable = false,
+                        groupName = "INT-RU-MIG29",
+                        groupForce = 2,
+                        groupNumber = 2
+                    }
+                }
+            }
+        },
+        capParameters = {
+            patrolFloor = 20000,
+            patrolCeiling = 40000,
+            minPatrolSpeed = 250,
+            maxPatrolSpeed = 400,
+            minEngageSpeed = 250,
+            maxEngageSpeed = 900,
+            engageFloor = 5000,
+            engageCeiling = 55000
+        }
+    },
 }
