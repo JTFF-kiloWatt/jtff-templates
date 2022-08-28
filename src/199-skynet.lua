@@ -9,7 +9,7 @@ function SpawnIADSDelayed(param)
     local delay = param[4] or 10
     local difficulty = param[5] or "easy"
     MESSAGE:NewType(string.format("Warning, IADS [%s] Units %s will spawn in %d sec", difficulty, iadsConfig.name, delay), MESSAGE.Type.Update):ToAll()
-    TIMER:New(SpawnIADS, param):Start(delay)
+    TIMER:New(SpawnIADSUnits, param):Start(delay)
 end
 
 function attachSAMSiteToSkynet(site, samGroupName, IADSObjectIndex, connectionNode)
@@ -91,7 +91,7 @@ function attachPdSiteToSkynet(site, pdGroupName, samGroupName, IADSObjectIndex, 
     end
 end
 
-function SpawnIADS(param)
+function SpawnIADSUnits(param)
     local parentMenu = param[1]
     local iadsConfig = param[2]
     local IADSObjectIndex = param[3]
@@ -180,12 +180,16 @@ function SpawnIADS(param)
     end
     IADSArray[IADSObjectIndex].spawned[difficulty] = true
     if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
+        local showStatusOption = IADSArray[IADSObjectIndex].IADSObject:getDebugSettings().IADSStatus
+        local showContactsOption = IADSArray[IADSObjectIndex].IADSObject:getDebugSettings().contacts
         deactivateSkynet(
                 {iadsConfig, IADSObjectIndex,parentMenu}
         )
         activateSkynet(
                 {iadsConfig, IADSObjectIndex,parentMenu}
         )
+        skynetUpdateDisplay({ IADSObjectIndex,'contacts',showContactsOption })
+        skynetUpdateDisplay({ IADSObjectIndex,'IADSStatus',showStatusOption })
     end
     debug_msg(string.format("Spawn IADS : %s-[%s] DONE", iadsName, difficulty))
     manageIADSNetworkMenu(parentMenu,iadsConfig,IADSObjectIndex)
@@ -412,12 +416,16 @@ function deleteIADSUnits(param)
     end
     IADSArray[IADSObjectIndex].spawned[difficulty] = false
     if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
+        local showStatusOption = IADSArray[IADSObjectIndex].IADSObject:getDebugSettings().IADSStatus
+        local showContactsOption = IADSArray[IADSObjectIndex].IADSObject:getDebugSettings().contacts
         deactivateSkynet(
                 {iadsConfig, IADSObjectIndex,parentMenu}
         )
         activateSkynet(
                 {iadsConfig, IADSObjectIndex,parentMenu}
         )
+        skynetUpdateDisplay({ IADSObjectIndex,'contacts',showContactsOption })
+        skynetUpdateDisplay({ IADSObjectIndex,'IADSStatus',showStatusOption })
     end
     manageIADSNetworkMenu(parentMenu,iadsConfig,IADSObjectIndex)
 end
@@ -485,7 +493,7 @@ function manageIADSNetworkMenu(networkRootMenu, iadsconfig, IADSObjectIndex)
                     networkRootMenu, activateSkynet, { iadsconfig, IADSObjectIndex, networkRootMenu })
         end
     end
-    for index, difficulty in ipairs({"easy","medium","hard","extreme"}) do
+    for index, difficulty in ipairs(difficultyArray) do
         if IADSArray[IADSObjectIndex].spawned[difficulty] then
             local CommandIADSDetroyEasy = MENU_MISSION_COMMAND:New(
                     "[" .. difficulty .. "] Delete",
@@ -501,7 +509,7 @@ function manageIADSNetworkMenu(networkRootMenu, iadsconfig, IADSObjectIndex)
                 local difficultySiteNumberToSpawn = 0
                 for indexsite, siteconfig in ipairs(nodeconfig.sites[difficulty]) do
                     difficultySiteNumberToSpawn = indexsite
-                    if indexsite > 1 then
+                    if indexsite >= 1 then
                         isThereSomethingToSpawn = true
                     end
                 end
@@ -523,7 +531,7 @@ IADSArray = {}
 compteur = 0
 mainRadioMenuForSkynet =  MENU_MISSION:New("Skynet-IADS", nil )
 for index, skynetconfig in ipairs(SkynetConfig) do
-    if skynetconfig.enable == true then
+    if ( skynetconfig.enable ) then
         compteur = compteur + 1
         env.info('Ajout menu radio pour IADS Skynet : '.. skynetconfig.name..'...')
         IADSArray[compteur] = {

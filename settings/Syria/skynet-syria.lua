@@ -1,9 +1,86 @@
 SkynetConfig = {
     {
-        name = "Syrian Remaining IADS",
+        name = "Syrian IADS Alpha",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
-        headQuarter = {"IADS_QG"},
+        headQuarter = {"IADS_QG_Alpha-1"},
+        nodes = {
+            {
+                connection = "Node_Aleppo",
+                ewrs = {"EWR_SYR_Aleppo_North"},
+                sites = {
+                    easy = {
+                        {
+                            sam = "SAM-SA-3-Aleppo",
+                        },
+                        {
+                            sam = "SAM-SA-3-Kuweires",
+                        },
+                        {
+                            sam = "SAM-SA-3-WestAleppo",
+                        },
+                        {
+                            sam = "SAM-SA-3-NorthAbuAlDuhur",
+                        },
+                        {
+                            sam = "SAM-SA-3-AlGhadfah",
+                        },
+                    },
+                    medium = {
+                        {
+                            sam = "SAM-SA-2-Aleppo",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 60,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {
+                                "SAM-SA-15-Aleppo-1","SAM-SA-15-Aleppo-3"
+                            }
+                        },
+                        {
+                            sam = "SAM-SA-2-AbuAlDuhur",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 60,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {
+                                "SAM-SA-15-AbuAlDuhur-1","SAM-SA-15-AbuAlDuhur-2"
+                            }
+                        },
+                    },
+                    hard = {
+                    },
+                    extreme = {
+                    },
+                }
+            },
+            {
+                connection = "Node_Hama",
+                ewrs = {"EWR_SYR_Hama_North"},
+                sites = {
+                    easy = {
+                        {
+                            sam = "SAM-SA-6-Hama-1",
+                        },
+                        {
+                            sam = "SAM-SA-6-Hama-2",
+                        },
+                    },
+                    medium = {
+                    },
+                    hard = {
+                    },
+                    extreme = {
+                    },
+                },
+            },
+        }
+    },
+    {
+        name = "Syrian IADS Bravo",
+        enable = true,
+        benefit_coalition = coalition.side.BLUE,
+        headQuarter = {"IADS_QG_Bassel"},
         nodes = {
             {
                 connection = "Node_Latakia",
@@ -51,6 +128,40 @@ SkynetConfig = {
                     },
                 },
             },
+            {
+                connection = "IADS_QG_Bassel",
+                ewrs = {"EWR_SYR_NorthBassel", "EWR_SYR_SouthBassel"},
+                sites = {
+                    easy = {
+                    },
+                    medium = {
+                        {
+                            sam = "SAM-SA-2-Bassel",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 60,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = "SAM-SA-15-PD-Bassel"
+                        },
+                    },
+                    hard = {
+                        {
+                            sam = "SAM-SA-19-Bassel",
+                            goLiveRangePercent = 70,
+                        }
+                    },
+                    extreme = {
+                    },
+                },
+            }
+        }
+    },
+    {
+        name = "Syrian IADS Charlie",
+        enable = true,
+        benefit_coalition = coalition.side.BLUE,
+        headQuarter = {"IADS_QG_Charlie-Tiyas","IADS_QG_Charlie-Homs-1"},
+        nodes = {
             {
                 connection = "Node_Tiyas",
                 ewrs = {"EWR_SYR_Tiyas"},
@@ -101,11 +212,30 @@ SkynetConfig = {
                         {
                             sam = "SAM-SA-5-Homs",
                         },
+                        {
+                            sam = "SAM-SA-5-Baniyas",
+                            harmDetectionChance = 75,
+                            goLiveRangePercent = 60,
+
+                        },
+                        {
+                            sam = "SAM-SA-5-Tartus",
+                            harmDetectionChance = 75,
+                            goLiveRangePercent = 60,
+                        },
                     },
                     extreme = {
                     },
                 },
             },
+        }
+    },
+    {
+        name = "Syrian IADS Delta",
+        enable = true,
+        benefit_coalition = coalition.side.BLUE,
+        headQuarter = {"IADS_QG_Delta-Damas-1"},
+        nodes = {
             {
                 connection = "Node_Damascus",
                 ewrs = {"EWR_SYR_Damascus_West", "EWR_SYR_Sayqal"},
@@ -160,34 +290,28 @@ SkynetConfig = {
                     extreme = {
                     },
                 },
-            }
+            },
         }
     },
     {
-        name = "Syrian Airspace Alpha",
+        name = "Syrian IADS Echo",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
-        headQuarter = {"IADS_QG_Alpha"},
+        headQuarter = {"IADS_QG_Echo-Tabqa-1"},
         nodes = {
             {
-                connection = "Node_Aleppo",
-                ewrs = {"EWR_SYR_Kuweires"},
+                connection = "Node_Raqqa",
+                ewrs = {"EWR_SYR_TalSiman"},
                 sites = {
                     easy = {
                         {
-                            sam = "SAM-SA-3-Aleppo",
-                        },
-                        {
-                            sam = "SAM-SA-3-Kuweires",
-                        },
-                        {
-                            sam = "SAM-SA-3-WestAleppo",
-                        },
+                            sam = "SAM-SA-3-Tabqa-1"
+                        }
                     },
                     medium = {
                         {
-                            sam = "SAM-SA-2-Aleppo",
-                        },
+                            sam = "SAM-SA-2-TalSiman-1"
+                        }
                     },
                     hard = {
                     },
@@ -195,64 +319,10 @@ SkynetConfig = {
                     },
                 }
             },
-            {
-                connection = "Node_Hama",
-                ewrs = {"EWR_SYR_Hama"},
-                sites = {
-                    easy = {
-                    },
-                    medium = {
-                    },
-                    hard = {
-                        {
-                            sam = "SAM-SA-5-Baniyas",
-                        },
-                        {
-                            sam = "SAM-SA-5-Tartus",
-                        },
-                    },
-                    extreme = {
-                    },
-                },
-            },
         }
     },
     {
-        name = "Bassel El Assad IADS",
-        enable = true,
-        benefit_coalition = coalition.side.BLUE,
-        headQuarter = {"IADS_QG_Bassel"},
-        nodes = {
-            {
-                connection = "IADS_QG_Bassel",
-                ewrs = {"EWR_SYR_NorthBassel", "EWR_SYR_SouthBassel"},
-                sites = {
-                    easy = {
-                    },
-                    medium = {
-                        {
-                            sam = "SAM-SA-2-Bassel",
-                            harmDetectionChance = 65,
-                            goLiveRangePercent = 60,
-                            pdharmDetectionChance = 90,
-                            actAsEw = false,
-                            pointDefenses = "SAM-SA-15-PD-Bassel"
-                        },
-                    },
-                    hard = {
-                        {
-                            sam = "SAM-SA-19-Bassel",
-                            goLiveRangePercent = 70,
-                        }
-                    },
-                    extreme = {
-                    },
-				},
-            }
-        }
-    },
-    {
-        name = "Iraki IADS",
+        name = "Iraki IADS Foxtrot",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
         headQuarter = {"IADS_QG_H3"},
@@ -280,5 +350,5 @@ SkynetConfig = {
                 },
             }
         }
-    }
+    },
 }

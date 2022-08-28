@@ -1438,11 +1438,11 @@ function getSoundFilesPrefix()
     return strPrefix
 end
 
-DEBUG_MSG = true
+DEBUG_MSG = false
 DEBUG_SQ_MSG = false
 DEBUG_DETECT_MSG = false
 
-spawnStandardDelay = 1
+spawnStandardDelay = 15
 
 sead = SEAD:New({})
 map_marker = {}
