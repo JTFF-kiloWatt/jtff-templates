@@ -24,8 +24,8 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetDefaultPlayerSkill(airbossconfig.difficulty) -- other options EASY / HARD
         if airbossconfig.wirecorrection then
             objAirboss:SetMPWireCorrection(airbossconfig.wirecorrection)
-        --else
-        --    objAirboss:SetMPWireCorrection()
+        else
+            objAirboss:SetMPWireCorrection()
         end
         if airbossconfig.operationsstatspath then
             objAirboss:Load(airbossconfig.operationsstatspath)

@@ -1,5 +1,6 @@
 SkynetConfig = {
     {
+        --TODO: Zone complete
         name = "Syrian IADS Alpha",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
@@ -17,7 +18,7 @@ SkynetConfig = {
                             sam = "SAM-SA-3-Kuweires",
                         },
                         {
-                            sam = "SAM-SA-3-WestAleppo",
+                            sam = "SAM-SA-3-Aleppo-1",
                         },
                         {
                             sam = "SAM-SA-3-NorthAbuAlDuhur",
@@ -47,6 +48,13 @@ SkynetConfig = {
                                 "SAM-SA-15-AbuAlDuhur-1","SAM-SA-15-AbuAlDuhur-2"
                             }
                         },
+                        {
+                            sam = "SAM-SA-2-Taannah",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 60,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                        },
                     },
                     hard = {
                     },
@@ -56,14 +64,24 @@ SkynetConfig = {
             },
             {
                 connection = "Node_Hama",
-                ewrs = {"EWR_SYR_Hama_North"},
+                ewrs = {"EWR_SYR_Hama"},
                 sites = {
                     easy = {
                         {
                             sam = "SAM-SA-6-Hama-1",
                         },
                         {
-                            sam = "SAM-SA-6-Hama-2",
+                            sam = "SAM-SA-3-Hama",
+                        },
+                        {
+                            sam = "SAM-SA-6-Hama",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 60,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {
+                                "SAM-SA-8-PD-Hama-1","SAM-SA-8-PD-Hama"
+                            }
                         },
                     },
                     medium = {
@@ -77,6 +95,7 @@ SkynetConfig = {
         }
     },
     {
+        --TODO: Zone complete
         name = "Syrian IADS Bravo",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
@@ -88,15 +107,29 @@ SkynetConfig = {
                 sites = {
                     easy = {
                         {
-                            sam = "SAM-SA-3-Jablah",
+                            sam = "SAM-SA-3-Latakia-3",
                         },
                         {
-                            sam = "SAM-SA-3-Latakia",
+                            sam = "SAM-SA-3-Latakia-1",
+                        },
+                        {
+                            sam = "SAM-SA-3-Latakia-2",
                         },
                     },
                     medium = {
                         {
                             sam = "SAM-SA-2-Latakia",
+                        },
+                        {
+                            sam = "SAM-SA-2-Latakia-1",
+                        },
+                        {
+                            sam = "SAM-SA-2-Bassel",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 80,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {"SAM-SA-15-PD-Bassel"}
                         },
                     },
                     hard = {
@@ -107,53 +140,58 @@ SkynetConfig = {
             },
             {
                 connection = "Node_Baniyas",
-                ewrs = {"EWR_SYR_Baniyas"},
+                ewrs = {"EWR_SYR_Baniyas","EWR_SYR_Tartus"},
                 sites = {
                     easy = {
+                        {
+                            sam = "SAM-SA-3-Baniyas",
+                        },
                         {
                             sam = "SAM-SA-3-Tartus",
                         },
                         {
+                            sam = "SAM-SA-3-Tartus-1",
+                        },
+                        {
                             sam = "SAM-SA-3-ReneMouawad",
+                        },
+                        {
+                            sam = "SAM-SA-3-Tartus-2",
                         },
                     },
                     medium = {
                         {
+                            sam = "SAM-SA-2-Baniyas",
+                        },
+                        {
                             sam = "SAM-SA-2-Tartus",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 65,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {"SAM-SA-15-PD-Tartus-1","SAM-SA-15-PD-Tartus-2","SAM-SA-15-PD-Tartus-3"}
+                        },
+                        {
+                            sam = "SAM-SA-2-ReneMouawad",
+                        },
+                        {
+                            sam = "SAM-SA-2-Bassel-1",
                         },
                     },
                     hard = {
+                        {
+                            sam = "SAM-SA-5-Baniyas",
+                            harmDetectionChance = 65,
+                            goLiveRangePercent = 40,
+                            pdharmDetectionChance = 90,
+                            actAsEw = false,
+                            pointDefenses = {"SAM-SA-15-PD-Baniyas-1","SAM-SA-19-PD-Baniyas-1"}
+                        },
                     },
                     extreme = {
                     },
                 },
             },
-            {
-                connection = "IADS_QG_Bassel",
-                ewrs = {"EWR_SYR_NorthBassel", "EWR_SYR_SouthBassel"},
-                sites = {
-                    easy = {
-                    },
-                    medium = {
-                        {
-                            sam = "SAM-SA-2-Bassel",
-                            harmDetectionChance = 65,
-                            goLiveRangePercent = 60,
-                            pdharmDetectionChance = 90,
-                            actAsEw = false,
-                            pointDefenses = "SAM-SA-15-PD-Bassel"
-                        },
-                    },
-                    hard = {
-                        {
-                            sam = "SAM-SA-19-Bassel",
-                            goLiveRangePercent = 70,
-                        }
-                    },
-                    extreme = {
-                    },
-                },
-            }
         }
     },
     {
@@ -294,23 +332,27 @@ SkynetConfig = {
         }
     },
     {
+        --TODO: Zone complete
         name = "Syrian IADS Echo",
         enable = true,
         benefit_coalition = coalition.side.BLUE,
         headQuarter = {"IADS_QG_Echo-Tabqa-1"},
         nodes = {
             {
-                connection = "Node_Raqqa",
-                ewrs = {"EWR_SYR_TalSiman"},
+                connection = "Statique_Node_Raqqa",
+                ewrs = {"EWR_SYR_Tabqa", "EWR_SYR_TalSiman"},
                 sites = {
                     easy = {
                         {
-                            sam = "SAM-SA-3-Tabqa-1"
-                        }
+                            sam = "SAM-SA-6-Tabqa"
+                        },
                     },
                     medium = {
                         {
                             sam = "SAM-SA-2-TalSiman-1"
+                        },
+                        {
+                            sam = "SAM-SA-2-Tabqa"
                         }
                     },
                     hard = {
@@ -322,6 +364,7 @@ SkynetConfig = {
         }
     },
     {
+        --TODO: Zone complete
         name = "Iraki IADS Foxtrot",
         enable = true,
         benefit_coalition = coalition.side.BLUE,

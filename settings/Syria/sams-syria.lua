@@ -1,19 +1,16 @@
 SamsConfig = {
     {
-        name = "Akamas",
-        enable = false,
+        name = "Bassel",
+        enable = true,
         benefit_coalition = coalition.side.BLUE,
         subRange = {
             {
-                name = "Center SAM",
-                groupsToSpawn = {"SAM SA6 Akamas"},
+                name = "SA23 Bassel El Assad",
+                groupsToSpawn = {"SAM-SA-23-Bassel", "SAM-SA-19-PD-Bassel","SAM-SA-15-PD-Bassel-2","SAM-SA-15-PD-Bassel-1"},
                 holdFire = false,
+                --redAlert = false
+                --La faute à tata
             },
-            {
-                name = "SAM",
-                groupsToSpawn = {"SAM SA2 Akamas"},
-                holdFire = false
-            }
         }
     }
 }

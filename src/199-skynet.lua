@@ -113,10 +113,10 @@ function SpawnIADSUnits(param)
                 local groupNameToSpawn = string.format("%s", ewrGroup)
                 if (GROUP:FindByName(groupNameToSpawn) ~= nil) then
                     local spawnGroup = SPAWN:New(groupNameToSpawn)
-                    debug_msg(string.format("SPAWN EWR : %s", groupNameToSpawn))
+                    debug_msg(string.format("IADS - SPAWN EWR : %s", groupNameToSpawn))
                     local groupSpawning = spawnGroup:Spawn():OptionAlarmStateRed()
                 else
-                    debug_msg(string.format("EWR GROUP to spawn %s not found in mission", groupNameToSpawn))
+                    debug_msg(string.format("IADS - EWR GROUP to spawn %s not found in mission", groupNameToSpawn))
                 end
             end
         end
@@ -126,38 +126,38 @@ function SpawnIADSUnits(param)
                 local groupNameToSpawn = string.format("%s", site)
                 if (GROUP:FindByName(groupNameToSpawn) ~= nil) then
                     local spawnGroup = SPAWN:New(groupNameToSpawn)
-                    debug_msg(string.format("SPAWN SAM : %s", groupNameToSpawn))
+                    debug_msg(string.format("IADS - SPAWN SAM : %s", groupNameToSpawn))
                     samGroupsSpawned[siteIndex] = spawnGroup:Spawn():OptionAlarmStateRed()
                     --if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
                     --    attachSAMSiteToSkynet(site, samGroupsSpawned[siteIndex]:GetName(), IADSObjectIndex, nodeConfig.connection)
                     --end
                 else
-                    debug_msg(string.format("SAM GROUP to spawn %s not found in mission", groupNameToSpawn))
+                    debug_msg(string.format("IADS - SAM GROUP to spawn %s not found in mission", groupNameToSpawn))
                 end
             elseif (type(site) == "table") then
-                debug_msg(string.format("SAM in config file is table"))
+                debug_msg(string.format("IADS - SAM in config file is table"))
                 local groupNameToSpawn = string.format("%s", site.sam)
                 if (GROUP:FindByName(groupNameToSpawn) ~= nil) then
                     local spawnGroup = SPAWN:New(groupNameToSpawn)
-                    debug_msg(string.format("SPAWN SAM : %s", groupNameToSpawn))
+                    debug_msg(string.format("IADS - SPAWN SAM : %s", groupNameToSpawn))
                     samGroupsSpawned[siteIndex] = spawnGroup:Spawn():OptionAlarmStateRed()
                     --if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
                     --    attachSAMSiteToSkynet(site, samGroupsSpawned[siteIndex]:GetName(), IADSObjectIndex, nodeConfig.connection)
                     --end
                 else
-                    debug_msg(string.format("SAM GROUP to spawn %s not found in mission", groupNameToSpawn))
+                    debug_msg(string.format("IADS - SAM GROUP to spawn %s not found in mission", groupNameToSpawn))
                 end
                 if (type(site.pointDefenses) == "string") then
                     local pdGroupNameToSpawn = string.format("%s", site.pointDefenses)
                     if (GROUP:FindByName(pdGroupNameToSpawn) ~= nil) then
                         local spawnGroup = SPAWN:New(pdGroupNameToSpawn)
-                        debug_msg(string.format("SPAWN SAM-PointDefense : %s", pdGroupNameToSpawn))
+                        debug_msg(string.format("IADS - SPAWN SAM-PointDefense : %s", pdGroupNameToSpawn))
                         local pdSamGroupsSpawned = spawnGroup:Spawn():OptionAlarmStateRed()
                         --if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
                         --    attachPdSiteToSkynet(site, pdSamGroupsSpawned:GetName(), samGroupsSpawned[siteIndex]:GetName(), IADSObjectIndex, nodeConfig.connection)
                         --end
                     else
-                        debug_msg(string.format("SAM-PointDefense GROUP to spawn %s not found in mission", pdGroupNameToSpawn))
+                        debug_msg(string.format("IADS - SAM-PointDefense GROUP to spawn %s not found in mission", pdGroupNameToSpawn))
                     end
                 elseif (type(site.pointDefenses) == "table") then
                     local pdSamGroupsSpawned = {}
@@ -165,13 +165,13 @@ function SpawnIADSUnits(param)
                         local pdGroupNameToSpawn = string.format("%s", pdSamGroup)
                         if (GROUP:FindByName(pdGroupNameToSpawn) ~= nil) then
                             local spawnGroup = SPAWN:New(pdGroupNameToSpawn)
-                            debug_msg(string.format("SPAWN SAM-PointDefense : %s", pdGroupNameToSpawn))
+                            debug_msg(string.format("IADS - SPAWN SAM-PointDefense : %s", pdGroupNameToSpawn))
                             pdSamGroupsSpawned[pdindex] = spawnGroup:Spawn():OptionAlarmStateRed()
                             --if (IADSArray[IADSObjectIndex].IADSNetworkRunning) then
                             --    attachPdSiteToSkynet(site, pdSamGroupsSpawned[pdindex]:GetName(), samGroupsSpawned[siteIndex]:GetName(), IADSObjectIndex, nodeConfig.connection)
                             --end
                         else
-                            debug_msg(string.format("SAM-PointDefense GROUP to spawn %s not found in mission", pdGroupNameToSpawn))
+                            debug_msg(string.format("IADS - SAM-PointDefense GROUP to spawn %s not found in mission", pdGroupNameToSpawn))
                         end
                     end
                 end
@@ -191,9 +191,9 @@ function SpawnIADSUnits(param)
         skynetUpdateDisplay({ IADSObjectIndex,'contacts',showContactsOption })
         skynetUpdateDisplay({ IADSObjectIndex,'IADSStatus',showStatusOption })
     end
-    debug_msg(string.format("Spawn IADS : %s-[%s] DONE", iadsName, difficulty))
+    debug_msg(string.format("IADS - Spawn IADS : %s-[%s] DONE", iadsName, difficulty))
     manageIADSNetworkMenu(parentMenu,iadsConfig,IADSObjectIndex)
-    MESSAGE:NewType(string.format("IADS Units %s-[%s] in place", iadsName, difficulty), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
+    MESSAGE:NewType(string.format("IADS - IADS Units %s-[%s] in place", iadsName, difficulty), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
 end
 
 function deleteIADSNetwork(param)
@@ -213,7 +213,7 @@ function deleteIADSNetwork(param)
         deleteIADSUnits(param)
     end
     IADSArray[IADSObjectIndex].IADSNetworkRunning = false
-    MESSAGE:NewType(string.format("Remove IADS : %s", iadsName), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
+    MESSAGE:NewType(string.format("IADS - Remove IADS : %s", iadsName), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
     manageIADSNetworkMenu(networkRootMenu, iadsConfig, IADSObjectIndex)
 end
 
@@ -226,7 +226,7 @@ function deactivateSkynet(param)
     IADSArray[IADSObjectIndex].IADSNetworkRunning = false
 
     manageIADSNetworkMenu(parentMenu, iadsConfig, IADSObjectIndex)
-    MESSAGE:NewType(string.format("Skynet of %s is desactivated", iadsConfig.name), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
+    MESSAGE:NewType(string.format("IADS - Skynet of %s is desactivated", iadsConfig.name), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
 end
 
 function skynetUpdateDisplay(param)
@@ -261,7 +261,7 @@ function activateGCI(param)
 
     for index, gci_group in ipairs(iadsConfig.gci) do
         gci_group_name = string.format("GCI_%s", gci_group.airport)
-        debug_msg(string.format("GCI - Group %s", gci_group_name))
+        debug_msg(string.format("IADS - GCI - Group %s", gci_group_name))
         A2ADispatcher:SetSquadron( gci_group_name,    gci_group.airport, gci_group.templatePrefixes, gci_group.numberOfAircraftAvailable )
         A2ADispatcher:SetSquadronGci( gci_group_name, 1000, 3000 )
     end
@@ -309,7 +309,7 @@ function activateSkynet(param)
                 local set_ewr_units = SET_UNIT:New():FilterPrefixes(ewr):FilterOnce()
                 set_ewr_units:ForEachUnit(function(ewr_alive)
                     if ewr_alive:IsAlive() then
-                        debug_msg(string.format("Alive EWR Unit name found %s", ewr_alive:Name()))
+                        debug_msg(string.format("IADS - Alive EWR Unit name found %s", ewr_alive:Name()))
                         IADSArray[IADSObjectIndex].IADSObject:addEarlyWarningRadar(ewr_alive:Name())
                         IADSArray[IADSObjectIndex].IADSObject:getEarlyWarningRadarByUnitName(ewr_alive:Name()):addConnectionNode(connectionNode)
                     end
@@ -478,15 +478,15 @@ function manageIADSNetworkMenu(networkRootMenu, iadsconfig, IADSObjectIndex)
                     deactivateSkynet,
                     { iadsconfig, IADSObjectIndex, networkRootMenu }
             )
-            --TODO: A réactiver lorsque les objets skynets seront basés sur la coalition et non sur la mission globale
-            --if (type(iadsconfig.gci) == "table") then
-            --    local CommandGCIActivate = MENU_MISSION_COMMAND:New(
-            --            "GCI Activation",
-            --            networkRootMenu,
-            --            activateGCI,
-            --            { iadsconfig, IADSObjectIndex, networkRootMenu }
-            --    )
-            --end
+            --TODO: A tweaker pour que les objets skynets seront basés sur la coalition et non sur la mission globale
+            if (type(iadsconfig.gci) == "table") then
+                local CommandGCIActivate = MENU_MISSION_COMMAND:New(
+                        "GCI Activation",
+                        networkRootMenu,
+                        activateGCI,
+                        { iadsconfig, IADSObjectIndex, networkRootMenu }
+                )
+            end
         else
             --On affiche le menu d activation skynet
             local CommandIADSActivate = MENU_MISSION_COMMAND:New("Skynet Activation",
@@ -513,7 +513,7 @@ function manageIADSNetworkMenu(networkRootMenu, iadsconfig, IADSObjectIndex)
                         isThereSomethingToSpawn = true
                     end
                 end
-                debug_msg(string.format('IADS: network=%s node=%s difficulty=%s sites number=%d', iadsconfig.name, nodeconfig.connection, difficulty, difficultySiteNumberToSpawn))
+                debug_msg(string.format('IADS - network=%s node=%s difficulty=%s sites number=%d', iadsconfig.name, nodeconfig.connection, difficulty, difficultySiteNumberToSpawn))
             end
             if isThereSomethingToSpawn then
                 local RadioCommandAddDifficulty = MENU_MISSION_COMMAND:New(
