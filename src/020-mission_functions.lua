@@ -423,12 +423,12 @@ function startCapWarZone(objCapWarZone)
                 objCapWarZone.objDispatcher:SetSquadronCap(
                         "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
                         CapZone,
-                        objCapWarZone.customconfig.capParameters.patrolFloor or UTILS.FeetToMeters(20000),
-                        objCapWarZone.customconfig.capParameters.patrolCeiling or UTILS.FeetToMeters(50000),
-                        objCapWarZone.customconfig.capParameters.minPatrolSpeed or UTILS.KnotsToKmph(200),
-                        objCapWarZone.customconfig.capParameters.maxPatrolSpeed or UTILS.KnotsToKmph(400),
-                        objCapWarZone.customconfig.capParameters.minEngageSpeed or UTILS.KnotsToKmph(200),
-                        objCapWarZone.customconfig.capParameters.maxEngageSpeed or UTILS.KnotsToKmph(2000),
+                        UTILS.FeetToMeters(objCapWarZone.customconfig.capParameters.patrolFloor) or UTILS.FeetToMeters(20000),
+                        UTILS.FeetToMeters(objCapWarZone.customconfig.capParameters.patrolCeiling) or UTILS.FeetToMeters(50000),
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minPatrolSpeed) or UTILS.KnotsToKmph(200),
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxPatrolSpeed) or UTILS.KnotsToKmph(400),
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minEngageSpeed) or UTILS.KnotsToKmph(200),
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxEngageSpeed) or UTILS.KnotsToKmph(2000),
                         "BARO"
                 )
                 objCapWarZone.objDispatcher:SetSquadronCapInterval(
@@ -459,8 +459,8 @@ function startCapWarZone(objCapWarZone)
                 end
                 objCapWarZone.objDispatcher:SetSquadronGci(
                         "GCI-"..capbaseconfig.baseName.."-"..indexinterceptsqn,
-                        objCapWarZone.customconfig.capParameters.minEngageSpeed or UTILS.KnotsToKmph(200),
-                        objCapWarZone.customconfig.capParameters.maxEngageSpeed or UTILS.KnotsToKmph(5000)
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minEngageSpeed) or UTILS.KnotsToKmph(200),
+                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxEngageSpeed) or UTILS.KnotsToKmph(5000)
                 )
             end
         end
