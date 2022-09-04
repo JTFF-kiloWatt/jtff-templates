@@ -527,9 +527,72 @@ function manageIADSNetworkMenu(networkRootMenu, iadsconfig, IADSObjectIndex)
     end
 end
 
+function addExtraSamTypeDB()
+    samTypesDB['FPS-117'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['FPS-117'] = {
+                ['name'] = {
+                    ['NATO'] = 'Seek Igloo',
+                },
+            },
+        },
+        ['harm_detection_chance'] = 60
+    }
+    samTypesDB['EWR P-37 BAR LOCK'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['EWR P-37 BAR LOCK'] = {
+                ['name'] = {
+                    ['NATO'] = 'Bar lock',
+                },
+            },
+        },
+
+        ['harm_detection_chance'] = 60
+    }
+    samTypesDB['EWR 55G6U NEBO-U'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['EWR 55G6U NEBO-U'] = {
+                ['name'] = {
+                    ['NATO'] = 'Nebo-U',
+                },
+            },
+        },
+
+        ['harm_detection_chance'] = 65
+    }
+    samTypesDB['EWR 1L119 Nebo-SVU'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['EWR 1L119 Nebo-SVU'] = {
+                ['name'] = {
+                    ['NATO'] = 'Nebo-SVU',
+                },
+            },
+        },
+
+        ['harm_detection_chance'] = 75
+    }
+    samTypesDB['EWR Generic radar tower'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['EWR Generic radar tower'] = {
+                ['name'] = {
+                    ['NATO'] = 'EWR Generic radar tower',
+                },
+            },
+        },
+        ['harm_detection_chance'] = 60
+    }
+
+end
+
 IADSArray = {}
 compteur = 0
 mainRadioMenuForSkynet =  MENU_MISSION:New("Skynet-IADS", nil )
+addExtraSamTypeDB()
 for index, skynetconfig in ipairs(SkynetConfig) do
     if ( skynetconfig.enable ) then
         compteur = compteur + 1
