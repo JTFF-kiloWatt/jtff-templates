@@ -302,6 +302,19 @@ WarCAPConfig = {
                     }
                 }
             },
+            {
+                baseName = AIRBASE.Syria.Jirah,
+                patrolSquadrons = {
+                },
+                interceptSquadrons = {
+                    {
+                        enable = true,
+                        groupName = "INT-ISIS-MIG21",
+                        groupForce = 2,
+                        groupNumber = 2
+                    }
+                }
+            },
         },
         capParameters = {
             patrolFloor = 20000,

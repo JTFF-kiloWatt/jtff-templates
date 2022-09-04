@@ -278,20 +278,20 @@ function activateSkynet(param)
 
     ---debug settings remove from here on if you do not wan't any output on what the IADS is doing by default
     local iadsDebug = IADSArray[IADSObjectIndex].IADSObject:getDebugSettings()
-    iadsDebug.IADSStatus = false
-    iadsDebug.radarWentDark = false
-    iadsDebug.contacts = false
-    iadsDebug.radarWentLive = false
-    iadsDebug.noWorkingCommmandCenter = false
-    iadsDebug.ewRadarNoConnection = false
-    iadsDebug.samNoConnection = false
-    iadsDebug.jammerProbability = false
-    iadsDebug.addedEWRadar = false
-    iadsDebug.hasNoPower = false
-    iadsDebug.harmDefence = false
-    iadsDebug.samSiteStatusEnvOutput = false
-    iadsDebug.earlyWarningRadarStatusEnvOutput = false
-    iadsDebug.commandCenterStatusEnvOutput = false
+    iadsDebug.IADSStatus = DEBUG_MSG
+    iadsDebug.radarWentDark = DEBUG_MSG
+    iadsDebug.contacts = DEBUG_MSG
+    iadsDebug.radarWentLive = DEBUG_MSG
+    iadsDebug.noWorkingCommmandCenter = DEBUG_MSG
+    iadsDebug.ewRadarNoConnection = DEBUG_MSG
+    iadsDebug.samNoConnection = DEBUG_MSG
+    iadsDebug.jammerProbability = DEBUG_MSG
+    iadsDebug.addedEWRadar = DEBUG_MSG
+    iadsDebug.hasNoPower = DEBUG_MSG
+    iadsDebug.harmDefence = DEBUG_MSG
+    iadsDebug.samSiteStatusEnvOutput = DEBUG_MSG
+    iadsDebug.earlyWarningRadarStatusEnvOutput = DEBUG_MSG
+    iadsDebug.commandCenterStatusEnvOutput = DEBUG_MSG
     ---end remove debug ---
 
     -- add a command center:
