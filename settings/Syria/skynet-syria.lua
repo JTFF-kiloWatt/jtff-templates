@@ -136,6 +136,12 @@ SkynetConfig = {
                     hard = {
                     },
                     extreme = {
+                        {
+                            sam = "SAM-SA-23-Bassel-1",
+                            goLiveRangePercent = 45,
+                            actAsEw = false,
+                            pointDefenses = {"SAM-SA-19-PD-Bassel", "SAM-SA-15-PD-Bassel-2", "SAM-SA-15-PD-Bassel-1"}
+                        },
                     },
                 }
             },

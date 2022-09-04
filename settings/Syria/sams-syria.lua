@@ -1,7 +1,7 @@
 SamsConfig = {
     {
         name = "Bassel",
-        enable = true,
+        enable = false,
         benefit_coalition = coalition.side.BLUE,
         subRange = {
             {
