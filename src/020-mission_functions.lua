@@ -6,8 +6,6 @@
 --
 env.info('JTFF-SHAREDLIB: shared library loading...')
 
-
-
 function debug_msg(message)
     if DEBUG_MSG then
         env.info(string.format("[DEBUG] %s", message))
@@ -1276,6 +1274,14 @@ spawnStandardDelay = 15
 sead = SEAD:New({})
 map_marker = {}
 soundFilesPrefix = getSoundFilesPrefix()
+
+AAMAxRange = {
+    MAX_RANGE = 0,
+    NEZ_RANGE = 1,
+    HALF_WAY_RMAX_NEZ = 2,
+    TARGET_THREAT_EST = 3,
+    RANDOM_RANGE = 4,
+}
 
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')
 
