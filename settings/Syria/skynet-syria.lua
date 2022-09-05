@@ -420,9 +420,7 @@ SkynetConfig = {
                     medium = {
                         {
                             sam = "SAM-SA-2-Sayqal-2",
-                        },
-                        {
-                            sam = "SAM-SA-3-Sayqal-3",
+                            pointDefenses = {"SAM-SA-8-PD-Sayqal-2", "SAM-SA-8-PD-Sayqal-1"}
                         },
                     },
                     hard = {

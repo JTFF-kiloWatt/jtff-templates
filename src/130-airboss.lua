@@ -1,13 +1,134 @@
 -- *****************************************************************************
 --                     **                       AirBoss                       **
 --                     *********************************************************
+function detectShitHotBreak(objAirboss)
+    local clientData={}
+    local player_name=""
+    --env.info('detectShitHotBreak : '.. objAirboss.customconfig.alias..' suspense ...')
+    objAirboss.CVNClients:ForEachClientInZone( objAirboss.CVN_GROUPZone,
+            function( MooseClient )
+
+                local function resetFlag()
+                    --trigger.action.outText('RESET SH Pass FLAG)', 5 )
+                    client_in_zone_flag:Set(0)
+                end
+
+                local player_velocity = MooseClient:GetVelocityKNOTS()
+                local player_name = MooseClient:GetPlayerName()
+                local player_alt = MooseClient:GetAltitude()
+                local player_type = MooseClient:GetTypeName()
+
+                player_alt_feet = math.floor((player_alt * ( 3.28 / 10)))*10
+
+                player_velocity_round = math.floor((player_velocity/10))*10
+
+                local Play_SH_Sound = USERSOUND:New( "AIRBOSS/Airboss Soundfiles/GreatBallsOfFire.ogg" )
+                --trigger.action.outText(player_name..' altitude is '..player_alt, 5)
+                --trigger.action.outText(player_name..' speed is '..player_velocity, 5)
+                if client_in_zone_flag == nil then
+                    client_in_zone_flag = USERFLAG:New(MooseClient:GetClientGroupID() + 10000000)
+                else
+                end
+
+                if client_performing_sh == nil then
+                    client_performing_sh = USERFLAG:New(MooseClient:GetClientGroupID() + 100000000)
+                else
+                end
+
+                if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
+                    -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
+                    --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
+                    local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
+                    HypeMan.sendBotMessage(sh_message_to_discord)
+                    Play_SH_Sound:ToAll()
+                    client_in_zone_flag:Set(1)
+                    client_performing_sh:Set(1)
+                    timer.scheduleFunction(resetFlag, {}, timer.getTime() + 10)
+                else
+                end
+
+                --trigger.action.outText('ForEachClientInZone: Client name is '..clientData.clientName , 5)
+                --trigger.action.outText('ForEachClientInZone: Client fuel1 is '..clientData.clientFuel1 , 5)
+
+            end
+    )
+end
+
+function switchCarrierDefCon2(params)
+    local carrierName = params[1]
+    local timeMinutes = params[2]
+    local cvUnit = UNIT:FindByName(carrierName)
+    local cvGroup = cvUnit:GetGroup()
+    cvGroup:OptionROE(ENUMS.ROE.WeaponFree):OptionAlarmStateRed()
+    debug_msg(string.format("CSG : %s DEFCON 2 -> ROE = %d", carrierName, ENUMS.ROE.WeaponFree))
+    SCHEDULER:New(
+            nil,
+            function(carrierName)
+                debug_squeduler_msg(carrierName .. " switchback to DEFCON 4")
+                debug_msg(string.format("CSG : %s DEFCON 4 -> ROE = %d", carrierName, ENUMS.ROE.ReturnFire))
+                UNIT:FindByName(carrierName):GetGroup():OptionROE(ENUMS.ROE.ReturnFire):OptionAlarmStateRed()
+            end,
+            { carrierName },
+            timeMinutes*60
+    )
+end
+
+function forceCarrierDefCon4(params)
+    local carrierName = params[1]
+    local cvUnit = UNIT:FindByName(carrierName)
+    local cvGroup = cvUnit:GetGroup()
+    cvGroup:OptionROE(ENUMS.ROE.WeaponFree):OptionAlarmStateRed()
+end
+
 AIRBOSSArray = {}
 compteur = 0
+MenuCoalitionCSGCommandsBlue = MENU_COALITION:New(coalition.side.BLUE, "CSG Commands", MenuCoalitionBlue)
+MenuCoalitionCSGCommandsRed = MENU_COALITION:New(coalition.side.RED, "CSG Commands", MenuCoalitionRed)
 for index, airbossconfig in ipairs(AirBossConfig) do
     if airbossconfig.enable == true then
         compteur = compteur +1
         --populate_SC(airbossconfig.carriername)
+        local MenuCoalitionCSGCommands = nil
+        if airbossconfig.coalition == coalition.side.BLUE then
+            MenuCoalitionCSGCommands = MenuCoalitionCSGCommandsBlue
+        else
+            MenuCoalitionCSGCommands = MenuCoalitionCSGCommandsRed
+        end
         local objAirboss = AIRBOSS:New(airbossconfig.carriername, airbossconfig.alias)
+        objAirboss.menuObject = MENU_COALITION:New(
+                airbossconfig.coalition,
+                airbossconfig.alias,
+                MenuCoalitionCSGCommands
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "DEFCON 2 - 5 minutes",
+                objAirboss.menuObject,
+                switchCarrierDefCon2,
+                {
+                    airbossconfig.carriername,
+                    5
+                }
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "DEFCON 2 - 10 minutes",
+                objAirboss.menuObject,
+                switchCarrierDefCon2,
+                {
+                    airbossconfig.carriername,
+                    10
+                }
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "Release : DEFCON 4",
+                objAirboss.menuObject,
+                forceCarrierDefCon4,
+                {
+                    airbossconfig.carriername
+                }
+        )
         objAirboss:SetTACAN(airbossconfig.tacan.channel, airbossconfig.tacan.mode, airbossconfig.tacan.morse)
         objAirboss:SetICLS(airbossconfig.icls.channel, airbossconfig.icls.morse)
         objAirboss:SetLSORadio(airbossconfig.freq.lso)
@@ -300,9 +421,9 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 'cvnGroupZone-'..AIRBOSSArray[compteur].customconfig.alias,
                 AIRBOSSArray[compteur].carrier:GetGroup(),
                 1111)
-        AIRBOSSArray[compteur].BlueCVNClients = SET_CLIENT:New()
-                                                          :FilterCoalitions(AIRBOSSArray[compteur].customconfig.coalition)
-                                                          :FilterStart()
+        AIRBOSSArray[compteur].CVNClients = SET_CLIENT:New()
+                                                      :FilterCoalitions(UTILS.GetCoalitionName(AIRBOSSArray[compteur].customconfig.coalition))
+                                                      :FilterStart()
         local myscheduler
         local myschedulerID
         myscheduler, myschedulerID = SCHEDULER:New(
