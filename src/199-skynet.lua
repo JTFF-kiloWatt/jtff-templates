@@ -539,6 +539,17 @@ function addExtraSamTypeDB()
         },
         ['harm_detection_chance'] = 60
     }
+    samTypesDB['FPS-117 Dome'] = {
+        ['type'] = 'ewr',
+        ['searchRadar'] = {
+            ['FPS-117 Dome'] = {
+                ['name'] = {
+                    ['NATO'] = 'Seek Igloo',
+                },
+            },
+        },
+        ['harm_detection_chance'] = 60
+    }
     samTypesDB['EWR P-37 BAR LOCK'] = {
         ['type'] = 'ewr',
         ['searchRadar'] = {

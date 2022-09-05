@@ -6,6 +6,8 @@
 --
 env.info('JTFF-SHAREDLIB: shared library loading...')
 
+
+
 function debug_msg(message)
     if DEBUG_MSG then
         env.info(string.format("[DEBUG] %s", message))
@@ -319,179 +321,6 @@ function resetRecoveryTanker(recoveryTankerObject)
         recoveryTankerObject.escortGroupObject:Destroy()
         --recoveryTankerObject.escortGroupObject = spawnRecoveryTankerEscort(recoveryTankerObject.escortSpawnObject,recoveryTankerObject.customconfig)
     end
-end
-
-function startCapZone(objCAPZone)
-    local AICapGroup = objCAPZone.objSpawn:SpawnInZone(objCAPZone.objPatrolZone,
-            true
-    )
-    local objCAP = AI_CAP_ZONE:New(
-            objCAPZone.objPatrolZone,
-            UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
-            UTILS.Round(objCAPZone.customconfig.capParameters.patrolCeiling*0.3048,0),
-            UTILS.Round(objCAPZone.customconfig.capParameters.minPatrolSpeed*1.852,0),
-            UTILS.Round(objCAPZone.customconfig.capParameters.maxPatrolSpeed*1.852,0),
-            AI.Task.AltitudeType.BARO
-    )
-    objCAP:SetControllable(AICapGroup)
-    objCAP:SetEngageZone(objCAPZone.objEngageZone)
-    objCAP:__Start(1)
-    --local objAiCapZone = AI_CAP_ZONE:New(
-    --        objCAPZone.objPatrolZone,
-    --        UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
-    --        UTILS.Round(objCAPZone.customconfig.capParameters.patrolCeiling*0.3048,0),
-    --        UTILS.Round(objCAPZone.customconfig.capParameters.minPatrolSpeed*1.852,0),
-    --        UTILS.Round(objCAPZone.customconfig.capParameters.maxPatrolSpeed*1.852,0),
-    --        AI.Task.AltitudeType.BARO
-    --)
-    --function objAiCapZone:OnAfterStart(from, event, to)
-    --end
-
-    --objAiCapZone:SetControllable(
-    --        objCAPZone.objSpawn:SpawnInZone(objCAPZone.objPatrolZone,
-    --                true
-    --        )
-    --)
-end
-
-function startCapWarZone(objCapWarZone)
-    objCapWarZone.objEWRNetwork = SET_GROUP:New()
-    objCapWarZone.objEWRNetwork:FilterPrefixes(objCapWarZone.customconfig.ewrPrefixes)
-    objCapWarZone.objEWRNetwork:FilterStart()
-    objCapWarZone.objDetectionAreas = DETECTION_AREAS:New( objCapWarZone.objEWRNetwork, UTILS.NMToMeters(objCapWarZone.customconfig.detectionGroupingRadius or UTILS.MetersToNM(30000)))
-    objCapWarZone.objDispatcher = AI_A2A_DISPATCHER:New( objCapWarZone.objDetectionAreas )
-    objCapWarZone.objDispatcher:SetBorderZone(objCapWarZone.objZone)
-    objCapWarZone.objDispatcher:SetEngageRadius(UTILS.NMToMeters(objCapWarZone.customconfig.engageRadius or UTILS.MetersToNM(100000)))
-    objCapWarZone.objDispatcher:SetGciRadius(UTILS.NMToMeters(objCapWarZone.customconfig.gciRadius or UTILS.MetersToNM(200000)))
-    objCapWarZone.objDispatcher:SetDefaultTakeoffFromParkingHot()
-    objCapWarZone.objDispatcher:SetDefaultLandingAtRunway()
-    objCapWarZone.objDispatcher:SetDefaultFuelThreshold(0.30)
-    objCapWarZone.objDispatcher:SetDefaultCapRacetrack(
-            UTILS.NMToMeters(20),
-            UTILS.NMToMeters(40),
-            0,
-            180,
-            15*60,
-            45*60
-    )
-    for indexbase, capbaseconfig in ipairs(objCapWarZone.customconfig.CAPBases) do
-        for indexcapsqn, capsqnconfig in ipairs(capbaseconfig.patrolSquadrons) do
-            if capsqnconfig.enable then
-                if AIRBASE:FindByName(capbaseconfig.baseName) then
-                    --baseName is Airbase
-                    objCapWarZone.objDispatcher:SetSquadron(
-                            "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                            capbaseconfig.baseName,
-                            capsqnconfig.groupName,
-                            capsqnconfig.groupNumber * capsqnconfig.groupForce
-                    )
-                    objCapWarZone.objDispatcher:SetSquadronGrouping(
-                            "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                            capsqnconfig.groupForce
-                    )
-                else
-                    --baseName is not an Airbase --> Airstart
-                    objCapWarZone.objDispatcher:SetSquadron(
-                            "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                            capbaseconfig.baseName,
-                            capsqnconfig.groupName,
-                            capsqnconfig.groupNumber * capsqnconfig.groupForce
-                    )
-                    objCapWarZone.objDispatcher:SetSquadronGrouping(
-                            "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                            capsqnconfig.groupForce
-                    )
-                    objCapWarZone.objDispatcher:SetSquadronTakeoffInAir(
-                            "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                            UTILS.FeetToMeters(20000)
-                    )
-                end
-                local CapZone = nil
-                if capsqnconfig.patrolZoneName then
-                    if capsqnconfig.patrolZoneGroupName then
-                        CapZone = ZONE_POLYGON:New(capsqnconfig.patrolZoneGroupName, GROUP:FindByName(capsqnconfig.patrolZoneGroupName))
-                    else
-                        CapZone = ZONE:New(capsqnconfig.patrolZoneName)
-                    end
-                else
-                    if capsqnconfig.patrolZoneGroupName then
-                        CapZone = ZONE_POLYGON:New(capsqnconfig.patrolZoneGroupName, GROUP:FindByName(capsqnconfig.patrolZoneGroupName))
-                    else
-                        CapZone = objCapWarZone.objZone
-                    end
-                end
-                objCapWarZone.objDispatcher:SetSquadronCap(
-                        "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                        CapZone,
-                        UTILS.FeetToMeters(objCapWarZone.customconfig.capParameters.patrolFloor) or UTILS.FeetToMeters(20000),
-                        UTILS.FeetToMeters(objCapWarZone.customconfig.capParameters.patrolCeiling) or UTILS.FeetToMeters(50000),
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minPatrolSpeed) or UTILS.KnotsToKmph(200),
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxPatrolSpeed) or UTILS.KnotsToKmph(400),
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minEngageSpeed) or UTILS.KnotsToKmph(200),
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxEngageSpeed) or UTILS.KnotsToKmph(2000),
-                        "BARO"
-                )
-                objCapWarZone.objDispatcher:SetSquadronCapInterval(
-                        "CAP-"..capbaseconfig.baseName.."-"..indexcapsqn,
-                        capsqnconfig.patrolInAirNumber,
-                        8*60,
-                        13*60,
-                        1
-                )
-            end
-        end
-        for indexinterceptsqn, interceptsqnconfig in ipairs(capbaseconfig.interceptSquadrons) do
-            if interceptsqnconfig.enable then
-                if AIRBASE:FindByName(capbaseconfig.baseName) then
-                    --baseName is Airbase
-                    objCapWarZone.objDispatcher:SetSquadron(
-                            "GCI-"..capbaseconfig.baseName.."-"..indexinterceptsqn,
-                            capbaseconfig.baseName,
-                            interceptsqnconfig.groupName,
-                            interceptsqnconfig.groupNumber
-                    )
-                    objCapWarZone.objDispatcher:SetSquadronGrouping(
-                            "GCI-"..capbaseconfig.baseName.."-"..indexinterceptsqn,
-                            interceptsqnconfig.groupForce
-                    )
-                else
-                    --baseName is not an Airbase --> Airstart
-                end
-                objCapWarZone.objDispatcher:SetSquadronGci(
-                        "GCI-"..capbaseconfig.baseName.."-"..indexinterceptsqn,
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.minEngageSpeed) or UTILS.KnotsToKmph(200),
-                        UTILS.KnotsToKmph(objCapWarZone.customconfig.capParameters.maxEngageSpeed) or UTILS.KnotsToKmph(5000)
-                )
-            end
-        end
-    end
-    objCapWarZone.objDispatcher:SetTacticalDisplay(objCapWarZone.customconfig.debug or false)
-    objCapWarZone.objMenu:RemoveSubMenus()
-    MENU_MISSION_COMMAND:New(
-            "Stop ".. objCapWarZone.customconfig.name .. " CAP War Zone",
-            objCapWarZone.objMenu,
-            wipeCapWarZone,
-            objCapWarZone
-    )
-end
-
-function wipeCapZone(objCAPZone)
-    fctKillSpawnObject(objCAPZone.objSpawn)
-    trigger.action.outText('CAP Training Zone '..(objCAPZone.customconfig.name)..' cleaned !!', 30)
-end
-
-function wipeCapWarZone(objCapWarZone)
-    objCapWarZone.objDispatcher:Stop()
-    objCapWarZone.objDispatcher = nil
-    objCapWarZone.objDetectionAreas = nil
-    objCapWarZone.objEWRNetwork = nil
-    objCapWarZone.objMenu:RemoveSubMenus()
-    MENU_MISSION_COMMAND:New(
-            "Start ".. objCapWarZone.customconfig.name .. " CAP War Zone",
-            objCapWarZone.objMenu,
-            startCapWarZone,
-            objCapWarZone)
-    trigger.action.outText('CAP War Zone '..(objCapWarZone.customconfig.name)..' disabled !!', 30)
 end
 
 function fctKillSpawnObject(objSpawn)
@@ -1438,11 +1267,11 @@ function getSoundFilesPrefix()
     return strPrefix
 end
 
-DEBUG_MSG = true
+DEBUG_MSG = false
 DEBUG_SQ_MSG = false
 DEBUG_DETECT_MSG = false
 
-spawnStandardDelay = 1
+spawnStandardDelay = 15
 
 sead = SEAD:New({})
 map_marker = {}

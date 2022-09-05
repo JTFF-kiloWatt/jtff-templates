@@ -1,3 +1,11 @@
+AAMAxRange = {
+    MAX_RANGE = 0,
+    NEZ_RANGE = 1,
+    HALF_WAY_RMAX_NEZ = 2,
+    TARGET_THREAT_EST = 3,
+    RANDOM_RANGE = 4,
+}
+
 WarCAPConfig = {
     {
         enable = true,
@@ -9,6 +17,7 @@ WarCAPConfig = {
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
+        fireRange = AAMAxRange.MAX_RANGE,
         ewrPrefixes = {
             "EWR_SYR"
         },
@@ -22,7 +31,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 8,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-alpha"
+                        patrolZoneGroupName = "airspace-alpha",
                     },
                     {
                         enable = true,
@@ -30,7 +39,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 8,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-alpha"
+                        patrolZoneGroupName = "airspace-alpha",
                     }
                 },
                 interceptSquadrons = {
@@ -45,7 +54,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 8,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-alpha"
+                        patrolZoneGroupName = "airspace-alpha",
                     },
                 },
                 interceptSquadrons = {
@@ -73,6 +82,7 @@ WarCAPConfig = {
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
+        fireRange = AAMAxRange.MAX_RANGE,
         ewrPrefixes = {
             "EWR_SYR"
         },
@@ -86,7 +96,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 6,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-bravo"
+                        patrolZoneGroupName = "airspace-bravo",
                     },
                     {
                         enable = true,
@@ -94,7 +104,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 6,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-bravo"
+                        patrolZoneGroupName = "airspace-bravo",
                     }
                 },
                 interceptSquadrons = {
@@ -102,13 +112,13 @@ WarCAPConfig = {
                         enable = false,
                         groupName = "INT-SY-MIG29",
                         groupForce = 2,
-                        groupNumber = 3
+                        groupNumber = 3,
                     },
                     {
                         enable = false,
                         groupName = "INT-RU-MIG29",
                         groupForce = 2,
-                        groupNumber = 2
+                        groupNumber = 2,
                     }
                 }
             }
@@ -134,6 +144,7 @@ WarCAPConfig = {
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
+        fireRange = AAMAxRange.MAX_RANGE,
         ewrPrefixes = {
             "EWR_SYR"
         },
@@ -147,7 +158,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-SY-MIG25",
                         groupForce = 2,
-                        groupNumber = 8
+                        groupNumber = 8,
                     }
                 }
             },
@@ -160,7 +171,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 12,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-charlie"
+                        patrolZoneGroupName = "airspace-charlie",
                     },
                 },
                 interceptSquadrons = {
@@ -188,6 +199,7 @@ WarCAPConfig = {
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
+        fireRange = AAMAxRange.MAX_RANGE,
         ewrPrefixes = {
             "EWR_SYR"
         },
@@ -201,7 +213,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 4,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-delta"
+                        patrolZoneGroupName = "airspace-delta",
                     }
                 },
                 interceptSquadrons = {
@@ -209,7 +221,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-SY-MIG29-1",
                         groupForce = 2,
-                        groupNumber = 4
+                        groupNumber = 4,
                     }
                 }
             },
@@ -222,7 +234,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 12,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-delta"
+                        patrolZoneGroupName = "airspace-delta",
                     },
                 },
                 interceptSquadrons = {
@@ -230,7 +242,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-SY-MIG25-1",
                         groupForce = 1,
-                        groupNumber = 4
+                        groupNumber = 4,
                     }
                 }
             },
@@ -243,7 +255,7 @@ WarCAPConfig = {
                         groupForce = 1,
                         groupNumber = 12,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-delta"
+                        patrolZoneGroupName = "airspace-delta",
                     }
                 },
                 interceptSquadrons = {
@@ -251,7 +263,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-SY-MIG25-2",
                         groupForce = 1,
-                        groupNumber = 2
+                        groupNumber = 2,
                     }
                 }
             },
@@ -277,6 +289,7 @@ WarCAPConfig = {
         detectionGroupingRadius = 15,
         engageRadius = 100,
         gciRadius = 300,
+        fireRange = AAMAxRange.MAX_RANGE,
         ewrPrefixes = {
             "EWR_SYR"
         },
@@ -290,7 +303,7 @@ WarCAPConfig = {
                         groupForce = 2,
                         groupNumber = 12,
                         patrolInAirNumber = 1,
-                        patrolZoneGroupName = "airspace-echo"
+                        patrolZoneGroupName = "airspace-echo",
                     }
                 },
                 interceptSquadrons = {
@@ -298,7 +311,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-SY-MIG29-2",
                         groupForce = 2,
-                        groupNumber = 4
+                        groupNumber = 4,
                     }
                 }
             },
@@ -311,7 +324,7 @@ WarCAPConfig = {
                         enable = true,
                         groupName = "INT-ISIS-MIG21",
                         groupForce = 2,
-                        groupNumber = 2
+                        groupNumber = 2,
                     }
                 }
             },

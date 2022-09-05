@@ -1,6 +1,45 @@
 -- *****************************************************************************
 --                     **                CAPZone Training                     **
 --                     *********************************************************
+function wipeCapZone(objCAPZone)
+    fctKillSpawnObject(objCAPZone.objSpawn)
+    trigger.action.outText('CAP Training Zone '..(objCAPZone.customconfig.name)..' cleaned !!', 30)
+end
+
+function startCapZone(objCAPZone)
+    local AICapGroup = objCAPZone.objSpawn:SpawnInZone(objCAPZone.objPatrolZone,
+            true
+    )
+    local objCAP = AI_CAP_ZONE:New(
+            objCAPZone.objPatrolZone,
+            UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
+            UTILS.Round(objCAPZone.customconfig.capParameters.patrolCeiling*0.3048,0),
+            UTILS.Round(objCAPZone.customconfig.capParameters.minPatrolSpeed*1.852,0),
+            UTILS.Round(objCAPZone.customconfig.capParameters.maxPatrolSpeed*1.852,0),
+            AI.Task.AltitudeType.BARO
+    )
+    objCAP:SetControllable(AICapGroup)
+    objCAP:SetEngageZone(objCAPZone.objEngageZone)
+    objCAP:__Start(1)
+    --local objAiCapZone = AI_CAP_ZONE:New(
+    --        objCAPZone.objPatrolZone,
+    --        UTILS.Round(objCAPZone.customconfig.capParameters.patrolFloor*0.3048,0),
+    --        UTILS.Round(objCAPZone.customconfig.capParameters.patrolCeiling*0.3048,0),
+    --        UTILS.Round(objCAPZone.customconfig.capParameters.minPatrolSpeed*1.852,0),
+    --        UTILS.Round(objCAPZone.customconfig.capParameters.maxPatrolSpeed*1.852,0),
+    --        AI.Task.AltitudeType.BARO
+    --)
+    --function objAiCapZone:OnAfterStart(from, event, to)
+    --end
+
+    --objAiCapZone:SetControllable(
+    --        objCAPZone.objSpawn:SpawnInZone(objCAPZone.objPatrolZone,
+    --                true
+    --        )
+    --)
+end
+
+
 CAPZoneArray = {}
 compteur = 0
 MenuCoalitionCAPZoneBlue = MENU_COALITION:New(coalition.side.BLUE, "Hostile CAP Zones", MenuCoalitionBlue)
