@@ -175,7 +175,7 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
 
                 local is_tanker_spawned = false
                 for index, current_group in ipairs(aliveTankersGroupList) do
-                    if ((not(is_tanker_spawned)) and (current_group.GroupName == OnDemandTanker.groupName)) then
+                    if ((not(is_tanker_spawned)) and (string.find(current_group.GroupName, string.format("%s-%s",OnDemandTanker.groupName,OnDemandTanker.type)) ~= nil)) then
                         is_tanker_spawned = true
                         TankerGroup = current_group
                     end
