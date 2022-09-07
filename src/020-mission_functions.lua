@@ -100,7 +100,7 @@ function tankerStatusMessage(tanker, PlayerUnit, PlayerGroup)
                 timeLeftString = timeLeftString .. UTILS.SecondsToClock(timeLeftInTheAir, true)
             end
             debug_msg(string.format("%s found in %s, time in the air : %i sec, time left %i sec",
-                value.tanker.GroupName, groupName, timeInTheAir, timeLeftInTheAir))
+                    value.tanker.GroupName, groupName, timeInTheAir, timeLeftInTheAir))
         else
             debug_msg(string.format("%s not found in %s", value.tanker.GroupName, groupName))
         end
@@ -116,7 +116,7 @@ function tankerStatusMessage(tanker, PlayerUnit, PlayerGroup)
                     timeLeftString = timeLeftString .. UTILS.SecondsToClock(timeLeftInTheAir, true)
                 end
                 debug_msg(string.format("%s found in %s, time in the air : %i sec, time left %i sec",
-                value:GetName(), groupName, timeInTheAir, timeLeftInTheAir))
+                        value:GetName(), groupName, timeInTheAir, timeLeftInTheAir))
             else
                 debug_msg(string.format("%s not found in %s", value:GetName(), groupName))
             end
@@ -124,8 +124,8 @@ function tankerStatusMessage(tanker, PlayerUnit, PlayerGroup)
     end
 
     local message = string.format("%s %s [%s]\nFuel State %s (%.2f)\n%s\n%s\n%s", tanker:GetName(),
-        tanker:GetTypeName(), tankerrefuelsystemName, fuelState, tanker:GetFuel() * 100, aspect_message, braa_message,
-        timeLeftString)
+            tanker:GetTypeName(), tankerrefuelsystemName, fuelState, tanker:GetFuel() * 100, aspect_message, braa_message,
+            timeLeftString)
     MESSAGE:NewType(message, MESSAGE.Type.Overview):ToGroup(PlayerGroup)
 end
 
@@ -254,59 +254,6 @@ function spawnRecoveryTankerEscort(escortSpawnObject,customconfig)
     end
 end
 
-function detectShitHotBreak(objAirboss)
-    local clientData={}
-    local player_name=""
-    --env.info('detectShitHotBreak : '.. objAirboss.customconfig.alias..' suspense ...')
-    objAirboss.BlueCVNClients:ForEachClientInZone( objAirboss.CVN_GROUPZone,
-            function( MooseClient )
-
-                local function resetFlag()
-                    --trigger.action.outText('RESET SH Pass FLAG)', 5 )
-                    client_in_zone_flag:Set(0)
-                end
-
-                local player_velocity = MooseClient:GetVelocityKNOTS()
-                local player_name = MooseClient:GetPlayerName()
-                local player_alt = MooseClient:GetAltitude()
-                local player_type = MooseClient:GetTypeName()
-
-                player_alt_feet = math.floor((player_alt * ( 3.28 / 10)))*10
-
-                player_velocity_round = math.floor((player_velocity/10))*10
-
-                local Play_SH_Sound = USERSOUND:New( "AIRBOSS/Airboss Soundfiles/GreatBallsOfFire.ogg" )
-                --trigger.action.outText(player_name..' altitude is '..player_alt, 5)
-                --trigger.action.outText(player_name..' speed is '..player_velocity, 5)
-                if client_in_zone_flag == nil then
-                    client_in_zone_flag = USERFLAG:New(MooseClient:GetClientGroupID() + 10000000)
-                else
-                end
-
-                if client_performing_sh == nil then
-                    client_performing_sh = USERFLAG:New(MooseClient:GetClientGroupID() + 100000000)
-                else
-                end
-
-                if client_in_zone_flag:Get() == 0 and player_velocity > 475 and player_alt < 213 then
-                    -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
-                    --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
-                    local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
-                    HypeMan.sendBotMessage(sh_message_to_discord)
-                    Play_SH_Sound:ToAll()
-                    client_in_zone_flag:Set(1)
-                    client_performing_sh:Set(1)
-                    timer.scheduleFunction(resetFlag, {}, timer.getTime() + 10)
-                else
-                end
-
-                --trigger.action.outText('ForEachClientInZone: Client name is '..clientData.clientName , 5)
-                --trigger.action.outText('ForEachClientInZone: Client fuel1 is '..clientData.clientFuel1 , 5)
-
-            end
-    )
-end
-
 function LeaveRecovery(objAirboss)
     local shipID = UNIT:FindByName(objAirboss.carrier:Name()):GetDCSObject():getID()
 end
@@ -367,7 +314,7 @@ function deleteSubRangeUnits(param)
         destroyGroup(groupsToSpawn[i])
     end
     MESSAGE:NewType(string.format("Remove the site : %s-%s", rangeConfig.name, subRangeConfig.name),
-        MESSAGE.Type.Information):ToBlue()
+            MESSAGE.Type.Information):ToBlue()
     if (not(blnMute)) then
         sound2Bip:ToAll()
     end
@@ -534,7 +481,7 @@ function giveToClientGroupCoordinates(param)
                     end
                     debug_msg(string.format("coordinate_txt [%s] : %s", group_alive:GetName(), coordinate_string))
                     coordinate_txt = string.format("%s[%s] : %s\n", coordinate_txt, group_alive:GetName(),
-                        coordinate_string)
+                            coordinate_string)
                 end)
                 debug_msg(string.format("Message to Client %s : %s", client:GetName(), coordinate_txt))
                 MESSAGE:NewType(coordinate_txt, MESSAGE.Type.Detailed):ToClient(client)
@@ -619,9 +566,9 @@ function giveListOfUnitsAliveInGroup(param)
                                 unit_altitude_for_client_unit = "m"
                             end
                             local info_unit_tmp = string.format("[%i] %s (%i", unit_tmp:GetThreatLevel(),
-                                unit_tmp:GetTypeName(), unit_life_pourcentage) .. '%),\t' .. unit_coordinate_for_client ..
-                                                      string.format("\tAlt: %.0f%s", unit_altitude_for_client,
-                                    unit_altitude_for_client_unit)
+                                    unit_tmp:GetTypeName(), unit_life_pourcentage) .. '%),\t' .. unit_coordinate_for_client ..
+                                    string.format("\tAlt: %.0f%s", unit_altitude_for_client,
+                                            unit_altitude_for_client_unit)
                             MESSAGE:NewType(info_unit_tmp, MESSAGE.Type.Overview):ToClient(client)
                         end
                     end)
@@ -752,8 +699,8 @@ function SpawnRanges(param)
                 if (redAlert == true) then
                     groupSpawning:OptionAlarmStateRed()
                 else
-                    groupSpawning:OptionAlarmStateGreen()   
-                end 
+                    groupSpawning:OptionAlarmStateGreen()
+                end
             else
                 groupSpawning:OptionAlarmStateAuto()
             end
@@ -778,42 +725,42 @@ function SpawnRanges(param)
             spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
         end
     else
-        debug_msg(string.format("No static in %s", subRangeName))  
-    end      
+        debug_msg(string.format("No static in %s", subRangeName))
+    end
 
 
     radioCommandSubRange:RemoveSubMenus()
     local CommandZoneDetroy = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Delete", radioCommandSubRange,
-        deleteSubRangeUnits, {groupsToSpawn, rangeConfig, subRangeConfig, radioCommandSubRange, true})
+            deleteSubRangeUnits, {groupsToSpawn, rangeConfig, subRangeConfig, radioCommandSubRange, true})
     local ROE = MENU_COALITION:New(rangeConfig.benefit_coalition, "ROE", radioCommandSubRange)
     local ROEOpenFire = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Open Fire", ROE, setROE,
-        {groupsToSpawn, ENUMS.ROE.OpenFire})
+            {groupsToSpawn, ENUMS.ROE.OpenFire})
     local ROEReturnFire = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Return Fire", ROE, setROE,
-        {groupsToSpawn, ENUMS.ROE.ReturnFire})
+            {groupsToSpawn, ENUMS.ROE.ReturnFire})
     local ROEHoldFire = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Hold Fire", ROE, setROE,
-        {groupsToSpawn, ENUMS.ROE.WeaponHold})
+            {groupsToSpawn, ENUMS.ROE.WeaponHold})
     local AlarmState = MENU_COALITION:New(rangeConfig.benefit_coalition, "Alarm State", radioCommandSubRange)
     local AlarmStateAuto = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Auto", AlarmState, setAlarmState,
-        {groupsToSpawn, ENUMS.AlarmState.Auto})
+            {groupsToSpawn, ENUMS.AlarmState.Auto})
     local AlarmStateGreen = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Green", AlarmState, setAlarmState,
-        {groupsToSpawn, ENUMS.AlarmState.Green})
+            {groupsToSpawn, ENUMS.AlarmState.Green})
     local AlarmStateRed = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Red", AlarmState, setAlarmState,
-        {groupsToSpawn, ENUMS.AlarmState.Red})
+            {groupsToSpawn, ENUMS.AlarmState.Red})
     local Engage_Air_Weapons = MENU_COALITION:New(rangeConfig.benefit_coalition, "Engage Air Weapons", radioCommandSubRange)
     local Engage_Air_Weapons_True = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "True", Engage_Air_Weapons, setEngageAirWeapons,
-        {groupsToSpawn, true})
+            {groupsToSpawn, true})
     local Engage_Air_Weapons_False = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "False", Engage_Air_Weapons, setEngageAirWeapons,
-        {groupsToSpawn, false})
+            {groupsToSpawn, false})
     local CommandZoneFumigene = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Smoke", radioCommandSubRange,
-        smokeOnSubRange, {groupsToSpawn, rangeConfig.benefit_coalition})
+            smokeOnSubRange, {groupsToSpawn, rangeConfig.benefit_coalition})
     local CommandZoneCoord = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Coordinates",
-        radioCommandSubRange, giveToClientGroupCoordinates, {groupsToSpawn})
+            radioCommandSubRange, giveToClientGroupCoordinates, {groupsToSpawn})
     local CommandZoneListGroup = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "List Groups",
-        radioCommandSubRange, giveListOfGroupsAliveInRange, {groupsToSpawn, rangeConfig, subRangeConfig})
+            radioCommandSubRange, giveListOfGroupsAliveInRange, {groupsToSpawn, rangeConfig, subRangeConfig})
     local CommandZoneList = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "List Units",
-        radioCommandSubRange, giveListOfUnitsAliveInGroup, {groupsToSpawn, rangeConfig.benefit_coalition, 5})
+            radioCommandSubRange, giveListOfUnitsAliveInGroup, {groupsToSpawn, rangeConfig.benefit_coalition, 5})
     MESSAGE:NewType(string.format("Units in range %s(%s) in place", rangeName, subRangeName), MESSAGE.Type.Information)
-        :ToBlue()
+           :ToBlue()
     markGroupOnMap({groupsToSpawn, rangeConfig.benefit_coalition})
 end
 
@@ -935,289 +882,6 @@ function GetTableLng(tbl)
     return getN
 end
 
-function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAnchorCoord, askedOrbitHeading, askedOrbitLeg)
-    local TankerGroup = nil
-    if (OnDemandTankersConfig) then
-        for index, OnDemandTanker in ipairs(OnDemandTankersConfig) do
-            if ((OnDemandTanker.type == type) and (OnDemandTanker.enable)) then
-                debug_msg(string.format('OnDemandTanker : Found type %s Tanker : %s Group!', type, OnDemandTanker.groupName))
-                if (askedSpeed and askedSpeed > 0) then
-                    OnDemandTanker.speed = askedSpeed
-                end
-                if (askedFL and askedFL > 0) then
-                    OnDemandTanker.altitude = askedFL * 100
-                end
-                if ( askedDuration == nil or askedDuration == 0 ) then
-                    askedDuration = 480
-                end
-                if (askedOrbitHeading) then
-                    if (askedOrbitLeg and askedOrbitLeg > 10) then
-                        --heading et Leg demandés
-                        OnDemandTanker.orbit = {
-                            heading = askedOrbitHeading % 360,
-                            length = askedOrbitLeg,
-                        }
-                    else
-                        --heading demandé et leg non demandé
-                        if (OnDemandTanker.orbit ) then
-                            if (not(OnDemandTanker.orbit.length)) then
-                                OnDemandTanker.orbit = {
-                                    heading = askedOrbitHeading % 360,
-                                    length = 30,
-                                }
-                            else
-                                OnDemandTanker.orbit = {
-                                    heading = askedOrbitHeading % 360,
-                                    length = math.max(10, OnDemandTanker.orbit.length),
-                                }
-                            end
-                        else
-                            OnDemandTanker.orbit = {
-                                heading = askedOrbitHeading % 360,
-                                length = 30,
-                            }
-                        end
-                    end
-                else
-                    --pas de heading demandé
-                    if (OnDemandTanker.orbit ) then
-                        if (not(OnDemandTanker.orbit.heading)) then
-                            OnDemandTanker.orbit.heading = 90
-                        end
-                        if (not(OnDemandTanker.orbit.length)) then
-                            OnDemandTanker.orbit.length = 30
-                        else
-                            OnDemandTanker.orbit.length = math.max(10, OnDemandTanker.orbit.length)
-                        end
-                    else
-                        OnDemandTanker.orbit = {
-                            heading = 90,
-                            length = 30,
-                        }
-                    end
-                end
-
-                -- SPAWN OR REDIRECT ONDEMAND TANKER
-                local is_tanker_spawned = SpawnedOnDemandTankers[OnDemandTanker.type] ~= nil
-                local TankerGroup = SpawnedOnDemandTankers[OnDemandTanker.type]
-
-                local RTBAirbase = nil
-                local TankerRoute = {}
-                if (OnDemandTanker.baseUnit) then
-                    RTBAirbase = AIRBASE:FindByName(OnDemandTanker.baseUnit)
-                else
-                    RTBAirbase = askedAnchorCoord:GetClosestAirbase2(Airbase.Category.AIRDROME, OnDemandTanker.benefit_coalition)
-                end
-                debug_msg("Is tanker spawned ? " .. tostring(is_tanker_spawned))
-                if (is_tanker_spawned) then
-                    debug_msg(string.format('OnDemandTanker already in air : rerouting %s', OnDemandTanker.groupName))
-                    TankerGroup:ClearTasks()
-                    table.insert(
-                            TankerRoute,
-                            askedAnchorCoord
-                                    :SetAltitude(UTILS.FeetToMeters(OnDemandTanker.altitude))
-                                    :WaypointAirTurningPoint(
-                                    nil,
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    {
-                                        {
-                                            id = 'Tanker',
-                                            params = {
-                                            }
-                                        },
-                                        {
-                                            id = 'ControlledTask',
-                                            params = {
-                                                task =
-                                                {
-                                                    id = 'Orbit',
-                                                    params = {
-                                                        pattern = AI.Task.OrbitPattern.RACE_TRACK,
-                                                        speed = UTILS.KnotsToMps(OnDemandTanker.speed),
-                                                        altitude = UTILS.FeetToMeters(OnDemandTanker.altitude)
-                                                    }
-                                                },
-                                                stopCondition = {
-                                                    duration = askedDuration * 60
-                                                }
-                                            },
-                                        },
-                                    },
-                                    "Refuel Start"
-                            )
-                    )
-                    table.insert(
-                            TankerRoute,
-                            askedAnchorCoord
-                                    :Translate(UTILS.NMToMeters(OnDemandTanker.orbit.length), OnDemandTanker.orbit.heading, true, false)
-                                    :SetAltitude(UTILS.FeetToMeters(OnDemandTanker.altitude))
-                                    :WaypointAirTurningPoint(
-                                    nil,
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    {
-                                        {
-                                            id = 'Tanker',
-                                            params = {
-                                            }
-                                        },
-                                    },
-                                    "Orbit End"
-                            )
-                    )
-                    table.insert(
-                            TankerRoute,
-                            RTBAirbase
-                                    :GetCoordinate()
-                                    :WaypointAirLanding(
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    RTBAirbase
-                            )
-                    )
-                else
-                    debug_msg(string.format('OnDemandTanker Spawning %s', OnDemandTanker.groupName))
-                    local SpawnTanker = SPAWN:NewWithAlias(OnDemandTanker.groupName, OnDemandTanker.type)
-                    if (OnDemandTanker.freq) then
-                        SpawnTanker:InitRadioFrequency(OnDemandTanker.freq)
-                        SpawnTanker:InitRadioModulation("AM")
-                    end
-                    if (OnDemandTanker.modex) then
-                        SpawnTanker:InitModex(OnDemandTanker.modex)
-                    end
-                    if (OnDemandTanker.baseUnit) then
-                        TankerGroup = SpawnTanker:SpawnAtAirbase(
-                                AIRBASE:FindByName(OnDemandTanker.baseUnit),
-                                SPAWN.Takeoff.Hot,
-                                nil,
-                                OnDemandTanker.terminalType
-                        )
-                        table.insert(TankerRoute,
-                                AIRBASE
-                                        :FindByName(OnDemandTanker.baseUnit)
-                                        :GetCoordinate()
-                                        :WaypointAirTakeOffParkingHot()
-                        )
-                    else
-                        TankerGroup = SpawnTanker:SpawnFromCoordinate(
-                                askedAnchorCoord
-                                        :GetRandomCoordinateInRadius(
-                                        UTILS.NMToMeters(30),
-                                        UTILS.NMToMeters(20)
-                                )
-                                        :SetAltitude(
-                                        UTILS.FeetToMeters(OnDemandTanker.altitude)
-                                )
-                        )
-                    end
-                    TankerGroup.spawnAbsTime = timer.getAbsTime()
-                    TankerGroup.missionmaxduration = askedDuration
-                    table.insert(TankerRoute,
-                            askedAnchorCoord
-                                    :SetAltitude(UTILS.FeetToMeters(OnDemandTanker.altitude))
-                                    :WaypointAirTurningPoint(
-                                    nil,
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    {
-                                        {
-                                            id = 'Tanker',
-                                            params = {
-                                            }
-                                        },
-                                        {
-                                            id = 'ControlledTask',
-                                            params = {
-                                                task =
-                                                {
-                                                    id = 'Orbit',
-                                                    params = {
-                                                        pattern = AI.Task.OrbitPattern.RACE_TRACK,
-                                                        speed = UTILS.KnotsToMps(OnDemandTanker.speed),
-                                                        altitude = UTILS.FeetToMeters(OnDemandTanker.altitude)
-                                                    }
-                                                },
-                                                stopCondition = {
-                                                    duration = askedDuration * 60
-                                                }
-                                            },
-                                        },
-                                    },
-                                    "Refuel Start"
-                            )
-                    )
-                    table.insert(TankerRoute,
-                            askedAnchorCoord
-                                    :Translate(UTILS.NMToMeters(OnDemandTanker.orbit.length), OnDemandTanker.orbit.heading, true, false)
-                                    :SetAltitude(UTILS.FeetToMeters(OnDemandTanker.altitude))
-                                    :WaypointAirTurningPoint(
-                                    nil,
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    {
-                                        {
-                                            id = 'Tanker',
-                                            params = {
-                                            }
-                                        }
-                                    },
-                                    "Orbit End"
-                            )
-                    )
-                    table.insert(TankerRoute,
-                            RTBAirbase
-                                    :GetCoordinate()
-                                    :WaypointAirLanding(
-                                    UTILS.KnotsToKmph(OnDemandTanker.speed),
-                                    RTBAirbase,
-                                    {},
-                                    'RTB'
-                            )
-                    )
-                end
-                TankerGroup:Route(TankerRoute)
-                TankerGroup:CommandEPLRS(true, 4)
-                if (OnDemandTanker.tacan) then
-                    TankerGroup.beacon=BEACON:New(TankerGroup:GetUnit(1))
-                    TankerGroup.beacon:ActivateTACAN(OnDemandTanker.tacan.channel, "Y", OnDemandTanker.tacan.morse, true)
-                end
-                if (OnDemandTanker.callsign) then
-                    TankerGroup:CommandSetCallsign(OnDemandTanker.callsign.name, OnDemandTanker.callsign.number, 2)
-                end
-                if (map_marker[TankerGroup:GetName()]) then
-                    COORDINATE:RemoveMark(map_marker[TankerGroup:GetName()])
-                end
-                map_marker[TankerGroup:GetName()] = askedAnchorCoord:MarkToCoalition(
-                        string.format(
-                                'OnDemand Tanker %s - TCN %i\nFL %i at %i knots\nFreq %i MHz\nOn station for %i minutes\nRacetrack : %i ° for %i nm',
-                                OnDemandTanker.type,
-                                OnDemandTanker.tacan.channel,
-                                UTILS.Round(OnDemandTanker.altitude / 100 , 0),
-                                OnDemandTanker.speed,
-                                OnDemandTanker.freq,
-                                askedDuration,
-                                OnDemandTanker.orbit.heading,
-                                OnDemandTanker.orbit.length
-                        ),
-                        OnDemandTanker.benefit_coalition,
-                        true,
-                        'OnDemand Tanker %s is Activated'
-                )
-                TankerGroup:HandleEvent(EVENTS.Land)
-                TankerGroup:HandleEvent(EVENTS.Crash)
-                TankerGroup:HandleEvent(EVENTS.Dead)
-                function TankerGroup:OnEventLand(EventData)
-                    COORDINATE:RemoveMark(map_marker[self:GetName()])
-                end
-                function TankerGroup:OnEventCrash(EventData)
-                    COORDINATE:RemoveMark(map_marker[self:GetName()])
-                end
-                function TankerGroup:OnEventDead(EventData)
-                    COORDINATE:RemoveMark(map_marker[self:GetName()])
-                end
-                SpawnedOnDemandTankers[OnDemandTanker.type] = TankerGroup
-            end
-        end
-    end
-    return TankerGroup;
-end
-
 function findJTFFSoundModulePath()
     -- **** Do not forget to inject a trailing slash ****
     --TODO: try to detect if JTFF-Missions-Sound Mod is present or not
@@ -1256,4 +920,3 @@ AAMAxRange = {
 }
 
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')
-
