@@ -170,7 +170,11 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                         }
                     end
                 end
-                local set_group_tanker = SET_GROUP:New():FilterActive():FilterPrefixes(OnDemandTanker.groupName):FilterCategories("plane"):FilterOnce()
+                local set_group_tanker = SET_GROUP:New()
+                        :FilterActive()
+                        :FilterPrefixes(OnDemandTanker.groupName)
+                        :FilterCategories("plane")
+                        :FilterOnce()
                 local aliveTankersGroupList = set_group_tanker:GetSetObjects()
 
                 local is_tanker_spawned = false
@@ -179,7 +183,7 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                             (not(is_tanker_spawned)) and
                                     (string.find(
                                             current_group.GroupName,
-                                            string.format("%s-%s",OnDemandTanker.groupName,OnDemandTanker.type)
+                                            string.format("%s-%s",OnDemandTanker.groupName, OnDemandTanker.type)
                                     ) ~= nil)
                     ) then
                         is_tanker_spawned = true
