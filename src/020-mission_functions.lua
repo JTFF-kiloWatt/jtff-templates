@@ -996,10 +996,11 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                         }
                     end
                 end
-                local set_group_tanker = SET_GROUP:New():FilterActive():FilterPrefixes(OnDemandTanker.groupName):FilterOnce()
-                local aliveTankersGroupList = set_group_tanker:GetSetObjects()
-                --local RefuelTask = nil
-                --local OrbitTask = nil
+
+                -- SPAWN OR REDIRECT ONDEMAND TANKER
+                local is_tanker_spawned = SpawnedOnDemandTankers[OnDemandTanker.type] ~= nil
+                local TankerGroup = SpawnedOnDemandTankers[OnDemandTanker.type]
+
                 local RTBAirbase = nil
                 local TankerRoute = {}
                 if (OnDemandTanker.baseUnit) then
@@ -1007,25 +1008,10 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                 else
                     RTBAirbase = askedAnchorCoord:GetClosestAirbase2(Airbase.Category.AIRDROME, OnDemandTanker.benefit_coalition)
                 end
-                if ( #aliveTankersGroupList > 0) then
+                debug_msg("Is tanker spawned ? " .. tostring(is_tanker_spawned))
+                if (is_tanker_spawned) then
                     debug_msg(string.format('OnDemandTanker already in air : rerouting %s', OnDemandTanker.groupName))
-                    TankerGroup = aliveTankersGroupList[1]
                     TankerGroup:ClearTasks()
-                    --RefuelTask = TankerGroup:EnRouteTaskTanker()
-                    --OrbitTask = TankerGroup:TaskControlled(
-                    --        TankerGroup:TaskOrbitCircle(
-                    --                UTILS.FeetToMeters(OnDemandTanker.altitude),
-                    --                UTILS.KnotsToMps(OnDemandTanker.speed)
-                    --        ),
-                    --        TankerGroup:TaskCondition(
-                    --                nil,
-                    --                nil,
-                    --                nil,
-                    --                nil,
-                    --                maxtime * 60,
-                    --                nil
-                    --        )
-                    --)
                     table.insert(
                             TankerRoute,
                             askedAnchorCoord
@@ -1089,7 +1075,7 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                     )
                 else
                     debug_msg(string.format('OnDemandTanker Spawning %s', OnDemandTanker.groupName))
-                    local SpawnTanker = SPAWN:New(OnDemandTanker.groupName)
+                    local SpawnTanker = SPAWN:NewWithAlias(OnDemandTanker.groupName, OnDemandTanker.type)
                     if (OnDemandTanker.freq) then
                         SpawnTanker:InitRadioFrequency(OnDemandTanker.freq)
                         SpawnTanker:InitRadioModulation("AM")
@@ -1124,21 +1110,6 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                     end
                     TankerGroup.spawnAbsTime = timer.getAbsTime()
                     TankerGroup.missionmaxduration = askedDuration
-                    --RefuelTask = TankerGroup:EnRouteTaskTanker()
-                    --OrbitTask = TankerGroup:TaskControlled(
-                    --        TankerGroup:TaskOrbitCircle(
-                    --                UTILS.FeetToMeters(OnDemandTanker.altitude),
-                    --                UTILS.KnotsToMps(OnDemandTanker.speed)
-                    --        ),
-                    --        TankerGroup:TaskCondition(
-                    --                nil,
-                    --                nil,
-                    --                nil,
-                    --                nil,
-                    --                (maxtime) * 60,
-                    --                nil
-                    --        )
-                    --)
                     table.insert(TankerRoute,
                             askedAnchorCoord
                                     :SetAltitude(UTILS.FeetToMeters(OnDemandTanker.altitude))
@@ -1240,6 +1211,7 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                 function TankerGroup:OnEventDead(EventData)
                     COORDINATE:RemoveMark(map_marker[self:GetName()])
                 end
+                SpawnedOnDemandTankers[OnDemandTanker.type] = TankerGroup
             end
         end
     end

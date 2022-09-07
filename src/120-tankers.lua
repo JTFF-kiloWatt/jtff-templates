@@ -111,6 +111,7 @@ end
 --                     *********************************************************
 --local RestrToCoal = nil
 tankersOnDemandArray = {}
+SpawnedOnDemandTankers = {}
 local MarkHandler = {}
 local CmdSymbol = "-"
 
