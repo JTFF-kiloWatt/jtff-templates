@@ -5,7 +5,7 @@ function detectShitHotBreak(objAirboss)
     local clientData={}
     local player_name=""
     --env.info('detectShitHotBreak : '.. objAirboss.customconfig.alias..' suspense ...')
-    objAirboss.BlueCVNClients:ForEachClientInZone( objAirboss.CVN_GROUPZone,
+    objAirboss.CVNClients:ForEachClientInZone( objAirboss.CVN_GROUPZone,
             function( MooseClient )
 
                 local function resetFlag()
@@ -54,13 +54,81 @@ function detectShitHotBreak(objAirboss)
     )
 end
 
+function switchCarrierDefCon2(params)
+    local carrierName = params[1]
+    local timeMinutes = params[2]
+    local cvUnit = UNIT:FindByName(carrierName)
+    local cvGroup = cvUnit:GetGroup()
+    cvGroup:OptionROE(ENUMS.ROE.WeaponFree):OptionAlarmStateRed()
+    debug_msg(string.format("CSG : %s DEFCON 2 -> ROE = %d", carrierName, ENUMS.ROE.WeaponFree))
+    SCHEDULER:New(
+            nil,
+            function(carrierName)
+                debug_squeduler_msg(carrierName .. " switchback to DEFCON 4")
+                debug_msg(string.format("CSG : %s DEFCON 4 -> ROE = %d", carrierName, ENUMS.ROE.ReturnFire))
+                UNIT:FindByName(carrierName):GetGroup():OptionROE(ENUMS.ROE.ReturnFire):OptionAlarmStateRed()
+            end,
+            { carrierName },
+            timeMinutes*60
+    )
+end
+
+function forceCarrierDefCon4(params)
+    local carrierName = params[1]
+    local cvUnit = UNIT:FindByName(carrierName)
+    local cvGroup = cvUnit:GetGroup()
+    cvGroup:OptionROE(ENUMS.ROE.WeaponFree):OptionAlarmStateRed()
+end
+
 AIRBOSSArray = {}
 compteur = 0
+MenuCoalitionCSGCommandsBlue = MENU_COALITION:New(coalition.side.BLUE, "CSG Commands", MenuCoalitionBlue)
+MenuCoalitionCSGCommandsRed = MENU_COALITION:New(coalition.side.RED, "CSG Commands", MenuCoalitionRed)
 for index, airbossconfig in ipairs(AirBossConfig) do
     if airbossconfig.enable == true then
         compteur = compteur +1
         --populate_SC(airbossconfig.carriername)
+        local MenuCoalitionCSGCommands = nil
+        if airbossconfig.coalition == coalition.side.BLUE then
+            MenuCoalitionCSGCommands = MenuCoalitionCSGCommandsBlue
+        else
+            MenuCoalitionCSGCommands = MenuCoalitionCSGCommandsRed
+        end
         local objAirboss = AIRBOSS:New(airbossconfig.carriername, airbossconfig.alias)
+        objAirboss.menuObject = MENU_COALITION:New(
+                airbossconfig.coalition,
+                airbossconfig.alias,
+                MenuCoalitionCSGCommands
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "DEFCON 2 - 5 minutes",
+                objAirboss.menuObject,
+                switchCarrierDefCon2,
+                {
+                    airbossconfig.carriername,
+                    5
+                }
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "DEFCON 2 - 10 minutes",
+                objAirboss.menuObject,
+                switchCarrierDefCon2,
+                {
+                    airbossconfig.carriername,
+                    10
+                }
+        )
+        MENU_COALITION_COMMAND:New(
+                airbossconfig.coalition,
+                "Release : DEFCON 4",
+                objAirboss.menuObject,
+                forceCarrierDefCon4,
+                {
+                    airbossconfig.carriername
+                }
+        )
         objAirboss:SetTACAN(airbossconfig.tacan.channel, airbossconfig.tacan.mode, airbossconfig.tacan.morse)
         objAirboss:SetICLS(airbossconfig.icls.channel, airbossconfig.icls.morse)
         objAirboss:SetLSORadio(airbossconfig.freq.lso)
@@ -353,9 +421,9 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 'cvnGroupZone-'..AIRBOSSArray[compteur].customconfig.alias,
                 AIRBOSSArray[compteur].carrier:GetGroup(),
                 1111)
-        AIRBOSSArray[compteur].BlueCVNClients = SET_CLIENT:New()
-                                                          :FilterCoalitions(AIRBOSSArray[compteur].customconfig.coalition)
-                                                          :FilterStart()
+        AIRBOSSArray[compteur].CVNClients = SET_CLIENT:New()
+                                                      :FilterCoalitions(UTILS.GetCoalitionName(AIRBOSSArray[compteur].customconfig.coalition))
+                                                      :FilterStart()
         local myscheduler
         local myschedulerID
         myscheduler, myschedulerID = SCHEDULER:New(

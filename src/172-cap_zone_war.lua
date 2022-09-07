@@ -1,7 +1,12 @@
 -- *****************************************************************************
 --                     **                CAPZone War                          **
 --                     *********************************************************
+function toggleDebugCapWarZone(objCapWarZone)
+    objCapWarZone.objDispatcher:SetTacticalDisplay(not(objCapWarZone.objDispatcher.TacticalDisplay))
+end
+
 function wipeCapWarZone(objCapWarZone)
+    objCapWarZone.objDispatcher:SetTacticalDisplay(false)
     objCapWarZone.objDispatcher:Stop()
     objCapWarZone.objDispatcher = nil
     objCapWarZone.objDetectionAreas = nil
@@ -141,6 +146,12 @@ function startCapWarZone(objCapWarZone)
             "Stop ".. objCapWarZone.customconfig.name .. " CAP War Zone",
             objCapWarZone.objMenu,
             wipeCapWarZone,
+            objCapWarZone
+    )
+    MENU_MISSION_COMMAND:New(
+            "Toggle Display Status ".. objCapWarZone.customconfig.name .. " CAP War Zone",
+            objCapWarZone.objMenu,
+            toggleDebugCapWarZone,
             objCapWarZone
     )
 end
