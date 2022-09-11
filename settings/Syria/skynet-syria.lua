@@ -295,6 +295,9 @@ SkynetConfig = {
                 sites = {
                     easy = {
                         {
+                            sam = "Damascus SA6-13",
+                        },
+                        {
                             sam = "SAM-SA-6-Damascus-1",
                         },
                         {

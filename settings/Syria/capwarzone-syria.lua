@@ -308,7 +308,7 @@ WarCAPConfig = {
                 },
                 interceptSquadrons = {
                     {
-                        enable = true,
+                        enable = false,
                         groupName = "INT-SY-MIG29-2",
                         groupForce = 2,
                         groupNumber = 4,

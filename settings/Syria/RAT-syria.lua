@@ -26,7 +26,7 @@ RATConfig = {
             },
             {
                 templatename = 'ISRAIR320#IFF:7116UN',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 290,
                 speed = 468,
                 inactive_timer = 600,
@@ -62,7 +62,7 @@ RATConfig = {
             },
             {
                 templatename = 'AIR ALGERIE 737 #IFF:2361un',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 310,
                 speed = 466,
                 inactive_timer = 600,
@@ -98,7 +98,7 @@ RATConfig = {
             },
             {
                 templatename = 'Quantas 747 #IFF:3212UN',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 360,
                 speed = 480,
                 inactive_timer = 600,
@@ -134,7 +134,7 @@ RATConfig = {
             },
             {
                 templatename = 'TNT 737°1 #IFF:3242UN',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 300,
                 speed = 466,
                 inactive_timer = 600,
@@ -170,7 +170,7 @@ RATConfig = {
             },
             {
                 templatename = 'MEA 320 #IFF:2631UN',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 350,
                 speed = 480,
                 inactive_timer = 600,
@@ -179,10 +179,10 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-Gaziantep'
+                        'zone-RAT-Gazipasa'
                     },
                     arrival = {
-                        AIRBASE.Syria.Beirut_Rafic_Hariri
+                        AIRBASE.Syria.Damascus
                     }
                 }
             },
@@ -197,7 +197,7 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-Gaziantep'
+                        'zone-RAT-Gazipasa'
                     },
                     arrival = {
                         AIRBASE.Syria.Beirut_Rafic_Hariri
@@ -206,7 +206,7 @@ RATConfig = {
             },
             {
                 templatename = 'EL AL 757 SPECIAL #IFF:1657UN',
-                spawns = 0,
+                spawns = 1,
                 flightlevel = 340,
                 speed = 448,
                 inactive_timer = 600,
@@ -233,10 +233,10 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-Gaziantep'
+                        AIRBASE.Syria.Damascus
                     },
                     arrival = {
-                        AIRBASE.Syria.Beirut_Rafic_Hariri
+                        AIRBASE.Syria.Gazipasa
                     }
                 }
             }

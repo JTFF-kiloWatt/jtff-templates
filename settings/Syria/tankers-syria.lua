@@ -2,7 +2,7 @@ TankersConfig = {
     {
         enable = true,
         autorespawn = true,
-        patternUnit = 'Escorte CSG-1 CVN-71-1',
+        patternUnit = 'CSG-1 CVN-71-1-4',
         benefit_coalition = coalition.side.BLUE,
         baseUnit = 'CSG-1 CVN-2-1',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
@@ -32,7 +32,7 @@ TankersConfig = {
     {
         enable = true,
         autorespawn = true,
-        patternUnit = 'Escorte CSG-2',
+        patternUnit = 'CSG-2 CVN-73-2',
         benefit_coalition = coalition.side.BLUE,
         baseUnit = 'CSG-1 CVN-2-1',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
