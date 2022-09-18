@@ -44,7 +44,7 @@ RATConfig = {
             },
             {
                 templatename = 'CATHAY747#IFF:5156UN',
-                spawns = 1,
+                spawns = 0,
                 flightlevel = 340,
                 speed = 460,
                 inactive_timer = 600,
@@ -80,7 +80,7 @@ RATConfig = {
             },
             {
                 templatename = 'IRAN AIR 320°1 #IFF:5616UN',
-                spawns = 1,
+                spawns = 0,
                 flightlevel = 290,
                 speed = 470,
                 inactive_timer = 600,
@@ -98,7 +98,7 @@ RATConfig = {
             },
             {
                 templatename = 'Quantas 747 #IFF:3212UN',
-                spawns = 1,
+                spawns = 0,
                 flightlevel = 360,
                 speed = 480,
                 inactive_timer = 600,
@@ -134,7 +134,7 @@ RATConfig = {
             },
             {
                 templatename = 'TNT 737°1 #IFF:3242UN',
-                spawns = 1,
+                spawns = 0,
                 flightlevel = 300,
                 speed = 466,
                 inactive_timer = 600,
@@ -206,7 +206,7 @@ RATConfig = {
             },
             {
                 templatename = 'EL AL 757 SPECIAL #IFF:1657UN',
-                spawns = 1,
+                spawns = 0,
                 flightlevel = 340,
                 speed = 448,
                 inactive_timer = 600,
