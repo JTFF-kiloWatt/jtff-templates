@@ -5,16 +5,18 @@ RATConfig = {
     {
         name = 'civil',
         enable = true,
+        maximum_aircrafts = 10,
         aircrafts_groupconfigs = {
             {
                 templatename = 'EL AL  757 #IFF:1562UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 330,
                 speed = 480,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "EL AL" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gazipasa'
@@ -26,13 +28,14 @@ RATConfig = {
             },
             {
                 templatename = 'ISRAIR320#IFF:7116UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 290,
                 speed = 468,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "Israir B", "Israir W" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gazipasa'
@@ -44,14 +47,16 @@ RATConfig = {
             },
             {
                 templatename = 'CATHAY747#IFF:5156UN',
-                spawns = 0,
+                minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 460,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = {"CP" },
                 airbases_names = {
+
                     departure = {
                         'zone-RAT-Gazipasa'
                     },
@@ -62,13 +67,14 @@ RATConfig = {
             },
             {
                 templatename = 'AIR ALGERIE 737 #IFF:2361un',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 310,
                 speed = 466,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "Air Algerie" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gazipasa'
@@ -80,13 +86,14 @@ RATConfig = {
             },
             {
                 templatename = 'IRAN AIR 320°1 #IFF:5616UN',
-                spawns = 0,
+                minimun_spawns = 0,
                 flightlevel = 290,
                 speed = 470,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "Iran Air" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Adana'
@@ -98,13 +105,14 @@ RATConfig = {
             },
             {
                 templatename = 'Quantas 747 #IFF:3212UN',
-                spawns = 0,
+                minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 480,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "QA" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Adana'
@@ -116,13 +124,14 @@ RATConfig = {
             },
             {
                 templatename = 'VIRGIN 747 #IFF:7377UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 335,
                 speed = 490,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "Virgin Atlantic 747_Barbarella_G-VROM", "Virgin Atlantic Modern" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Adana'
@@ -134,13 +143,14 @@ RATConfig = {
             },
             {
                 templatename = 'TNT 737°1 #IFF:3242UN',
-                spawns = 0,
+                minimun_spawns = 0,
                 flightlevel = 300,
                 speed = 466,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "TNT" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Adana'
@@ -152,13 +162,14 @@ RATConfig = {
             },
             {
                 templatename = 'DHL 757 #IFF:7316UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 370,
                 speed = 500,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "DHL" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gaziantep'
@@ -170,13 +181,14 @@ RATConfig = {
             },
             {
                 templatename = 'MEA 320 #IFF:2631UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 350,
                 speed = 480,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "MEA" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gazipasa'
@@ -188,13 +200,14 @@ RATConfig = {
             },
             {
                 templatename = 'ISRAIR 737 #IFF:2376UN',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 360,
                 speed = 500,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "Israir" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gazipasa'
@@ -206,13 +219,14 @@ RATConfig = {
             },
             {
                 templatename = 'EL AL 757 SPECIAL #IFF:1657UN',
-                spawns = 0,
+                minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 448,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "EL AL Special" },
                 airbases_names = {
                     departure = {
                         'zone-RAT-Gaziantep'
@@ -224,13 +238,14 @@ RATConfig = {
             },
             {
                 templatename = 'EL AL 757 #IFF:0254FR',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 330,
                 speed = 470,
                 inactive_timer = 600,
                 allow_immortal = false,
                 allow_invisible = false,
                 atcmessage_enable = false,
+                liveries = { "EL AL" },
                 airbases_names = {
                     departure = {
                         AIRBASE.Syria.Damascus
@@ -245,10 +260,11 @@ RATConfig = {
     {
         name = 'military',
         enable = true,
+        maximum_aircrafts = 2,
         aircrafts_groupconfigs = {
             {
                 templatename = 'A-400M Incirlik-Akrotiri',
-                spawns = 1,
+                minimun_spawns = 1,
                 flightlevel = 150,
                 speed = 400,
                 inactive_timer = 600,
