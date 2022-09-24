@@ -15,28 +15,47 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
         trainingRange:SetDefaultPlayerSmokeBomb(false)
         trainingRange:SetRangeRadius(0.2) -- bomb impact at more than 200m is out of range
         trainingRange:SetScoreBombDistance(100)-- bomb impact at more than 100m won't be taken into account
-        trainingRange:SetSoundfilesPath(soundFilesPrefix .. 'RANGE/Range Soundfiles/')
-        if (traingingrangeconfig.srs and traingingrangeconfig.srs.useSRS == true) then
+        if ( type(traingingrangeconfig.srs) ~= nil ) then
+            if ( traingingrangeconfig.srs.useSRS == true) then
                 trainingRange:SetSRS(traingingrangeconfig.srs.path, traingingrangeconfig.srs.port, coalition.side.BLUE)
+            else
+                trainingRange:SetSoundfilesPath(soundFilesPrefix .. 'RANGE/Range Soundfiles/')
+            end
+        else
+            trainingRange:SetSoundfilesPath(soundFilesPrefix .. 'RANGE/Range Soundfiles/')
         end
         if (traingingrangeconfig.instructionradio) then
-            if (traingingrangeconfig.srs.useSRS == true) then
-                trainingRange:SetSRSRangeInstructor(traingingrangeconfig.instructionradio.freq, nil, nil, nil, nil,traingingrangeconfig.instructionradio.unitname)
+            if ( type(traingingrangeconfig.srs) ~= nil ) then
+                if (traingingrangeconfig.srs.useSRS == true) then
+                    trainingRange:SetSRSRangeInstructor(traingingrangeconfig.instructionradio.freq, nil, nil, nil, nil,traingingrangeconfig.instructionradio.unitname)
+                else
+                    trainingRange:SetInstructorRadio(
+                            traingingrangeconfig.instructionradio.freq,
+                            traingingrangeconfig.instructionradio.unitname
+                    )
+                end
             else
                 trainingRange:SetInstructorRadio(
-                    traingingrangeconfig.instructionradio.freq,
-                    traingingrangeconfig.instructionradio.unitname
+                        traingingrangeconfig.instructionradio.freq,
+                        traingingrangeconfig.instructionradio.unitname
                 )
             end
         end
         if (traingingrangeconfig.controlradio) then
-            if (traingingrangeconfig.srs.useSRS == true) then
-                trainingRange:SetSRSRangeControl(traingingrangeconfig.controlradio.freq, nil, nil, nil, nil, traingingrangeconfig.controlradio.unitname)
+            if ( type(traingingrangeconfig.srs) ~= nil ) then
+                if (traingingrangeconfig.srs.useSRS == true) then
+                    trainingRange:SetSRSRangeControl(traingingrangeconfig.controlradio.freq, nil, nil, nil, nil, traingingrangeconfig.controlradio.unitname)
+                else
+                    trainingRange:SetRangeControl(
+                            traingingrangeconfig.controlradio.freq,
+                            traingingrangeconfig.controlradio.unitname
+                    )
+                end
             else
-            trainingRange:SetRangeControl(
-                    traingingrangeconfig.controlradio.freq,
-                    traingingrangeconfig.controlradio.unitname
-            )
+                trainingRange:SetRangeControl(
+                        traingingrangeconfig.controlradio.freq,
+                        traingingrangeconfig.controlradio.unitname
+                )
             end
         end
         for index, subrangeTraining in ipairs(traingingrangeconfig.targets) do

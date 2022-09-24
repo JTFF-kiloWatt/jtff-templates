@@ -5,7 +5,7 @@ TrainingRangeConfig = {
         targetsheetpath = "C:/rangeboss-targetsheets",
         srs = {
             useSRS = true,
-            path = "C:/Program Files/DCS-SimpleRadio-Standalone",
+            path = "C:\\SRS",
             port = 5002
         },
         instructionradio = {

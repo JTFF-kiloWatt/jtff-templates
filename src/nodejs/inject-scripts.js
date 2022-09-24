@@ -481,8 +481,8 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             "/",
             path.basename(process.env.npm_config_mission)
         ].join(""));
-        const rangeSoundFolder = zip.remove('RANGE').folder('RANGE');
-        await jtffci.addFilesToZip(rangeSoundFolder, 'resources/sounds/RANGE', fs.readdirSync('resources/sounds/RANGE'));
+        // const rangeSoundFolder = zip.remove('RANGE').folder('RANGE');
+        // await jtffci.addFilesToZip(rangeSoundFolder, 'resources/sounds/RANGE', fs.readdirSync('resources/sounds/RANGE'));
         const inputZip = await zip.generateAsync({
             type: 'nodebuffer',
             streamFiles: true,

@@ -1174,7 +1174,12 @@ TrainingRangeConfig = {
                 precision = 15
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
     },
     {
         name = "64C",
@@ -1221,7 +1226,12 @@ TrainingRangeConfig = {
                 precision = 15
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
     },
 }
 

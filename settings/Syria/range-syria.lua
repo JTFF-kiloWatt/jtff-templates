@@ -99,6 +99,11 @@ TrainingRangeConfig = {
         name = "Akamas",
         enable = true,
         targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
         instructionradio = {
             unitname = "Static *Range Tower (Main)-1",
             freq = 251.75,
@@ -144,6 +149,11 @@ TrainingRangeConfig = {
         name = "Incirlik",
         enable = true,
         targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
         instructionradio = {
             unitname = "Range INCIRLIK Target-7",
             freq = 251.75,
