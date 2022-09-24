@@ -3,6 +3,11 @@ TrainingRangeConfig = {
         name = "Akamas",
         enable = false,
         targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
         instructionradio = {
             unitname = "toto",
             freq = 300,

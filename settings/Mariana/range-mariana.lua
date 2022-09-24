@@ -35,40 +35,33 @@ RangeConfig = {
 
 TrainingRangeConfig = {
     {
-        name = "Akamas",
-        enable = false,
+        name = "Faralon de Medilina",
+        enable = true,
+        instructionradio = {
+            unitname = "Tour",
+            freq = 251.75,
+        },
+        controlradio = {
+            unitname = "Tour",
+            freq = 250.25,
+        },
         targets = {
             {
-                type = "Strafepit",
-                unit_name = "Strafe Akamas",
-                foul_line = "Foul Line",
-                boxlength = 2000,
-                boxwidth = 200,
-                heading = nil,
-                inverseheading = true,
-                goodpass = 20
-            },
-            {
                 type = "BombCircle",
-                unit_name = "Cercle B Akamas",
+                unit_name = "Unité Sol-4-1",
                 precision = 30
             },
             {
                 type = "BombCircle",
-                unit_name = "Cercle B Akamas-2",
+                unit_name = "Unité Sol-4-2",
                 precision = 30
             },
-            {
-                type = "BombCircle",
-                unit_name = "Cercle A Akamas",
-                precision = 50
-            },
-            {
-                type = "BombCircle",
-                unit_name = "Cercle A Akamas-2",
-                precision = 50
-            }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
     }
 }

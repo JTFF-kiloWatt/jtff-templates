@@ -50,6 +50,11 @@ TrainingRangeConfig = {
                 precision = 50
             }
         },
-        targetsheetpath = "C:/rangeboss-targetsheets"
+        targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:\\SRS",
+            port = 5002
+        },
     }
 }
