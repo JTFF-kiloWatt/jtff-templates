@@ -16,17 +16,28 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
         trainingRange:SetRangeRadius(0.2) -- bomb impact at more than 200m is out of range
         trainingRange:SetScoreBombDistance(100)-- bomb impact at more than 100m won't be taken into account
         trainingRange:SetSoundfilesPath(soundFilesPrefix .. 'RANGE/Range Soundfiles/')
+        if (traingingrangeconfig.srs and traingingrangeconfig.srs.useSRS == true) then
+                trainingRange:SetSRS(traingingrangeconfig.srs.path, traingingrangeconfig.srs.port, coalition.side.BLUE)
+        end
         if (traingingrangeconfig.instructionradio) then
-            trainingRange:SetInstructorRadio(
+            if (traingingrangeconfig.srs.useSRS == true) then
+                trainingRange:SetSRSRangeInstructor(traingingrangeconfig.instructionradio.freq, nil, nil, nil, nil,traingingrangeconfig.instructionradio.unitname)
+            else
+                trainingRange:SetInstructorRadio(
                     traingingrangeconfig.instructionradio.freq,
                     traingingrangeconfig.instructionradio.unitname
-            )
+                )
+            end
         end
         if (traingingrangeconfig.controlradio) then
+            if (traingingrangeconfig.srs.useSRS == true) then
+                trainingRange:SetSRSRangeControl(traingingrangeconfig.controlradio.freq, nil, nil, nil, nil, traingingrangeconfig.controlradio.unitname)
+            else
             trainingRange:SetRangeControl(
                     traingingrangeconfig.controlradio.freq,
                     traingingrangeconfig.controlradio.unitname
             )
+            end
         end
         for index, subrangeTraining in ipairs(traingingrangeconfig.targets) do
             env.info('subrangeTraining type : ' .. subrangeTraining.type)
@@ -43,7 +54,7 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
             end
         end
         
-        function saveTargetSheet(playername, result, path, prefix, rangeName)
+        function saveTargetSheet(result, path, prefix)
             local function _savefile(filename, data)
                 local f = io.open(filename, "wb")
                 if f then
@@ -68,8 +79,8 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
                 if prefix then
                     filename = string.format("%s_%s-%04d.csv", prefix, result.airframe, i)
                 else
-                    local name = UTILS.ReplaceIllegalCharacters(playername, "_")
-                    filename = string.format("RANGERESULTS-%s_Targetsheet-%s-%04d.csv", rangeName, name, i)
+                    local name = UTILS.ReplaceIllegalCharacters(result.player, "_")
+                    filename = string.format("RANGERESULTS-%s_Targetsheet-%s-%04d.csv", result.rangename, name, i)
                 end
 
                 -- Set path.
@@ -88,22 +99,23 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
             local data = "Name,Target,Distance,Radial,Quality,Rounds Fired,Rounds Hit,Rounds Quality,Weapon,Attack Heading,Airframe,Mission Time,OS Time\n"
             
             -- local result=_result --#RANGE.BombResult
+            local playername = result.player
             local distance = result.distance
             local weapon = result.weapon
             local target = result.name
             local radial = result.radial
             local quality = result.quality
-            local time = UTILS.SecondsToClock( result.time )
+            local time = result.clock
             local airframe = result.airframe
             local date = "n/a"
             local roundsFired = result.roundsFired
             local roundsHit = result.roundsHit
-            local strafeResult = result.roundsQuality
+            local roundsQuality = result.roundsQuality
             local attackHeading = result.heading
             if os then
                 date = os.date()
             end
-            data = data .. string.format( "%s,%s,%.2f,%03d,%s,%03d,%03d,%s,%s,%s,%s,%s", playername, target, distance, radial, quality, roundsFired, roundsHit, strafeResult, weapon, attackHeading, airframe, time, date )
+            data = data .. string.format( "%s,%s,%.2f,%03d,%s,%03d,%03d,%s,%s,%s,%s,%s", playername, target, distance, radial, quality, roundsFired, roundsHit, roundsQuality, weapon, attackHeading, airframe, time, date )
             
             -- Save file.
             _savefile( filename, data )
@@ -112,16 +124,14 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
         function trainingRange:OnAfterImpact(From, Event, To, result, player)
             result.messageType = 4
             result.callsign = player.playername
-            result.theatre = env.mission.theatre
-            result.rangeName = self.rangename
+            result.rangeName = result.rangename
             result.missionType = "1"
-            result.mizTime = UTILS.SecondsToClock(timer.getAbsTime())
-            result.midate=UTILS.GetDCSMissionDate()
+            result.mizTime = result.clock
             result.strafeAccuracy = "N/A"
             result.strafeQuality = "N/A"
-            result.altitude = playerAltForRangeData*3.28084
-            result.pitch = playerPitchForRangeData
-            result.heading = playerHeadingForRangeData
+            result.altitude = result.attackAlt*3.28084
+            result.pitch = playerPitchForRangeData 
+            result.heading = math.floor(result.attackHdg)
             result.strafeScore = "N/A"
             result.bombScore = "notSet"
             
@@ -138,12 +148,12 @@ for index, traingingrangeconfig in ipairs(TrainingRangeConfig) do
             end
             result.targetSheetPath = self.targetpath
             
-            local text=string.format("%s, impact %03d° for %d m", player.playername, result.radial, result.distance)  
+            local text=string.format("%s, impact %03d° for %d m", result.player, result.radial, result.distance)  
             text=text..string.format(" %s hit.", result.quality)  
             env.info(text)
             
             env.info(net.lua2json(result))
-            saveTargetSheet(player.playername, result, self.targetpath, self.targetprefix, self.rangename) 
+            saveTargetSheet(result, self.targetpath, self.targetprefix) 
             HypeMan.sendBotTable(result)
         end
         trainingRange:SetTargetSheet(traingingrangeconfig.targetsheetpath)
@@ -155,8 +165,6 @@ ShootingEvent = EVENTHANDLER:New():HandleEvent(EVENTS.Shot)
 function ShootingEvent:OnEventShot(EventData)
     if EventData.IniPlayerName ~= nil then
         local PlayerUnit = EventData.IniUnit
-        playerAltForRangeData = PlayerUnit:GetAltitude()
         playerPitchForRangeData = PlayerUnit:GetPitch()
-        playerHeadingForRangeData = math.floor(PlayerUnit:GetHeading())
     end
 end

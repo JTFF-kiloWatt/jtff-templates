@@ -3,6 +3,11 @@ TrainingRangeConfig = {
         name = "Akamas",
         enable = false,
         targetsheetpath = "C:/rangeboss-targetsheets",
+        srs = {
+            useSRS = true,
+            path = "C:/Program Files/DCS-SimpleRadio-Standalone",
+            port = 5002
+        },
         instructionradio = {
             unitname = "toto",
             freq = 300,
