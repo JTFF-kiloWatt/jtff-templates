@@ -105,11 +105,11 @@ TrainingRangeConfig = {
             port = 5002
         },
         instructionradio = {
-            unitname = "Static *Range Tower (Main)-1",
+            unitname = "Range Tower (Main)-1",
             freq = 251.75,
         },
         controlradio = {
-            unitname = "Static *Range Tower (Main)-1",
+            unitname = "Range Tower (Main)-2",
             freq = 250.25,
         },
         targets = {

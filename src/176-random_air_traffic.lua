@@ -68,6 +68,6 @@ for index, ratconfig in ipairs(RATConfig) do
             end
         end
         RATManagerArray[compteur] = RATmanager
-        (RATManagerArray[compteur]):Start(spawnStandardDelay)
+        RATManagerArray[compteur]:Start(spawnStandardDelay)
     end
 end
