@@ -8,7 +8,7 @@ RATConfig = {
         maximum_aircrafts = 5,
         aircrafts_groupconfigs = {
             {
-                templatename = 'EL AL  757 #IFF:1562UN',
+                templatename = 'B757 #IFF:1562UN',
                 minimun_spawns = 1,
                 flightlevel = 330,
                 speed = 480,
@@ -26,7 +26,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'AirChina 330 #IFF:1563UN',
+                templatename = 'A330 #IFF:1563UN',
                 minimun_spawns = 0,
                 flightlevel = 290,
                 speed = 468,
@@ -44,7 +44,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'Cathay 747 #IFF:1564UN',
+                templatename = 'B747 #IFF:1564UN',
                 minimun_spawns = 1,
                 flightlevel = 340,
                 speed = 460,
@@ -63,7 +63,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'Quantas 747 #IFF:3212UN',
+                templatename = 'B747 #IFF:3212UN',
                 minimun_spawns = 0,
                 flightlevel = 310,
                 speed = 466,
@@ -82,7 +82,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'DHL 757 #IFF:7316UN',
+                templatename = 'B757 #IFF:7316UN',
                 minimun_spawns = 1,
                 flightlevel = 290,
                 speed = 470,
@@ -102,7 +102,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'MEA 320 #IFF:2631UN',
+                templatename = 'A320 #IFF:2631UN',
                 minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 480,
@@ -121,7 +121,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'TNT 737°1 #IFF:3242UN',
+                templatename = 'B737 #IFF:3242UN',
                 minimun_spawns = 1,
                 flightlevel = 335,
                 speed = 490,
@@ -142,8 +142,32 @@ RATConfig = {
     },
     {
         name = 'military',
-        enable = false,
-        aircrafts_groupconfigs = {}
+        enable = true,
+        maximum_aircrafts = 2,
+        aircrafts_groupconfigs = {
+            {
+                templatename = 'A400M #IFF:2734FR',
+                minimun_spawns = 2,
+                flightlevel = 150,
+                speed = 400,
+                inactive_timer = 600,
+                liveries = { "French - F-JTFF","French - F-RBAA", "French - F-RBAO", "UK 406" },
+                allow_immortal = false,
+                allow_invisible = false,
+                atcmessage_enable = false,
+                commute = true,
+                airbases_names = {
+                    departure = {
+                        AIRBASE.MarianaIslands.Andersen_AFB,
+                    },
+                    arrival = {
+                        AIRBASE.MarianaIslands.Rota_Intl,
+                        AIRBASE.MarianaIslands.Tinian_Intl,
+                        AIRBASE.MarianaIslands.Saipan_Intl,
+                    }
+                }
+            }
+        }
     }
 }
 

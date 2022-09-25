@@ -57,6 +57,9 @@ for index, ratconfig in ipairs(RATConfig) do
                     if (type(planegroupconfig.allow_invisible) == "boolean" and planegroupconfig.allow_invisible == true) then
                         RATGroup:Invisible()
                     end
+                    if (type(planegroupconfig.commute) == "boolean" and planegroupconfig.commute == true) then
+                        RATGroup:Commute(true)
+                    end
                     RATGroup:SetEPLRS(true)
                     RATmanager:Add(RATGroup, planegroupconfig.minimun_spawns)
                 end
