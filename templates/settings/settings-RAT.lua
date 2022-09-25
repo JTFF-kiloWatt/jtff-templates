@@ -14,6 +14,7 @@ RATConfig = {
                 allow_immortal = false,
                 allow_invisible = true,
                 atcmessage_enable = false,
+                commute = false,
                 liveries = { "Aeroflot", "Aeroflot 1", "Air Asia", "Air Berlin", "Air Berlin FFO", "Air Berlin OLT",
                     "Air Berlin retro", "Air France", "Air Moldova", "Airbus Neo", "Al Maha", "Alaska Modern", "Alitalia",
                     "Allegiant", "American Airlines", "British Airways", "Brussels airlines Tintin", "Cebu Pacific",
