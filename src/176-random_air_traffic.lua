@@ -1,7 +1,7 @@
 -- *****************************************************************************
 --                     **                    Random Air Traffic               **
 --                     *********************************************************
-RATArray = {}
+RATManagerArray = {}
 compteur = 0
 for index, ratconfig in ipairs(RATConfig) do
     if ratconfig.enable == true then
@@ -19,43 +19,52 @@ for index, ratconfig in ipairs(RATConfig) do
                 for index, templatename in ipairs(planegroupconfig.templatename) do
                     debug_msg(string.format("RAT %s", templatename))
                     local RATGroup = RAT:New(templatename)
-                    if (planegroupconfig.airbases_names and type(planegroupconfig.airbases_names) == "table" ) then
-                        RATGroup:SetTakeoff("air")
+                    if (type(planegroupconfig.airbases_names) == "table" ) then
+                        RATGroup:SetTakeoff("cold")
+                        for airstartindex, airstartname in ipairs(planegroupconfig.airbases_names.departure) do
+                            if not(RATGroup:_AirportExists(airstartname)) then
+                                RATGroup:SetTakeoff("air")
+                            end
+                        end
+                        for airstopindex, airstopname in ipairs(planegroupconfig.airbases_names.arrival) do
+                            if not(RATGroup:_AirportExists(airstopname)) then
+                                RATGroup:DestinationZone()
+                            end
+                        end
                         RATGroup:SetDeparture(planegroupconfig.airbases_names.departure)
-                        RATGroup:DestinationZone()
                         RATGroup:SetDestination(planegroupconfig.airbases_names.arrival)
                     end
-                    if (planegroupconfig.inactive_timer and type(planegroupconfig.inactive_timer) == "number" ) then
+                    if (type(planegroupconfig.inactive_timer) == "number" ) then
                         RATGroup:TimeDestroyInactive(planegroupconfig.inactive_timer)
                     end
-                    if (planegroupconfig.atcmessage_enable and type(planegroupconfig.atcmessage_enable) == "boolean" ) then
+                    if (type(planegroupconfig.atcmessage_enable) == "boolean" ) then
                         RATGroup:ATC_Messages(planegroupconfig.atcmessage_enable)
                     else
                         RATGroup:ATC_Messages(false)
                     end
-                    if (planegroupconfig.flightlevel and type(planegroupconfig.flightlevel) == "number" ) then
+                    if (type(planegroupconfig.flightlevel) == "number" ) then
                         RATGroup:SetFLcruise(planegroupconfig.flightlevel)
                     end
-                    if (planegroupconfig.speed and type(planegroupconfig.speed) == "number") then
-                        RATGroup:SetMaxCruiseSpeed(UTILS.Round(planegroupconfig.speed*1.852, 0))
+                    if (type(planegroupconfig.speed) == "number") then
+                        RATGroup:SetMaxCruiseSpeed(UTILS.KnotsToKmph(planegroupconfig.speed))
                     end
                     if (planegroupconfig.liveries) then
                         RATGroup:Livery(planegroupconfig.liveries)
                     end
-                    if (planegroupconfig.allow_immortal and type(planegroupconfig.allow_immortal) == "boolean" and planegroupconfig.allow_immortal == true) then
+                    if (type(planegroupconfig.allow_immortal) == "boolean" and planegroupconfig.allow_immortal == true) then
                         RATGroup:Immortal()
                     end
-                    if (planegroupconfig.allow_invisible and type(planegroupconfig.allow_invisible) == "boolean" and planegroupconfig.allow_invisible == true) then
+                    if (type(planegroupconfig.allow_invisible) == "boolean" and planegroupconfig.allow_invisible == true) then
                         RATGroup:Invisible()
                     end
                     RATGroup:SetEPLRS(true)
-                    RATArray[compteur] = RATGroup
                     RATmanager:Add(RATGroup, planegroupconfig.minimun_spawns)
                 end
             else
                 debug_msg(string.format("RAT error in template name type : %s", planegroupconfig.templatename))
             end
         end
-        RATmanager:Start(10)
+        RATManagerArray[compteur] = RATmanager
+        (RATManagerArray[compteur]):Start(spawnStandardDelay)
     end
 end

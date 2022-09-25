@@ -8,7 +8,7 @@ RATConfig = {
         maximum_aircrafts = 10,
         aircrafts_groupconfigs = {
             {
-                templatename = 'EL AL  757 #IFF:1562UN',
+                templatename = 'B757 #IFF:1562UN',
                 minimun_spawns = 1,
                 flightlevel = 330,
                 speed = 480,
@@ -27,7 +27,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'ISRAIR320#IFF:7116UN',
+                templatename = 'A320 #IFF:7116UN',
                 minimun_spawns = 1,
                 flightlevel = 290,
                 speed = 468,
@@ -46,7 +46,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'CATHAY747#IFF:5156UN',
+                templatename = 'B747 #IFF:5156UN',
                 minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 460,
@@ -66,7 +66,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'AIR ALGERIE 737 #IFF:2361un',
+                templatename = 'B737 #IFF:2361UN',
                 minimun_spawns = 1,
                 flightlevel = 310,
                 speed = 466,
@@ -85,7 +85,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'IRAN AIR 320°1 #IFF:5616UN',
+                templatename = 'A320 #IFF:5616UN',
                 minimun_spawns = 0,
                 flightlevel = 290,
                 speed = 470,
@@ -104,7 +104,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'Quantas 747 #IFF:3212UN',
+                templatename = 'B747 #IFF:3212UN',
                 minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 480,
@@ -123,7 +123,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'VIRGIN 747 #IFF:7377UN',
+                templatename = 'B747 #IFF:7377UN',
                 minimun_spawns = 1,
                 flightlevel = 335,
                 speed = 490,
@@ -142,7 +142,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'TNT 737°1 #IFF:3242UN',
+                templatename = 'B737 #IFF:3242UN',
                 minimun_spawns = 0,
                 flightlevel = 300,
                 speed = 466,
@@ -161,7 +161,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'DHL 757 #IFF:7316UN',
+                templatename = 'B757 #IFF:7316UN',
                 minimun_spawns = 1,
                 flightlevel = 370,
                 speed = 500,
@@ -180,7 +180,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'MEA 320 #IFF:2631UN',
+                templatename = 'A320 #IFF:2631UN',
                 minimun_spawns = 1,
                 flightlevel = 350,
                 speed = 480,
@@ -199,7 +199,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'ISRAIR 737 #IFF:2376UN',
+                templatename = 'B737 #IFF:2376UN',
                 minimun_spawns = 1,
                 flightlevel = 360,
                 speed = 500,
@@ -218,7 +218,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'EL AL 757 SPECIAL #IFF:1657UN',
+                templatename = 'B757 #IFF:1657UN',
                 minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 448,
@@ -237,7 +237,7 @@ RATConfig = {
                 }
             },
             {
-                templatename = 'EL AL 757 #IFF:0254FR',
+                templatename = 'B757 #IFF:0254FR',
                 minimun_spawns = 1,
                 flightlevel = 330,
                 speed = 470,
