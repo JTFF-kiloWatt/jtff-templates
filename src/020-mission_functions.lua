@@ -129,7 +129,6 @@ function tankerStatusMessage(tanker, PlayerUnit, PlayerGroup)
     MESSAGE:NewType(message, MESSAGE.Type.Overview):ToGroup(PlayerGroup)
 end
 
-
 function findNearestTanker(PlayerUnit, PlayerGroup, Radius)
 
     Radius=UTILS.NMToMeters(Radius or 50)
