@@ -123,7 +123,7 @@ function StartInterceptTraining(param)
             }
     )
     debug_msg(string.format("Intercept: Spawning target based on %s with TargetAngle of %i degrees", targetSpawnObj.SpawnTemplatePrefix, targetAngle))
-    targetGroup = targetSpawnObj:InitHeading(math.mod(fighterHeading+180+ targetAngle,360)):SpawnFromVec3(targetCoord)
+    targetGroup = targetSpawnObj:InitHeading(math.mod(fighterHeading + 180 + targetAngle,360)):SpawnFromVec3(targetCoord)
     targetGroup:OptionROE(ENUMS.ROE.WeaponHold)
     targetGroup:OptionROT(ENUMS.ROT.NoReaction)
     targetGroup:OptionRTBBingoFuel(true)
@@ -132,13 +132,26 @@ function StartInterceptTraining(param)
     targetGroup:OptionAlarmStateGreen()
     targetGroup:OptionECM_Never()
     targetGroup:CommandEPLRS(true)
+    InterceptArray[objInterceptIndex].interceptTarget = targetGroup
     --TODO: reactivate code below
-    --local targetDetectionRange = 50
-    --InterceptArray[objInterceptIndex].interceptDetectionZone = ZONE_GROUP:New(
-    --        "intercept-" .. targetGroup:GetName(),
-    --        targetGroup,
-    --        targetDetectionRange
-    --)
+    local targetDetectionRange = 50
+    InterceptArray[objInterceptIndex].interceptDetectionZone = ZONE_GROUP:New(
+            "intercept-" .. targetGroup:GetName(),
+            InterceptArray[objInterceptIndex].interceptTarget,
+            targetDetectionRange
+    )
+    InterceptArray[objInterceptIndex].interceptTarget:ScheduleRepeat(
+            5,
+            5,
+            0,
+            nil,
+            interceptDetection,
+            {
+                InterceptArray[objInterceptIndex].interceptTarget,
+                fighterUnitName,
+                InterceptArray[objInterceptIndex],
+            }
+    )
     --local setClients = SET_CLIENT:New():FilterZones({InterceptArray[objInterceptIndex].interceptDetectionZone})
     --function setClients:OnAfterAdded(From, Event, To, ObjectName, Object)
     --    debug_msg(string.format("Intercept: %s has intercepted his target", Object:GetName()))
