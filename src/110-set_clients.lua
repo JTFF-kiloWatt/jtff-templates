@@ -12,30 +12,23 @@ function Set_CLIENT:OnEventPlayerEnterAircraft(EventData)
         clientSetting:SetA2G_MGRS()
         clientSetting:SetMenutextShort(true)
         debug_msg(string.format("Add Tanker Menu for group [%s], player name [%s]",EventData.IniGroupName , EventData.IniPlayerName))
+        if type(InterceptArray) == 'table' then
+            for index, objIntercept in ipairs(InterceptArray) do
+                if (objIntercept.menus[EventData.IniUnit:GetCoalition()]) then
+                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "High Aspect", objIntercept.menus[EventData.IniUnit:GetCoalition()], StartInterceptTraining, {EventData.IniUnit:GetName(),index,-20,20} )
+                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Left", objIntercept.menus[EventData.IniUnit:GetCoalition()], StartInterceptTraining, {EventData.IniUnit:GetName(),index,20,50} )
+                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Right", objIntercept.menus[EventData.IniUnit:GetCoalition()], StartInterceptTraining, {EventData.IniUnit:GetName(),index,-50,-20} )
+                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Left", objIntercept.menus[EventData.IniUnit:GetCoalition()], StartInterceptTraining, {EventData.IniUnit:GetName(),index,50,80} )
+                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Right", objIntercept.menus[EventData.IniUnit:GetCoalition()], StartInterceptTraining, {EventData.IniUnit:GetName(),index,-80,-50} )
+                end
+            end
+        end
         if EventData.IniUnit:GetCoalition() == coalition.side.BLUE then
             MENU_GROUP_COMMAND:New( EventData.IniGroup, "Nearest Tanker Info", MenuCoalitionTankerBlue, NearestTankerInfo, { EventData.IniUnit, EventData.IniGroup}  )
             MENU_GROUP_COMMAND:New( EventData.IniGroup, "All Tankers Info", MenuCoalitionTankerBlue, AllTankersInfo, {EventData.IniUnit,EventData.IniGroup} )
-            if type(InterceptArray) == 'table' then
-                for index, objIntercept in ipairs(InterceptArray) do
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "High Aspect", objIntercept.menuBlue, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-20,20} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Left", objIntercept.menuBlue, StartInterceptTraining, {EventData.IniUnit:GetName(),index,20,50} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Right", objIntercept.menuBlue, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-50,-20} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Left", objIntercept.menuBlue, StartInterceptTraining, {EventData.IniUnit:GetName(),index,50,80} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Right", objIntercept.menuBlue, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-80,-50} )
-                end
-            end
         else
             MENU_GROUP_COMMAND:New( EventData.IniGroup, "Nearest Tanker Info", MenuCoalitionTankerRed, NearestTankerInfo, { EventData.IniUnit, EventData.IniGroup}  )
             MENU_GROUP_COMMAND:New( EventData.IniGroup, "All Tankers Info", MenuCoalitionTankerRed, AllTankersInfo, {EventData.IniUnit,EventData.IniGroup} )
-            if type(InterceptArray) == 'table' then
-                for index, objIntercept in ipairs(InterceptArray) do
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "High Aspect", objIntercept.menuRed, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-20,20} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Left", objIntercept.menuRed, StartInterceptTraining, {EventData.IniUnit:GetName(),index,20,50} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Medium Aspect Right", objIntercept.menuRed, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-50,-20} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Left", objIntercept.menuRed, StartInterceptTraining, {EventData.IniUnit:GetName(),index,50,80} )
-                    MENU_GROUP_COMMAND:New( EventData.IniGroup, "Low Aspect Right", objIntercept.menuRed, StartInterceptTraining, {EventData.IniUnit:GetName(),index,-80,-50} )
-                end
-            end
         end
         local GroupMenu = MENU_GROUP:New( EventData.IniGroup, "My settings" )
         debug_msg(string.format("Add Immortal Menu for group [%s], player name [%s]",EventData.IniGroupName , EventData.IniPlayerName))

@@ -1,6 +1,7 @@
 InterceptConfig = {
     {
         enable = true,
+        benefitCoalition = coalition.side.BLUE,
         name = 'Civilian',
         type = 'civil',
         skill = 'Excellent',
@@ -11,6 +12,7 @@ InterceptConfig = {
     },
     {
         enable = true,
+        benefitCoalition = coalition.side.BLUE,
         name = 'Syrian AF',
         type = 'fighter',
         skill = 'Excellent',

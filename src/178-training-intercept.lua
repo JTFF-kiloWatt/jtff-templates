@@ -1,7 +1,20 @@
 -- *****************************************************************************
 --                     **                    Interception Training            **
 --                     *********************************************************
-function interceptDefendFicghter(targetGroup, interceptUnitName)
+function clearIntercept(param)
+    local objInterceptIndex = param[1]
+    local objIntercept = InterceptArray[objInterceptIndex]
+    debug_msg(string.format("Intercept: objIntercept.objSpawn is %s", net.lua2json(objIntercept.objSpawn)))
+    local GroupPlane, Index = objIntercept.objSpawn:GetFirstAliveGroup()
+    while GroupPlane ~= nil do
+        GroupPlane:ScheduleStop()
+        GroupPlane:Destroy(true,0)
+        GroupPlane, Index = objIntercept.objSpawn:GetNextAliveGroup( Index )
+    end
+    collectgarbage()
+end
+
+function interceptDefendFicghter(targetGroup)
     targetGroup:OptionROEWeaponFree()
     targetGroup:OptionROTVertical()
     targetGroup:OptionRTBBingoFuel(true)
@@ -10,8 +23,6 @@ function interceptDefendFicghter(targetGroup, interceptUnitName)
     targetGroup:OptionAlarmStateRed()
     targetGroup:OptionECM_DetectedLockByRadar()
     targetGroup:CommandEPLRS(true)
-    targetGroup:OptionAAAttackRange(1)
-    targetGroup:TaskAttackUnit(UNIT:FindByName(interceptUnitName), true)
 end
 
 function interceptDefendFastBomber(targetGroup)
@@ -44,43 +55,38 @@ function interceptDefendFastBomber(targetGroup)
     )
 end
 
-function interceptDetection(targetGroup, interceptorUnitName, objIntercept)
-    --TODO: put back 3nm
-    local targetDetectionRange = 50
+function interceptDetection(param)
+    local objIntercept = param[1]
+    debug_msg(string.format("Intercept: objIntercept.interceptDetectionZone is %s", net.lua2json(objIntercept.interceptDetectionZone)))
+    --debug_msg(string.format("Intercept: interceptorUnitName is %s", net.lua2json(interceptorUnitName)))
     if ( objIntercept.bubbleInvaded == false ) then
-        debug_msg(string.format("Intercept: %s has not yet been intercepted", targetGroup:GetName()))
-        local interceptDetectionZone = ZONE_GROUP:New(
-                "intercept-" .. targetGroup:GetName(),
-                targetGroup,
-                UTILS.NMToMeters(targetDetectionRange)
-        )
-        local setClients = SET_CLIENT:New():FilterZones({interceptDetectionZone}):FilterOnce()
-        if setClients:CountAlive() > 1 then
+        debug_msg(string.format("Intercept: %s has not yet been intercepted", objIntercept.interceptTarget:GetName()))
+        --debug_msg(string.format("Intercept: interceptDetectionZone is %s", net.lua2json(interceptDetectionZone)))
+        if (SET_CLIENT:New():FilterZones({objIntercept.interceptDetectionZone}):FilterOnce():CountAlive() > 0) then
             objIntercept.bubbleInvaded = true
-            debug_msg(string.format("Intercept: %s has been intercepted", targetGroup:GetName()))
+            debug_msg(string.format("Intercept: %s has been intercepted", objIntercept.interceptTarget:GetName()))
             if (objIntercept.knowIsIntercepted == false) then
-                --TODO: put back detection probability to 30%
-                if (math.random(0,100) > 0) then
-                    local delay = math.random(15,135)
-                    debug_msg(string.format("Intercept: %s has detected it has been intercepted : he will react accordingly in %i seconds !", targetGroup:GetName(), delay))
+                if (math.random(1,100) > 0) then
+                    local delay = math.random(15,120)
+                    debug_msg(string.format("Intercept: %s has detected it has been intercepted : he will react accordingly in %i seconds !", objIntercept.interceptTarget:GetName(), delay))
                     objIntercept.knowIsIntercepted = true
-                    if configObject.type == 'fastbomber' then
+                    if objIntercept.customconfig.type == 'fastbomber' then
                         SCHEDULER:New(
-                                targetGroup,
+                                objIntercept.interceptTarget,
                                 interceptDefendFastBomber,
                                 {},
                                 delay
                         )
-                    elseif configObject.type == 'fighter' then
+                    elseif objIntercept.customconfig.type == 'fighter' then
                         SCHEDULER:New(
-                                targetGroup,
+                                objIntercept.interceptTarget,
                                 interceptDefendFicghter,
-                                {interceptorUnitName},
+                                {},
                                 delay
                         )
                     end
                 else
-                    debug_msg(string.format("Intercept: %s has not detected soon enough it has been intercepted", targetGroup:GetName()))
+                    debug_msg(string.format("Intercept: %s has not detected soon enough it has been intercepted", objIntercept.interceptTarget:GetName()))
                 end
             end
         end
@@ -92,15 +98,15 @@ function StartInterceptTraining(param)
     local objInterceptIndex = param[2]
     local minTA = param[3]
     local maxTA = param[4]
-    local behaviorSchedule = nil
     local fighterUnit = UNIT:FindByName(fighterUnitName)
+    local fighterGroup = fighterUnit:GetGroup()
     local fighterCoord = fighterUnit:GetCoordinate()
     local fighterHeading = fighterUnit:GetHeading()
     local fighterAltitude = fighterUnit:GetAltitude(false)
     local deltaAltMax = nil
     local targetGroup = nil
     local targetRange = nil
-    local targetSpeed = 400
+    local targetGroundSpeed = 450
     local targetAngle = math.mod(minTA + math.random(0,maxTA-minTA),360)
     if (math.abs(math.mod(targetAngle,180)) > 50) then
         targetRange = 40
@@ -118,47 +124,49 @@ function StartInterceptTraining(param)
     local targetCoord = POINT_VEC3:NewFromVec3(
             {
                 x = fighterCoord.x + math.floor(UTILS.NMToMeters(targetRange) * math.cos(math.rad(fighterHeading))),
-                y = math.max(math.min(fighterCoord.y + math.random(fighterCoord.y-UTILS.FeetToMeters(deltaAltMax),fighterCoord.y+UTILS.FeetToMeters(deltaAltMax)),UTILS.FeetToMeters(42000)),UTILS.FeetToMeters(8000)),
+                y = math.max(
+                        math.min(
+                                math.random(
+                                        fighterCoord.y - UTILS.FeetToMeters(deltaAltMax),
+                                        fighterCoord.y + UTILS.FeetToMeters(deltaAltMax)
+                                ),
+                                UTILS.FeetToMeters(32000)
+                        ),
+                        UTILS.FeetToMeters(8000)
+                ),
                 z = fighterCoord.z + math.floor(UTILS.NMToMeters(targetRange) * math.sin(math.rad(fighterHeading))),
             }
     )
     debug_msg(string.format("Intercept: Spawning target based on %s with TargetAngle of %i degrees", targetSpawnObj.SpawnTemplatePrefix, targetAngle))
-    targetGroup = targetSpawnObj:InitHeading(math.mod(fighterHeading+180+ targetAngle,360)):SpawnFromVec3(targetCoord)
+    targetGroup = targetSpawnObj:InitHeading(math.mod(fighterHeading + 180 + targetAngle,360)):SpawnFromVec3(targetCoord)
     targetGroup:OptionROE(ENUMS.ROE.WeaponHold)
     targetGroup:OptionROT(ENUMS.ROT.NoReaction)
     targetGroup:OptionRTBBingoFuel(true)
-    targetGroup:OptionRestrictBurner(true)
+    targetGroup:OptionRestrictBurner(false)
     targetGroup:EnableEmission(false)
     targetGroup:OptionAlarmStateGreen()
     targetGroup:OptionECM_Never()
     targetGroup:CommandEPLRS(true)
-    --TODO: reactivate code below
-    --local targetDetectionRange = 50
-    --InterceptArray[objInterceptIndex].interceptDetectionZone = ZONE_GROUP:New(
-    --        "intercept-" .. targetGroup:GetName(),
-    --        targetGroup,
-    --        targetDetectionRange
-    --)
-    --local setClients = SET_CLIENT:New():FilterZones({InterceptArray[objInterceptIndex].interceptDetectionZone})
-    --function setClients:OnAfterAdded(From, Event, To, ObjectName, Object)
-    --    debug_msg(string.format("Intercept: %s has intercepted his target", Object:GetName()))
-    --    if (math.random(1,100) >= 1) then
-    --        local delay = math.random(15,135)
-    --        debug_msg(string.format("Intercept: %s\'s target has detected it has been intercepted : he will react accordingly in %i seconds !", Object:GetName(), delay))
-    --    end
-    --end
-    --setClients:FilterStart()
-    --InterceptArray[objInterceptIndex].setClients = setClients
-    --InterceptArray[objInterceptIndex].behaviorSchedule = SCHEDULER:New(
-    --        targetGroup,
-    --        interceptDetection,
-    --        {
-    --            fighterUnitName,
-    --            InterceptArray[objInterceptIndex],
-    --        },
-    --        0,
-    --        5
-    --)
+    InterceptArray[objInterceptIndex].interceptTarget = targetGroup
+    InterceptArray[objInterceptIndex].knowIsIntercepted = false
+    InterceptArray[objInterceptIndex].bubbleInvaded = false
+    local targetDetectionRange = 1.5
+    --targetDetectionRange = 70
+    InterceptArray[objInterceptIndex].interceptDetectionZone = ZONE_GROUP:New(
+            "intercept-" .. targetGroup:GetName(),
+            targetGroup,
+            UTILS.NMToMeters(targetDetectionRange)
+    )
+    InterceptArray[objInterceptIndex].interceptTarget:ScheduleRepeat(
+            0,
+            5,
+            nil,
+            nil,
+            interceptDetection,
+            {
+                InterceptArray[objInterceptIndex]
+            }
+    )
     local targetDestinationCoord = targetGroup:GetCoordinate():Translate(
             UTILS.NMToMeters(200),
             math.mod(fighterHeading+180+ targetAngle,360),
@@ -169,7 +177,7 @@ function StartInterceptTraining(param)
             {
                 targetDestinationCoord:WaypointAirTurningPoint(
                         COORDINATE.WaypointAltType.BARO,
-                        UTILS.KnotsToKmph(targetSpeed),
+                        UTILS.KnotsToKmph(targetGroundSpeed),
                         nil,
                         "End interception"
                 ),
@@ -177,7 +185,7 @@ function StartInterceptTraining(param)
                         targetGroup:GetCategory(),
                         targetGroup:GetCoalition()
                 ):GetCoordinate():WaypointAirLanding(
-                        UTILS.KnotsToKmph(targetSpeed),
+                        UTILS.KnotsToKmph(targetGroundSpeed),
                         targetDestinationCoord:GetClosestAirbase(
                                 targetGroup:GetCategory(),
                                 targetGroup:GetCoalition()
@@ -199,16 +207,51 @@ for index, intconfig in ipairs(InterceptConfig) do
         local objIntercept = {
             customconfig = {},
             objSpawn = nil,
-            menuBlue = nil,
-            menuRed = nil,
+            menus = {},
+            menu_finex = {},
             knowIsIntercepted = false,
             bubbleInvaded = false,
         }
         objIntercept.objSpawn = SPAWN:New(intconfig.templates[1])
-                :InitSkill(intconfig.skill)
-                :InitRandomizeTemplatePrefixes(intconfig.templates)
-        objIntercept.menuBlue = MENU_COALITION:New(coalition.side.BLUE, intconfig.name, MenuCoalitionInterceptBlue)
-        objIntercept.menuRed = MENU_COALITION:New(coalition.side.RED, intconfig.name, MenuCoalitionInterceptRed)
+                                     :InitSkill(intconfig.skill)
+                                     :InitRandomizeTemplatePrefixes(intconfig.templates)
+        if (intconfig.type == 'civil') then
+            objIntercept.menus[coalition.side.BLUE] = MENU_COALITION:New(coalition.side.BLUE, intconfig.name, MenuCoalitionInterceptBlue)
+            objIntercept.menu_finex[coalition.side.BLUE] = MENU_COALITION_COMMAND:New(
+                    coalition.side.BLUE,
+                    "Knock it off, FinEx !!",
+                    objIntercept.menus[coalition.side.BLUE],
+                    clearIntercept,
+                    {
+                        compteur
+                    }
+            )
+            objIntercept.menus[coalition.side.RED] = MENU_COALITION:New(coalition.side.RED, intconfig.name, MenuCoalitionInterceptRed)
+            objIntercept.menu_finex[coalition.side.RED] = MENU_COALITION_COMMAND:New(
+                    coalition.side.RED,
+                    "Knock it off, FinEx !!",
+                    objIntercept.menus[coalition.side.RED],
+                    clearIntercept,
+                    {
+                        compteur
+                    }
+            )
+        else
+            if (intconfig.benefitCoalition == coalition.side.BLUE) then
+                objIntercept.menus[intconfig.benefitCoalition] = MENU_COALITION:New(intconfig.benefitCoalition, intconfig.name, MenuCoalitionInterceptBlue)
+            else
+                objIntercept.menus[intconfig.benefitCoalition] = MENU_COALITION:New(intconfig.benefitCoalition, intconfig.name, MenuCoalitionInterceptRed)
+            end
+            objIntercept.menu_finex[intconfig.benefitCoalition] = MENU_COALITION_COMMAND:New(
+                    intconfig.benefitCoalition,
+                    "Knock it off, FinEx !!",
+                    objIntercept.menus[intconfig.benefitCoalition],
+                    clearIntercept,
+                    {
+                        compteur
+                    }
+            )
+        end
         objIntercept.customconfig = intconfig
         InterceptArray[compteur] = objIntercept
     end
