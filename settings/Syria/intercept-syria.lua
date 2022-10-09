@@ -18,6 +18,8 @@ InterceptConfig = {
         skill = 'Excellent',
         templates = {
             'intercept-Mig23',
+            'intercept-Mig29',
+            'intercept-Mig21',
         }
     }
 }

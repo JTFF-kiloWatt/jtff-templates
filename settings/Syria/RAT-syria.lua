@@ -9,7 +9,7 @@ RATConfig = {
         aircrafts_groupconfigs = {
             {
                 templatename = 'B757 #IFF:1562UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 330,
                 speed = 480,
                 inactive_timer = 600,
@@ -124,7 +124,7 @@ RATConfig = {
             },
             {
                 templatename = 'B747 #IFF:7377UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 335,
                 speed = 490,
                 inactive_timer = 600,

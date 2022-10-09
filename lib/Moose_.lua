@@ -1,4 +1,4 @@
-env.info('*** MOOSE GITHUB Commit Hash ID: 2022-09-24T08:10:06.0000000Z-e804ab9254875f5fa712e787455e67249f7163ca ***')
+env.info('*** MOOSE GITHUB Commit Hash ID: 2022-10-09T10:53:45.0000000Z-38b9778e9aab98aa318dbb15e2cad561dc8e3af6 ***')
 env.info('*** MOOSE STATIC INCLUDE START *** ')
 ENUMS={}
 ENUMS.ROE={
@@ -4945,7 +4945,7 @@ BOMBRESULT="moose_bomb_result",
 STRAFERESULT="moose_strafe_result",
 LSOGRADE="moose_lso_grade",
 }
-SOCKET.version="0.1.0"
+SOCKET.version="0.2.0"
 function SOCKET:New(Port,Host)
 local self=BASE:Inherit(self,FSM:New())
 package.path=package.path..";.\\LuaSocket\\?.lua;"
@@ -4965,6 +4965,7 @@ function SOCKET:SetHost(Host)
 self.host=Host or"127.0.0.1"
 end
 function SOCKET:SendTable(Table)
+Table.server_name=BASE.ServerName or"Unknown"
 local json=self.json:encode(Table)
 self:T("Json table:")
 self:T(json)
@@ -8667,11 +8668,14 @@ end
 ZONE_RADIUS={
 ClassName="ZONE_RADIUS",
 }
-function ZONE_RADIUS:New(ZoneName,Vec2,Radius)
+function ZONE_RADIUS:New(ZoneName,Vec2,Radius,DoNotRegisterZone)
 local self=BASE:Inherit(self,ZONE_BASE:New(ZoneName))
 self:F({ZoneName,Vec2,Radius})
 self.Radius=Radius
 self.Vec2=Vec2
+if not DoNotRegisterZone then
+_EVENTDISPATCHER:CreateEventNewZone(self)
+end
 return self
 end
 function ZONE_RADIUS:UpdateFromVec2(Vec2,Radius)
@@ -9078,7 +9082,7 @@ rcoord=self:GetRandomCoordinate(inner,outer)
 found=false
 for _,_coord in pairs(buildings)do
 local coord=_coord
-if coord:Get2DDistance(rcoord)>dist then
+if coord:Get3DDistance(rcoord)>dist then
 found=true
 else
 found=false
@@ -9108,7 +9112,7 @@ if not Zone then
 env.error("ERROR: Zone "..ZoneName.." does not exist!")
 return nil
 end
-local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,{x=Zone.point.x,y=Zone.point.z},Zone.radius))
+local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,{x=Zone.point.x,y=Zone.point.z},Zone.radius,true))
 self:F(ZoneName)
 self.Color={1,0,0,0.15}
 self.Zone=Zone
@@ -9132,7 +9136,7 @@ self.rho=Offset.rho or 0.0
 self.theta=(Offset.theta or 0.0)*math.pi/180.0
 self.relative_to_unit=Offset.relative_to_unit or false
 end
-local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,ZoneUNIT:GetVec2(),Radius))
+local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,ZoneUNIT:GetVec2(),Radius,true))
 self:F({ZoneName,ZoneUNIT:GetVec2(),Radius})
 self.ZoneUNIT=ZoneUNIT
 self.LastVec2=ZoneUNIT:GetVec2()
@@ -9190,7 +9194,7 @@ ZONE_GROUP={
 ClassName="ZONE_GROUP",
 }
 function ZONE_GROUP:New(ZoneName,ZoneGROUP,Radius)
-local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,ZoneGROUP:GetVec2(),Radius))
+local self=BASE:Inherit(self,ZONE_RADIUS:New(ZoneName,ZoneGROUP:GetVec2(),Radius,true))
 self:F({ZoneName,ZoneGROUP:GetVec2(),Radius})
 self._.ZoneGROUP=ZoneGROUP
 self._.ZoneVec2Cache=self._.ZoneGROUP:GetVec2()
@@ -9501,7 +9505,7 @@ local DeltaY=self._.Polygon[j].y-self._.Polygon[i].y
 for Segment=0,Segments do
 local PointX=self._.Polygon[i].x+(Segment*DeltaX/Segments)
 local PointY=self._.Polygon[i].y+(Segment*DeltaY/Segments)
-ZONE_RADIUS:New("Zone",{x=PointX,y=PointY},Radius):DrawZone(Coalition,Color,1,Color,Alpha,nil,true)
+ZONE_RADIUS:New("Zone",{x=PointX,y=PointY},Radius,true):DrawZone(Coalition,Color,1,Color,Alpha,nil,false)
 end
 end
 j=i
@@ -9519,6 +9523,12 @@ self:F({ZoneName,ZoneGroup,self._.Polygon})
 _EVENTDISPATCHER:CreateEventNewZone(self)
 return self
 end
+function ZONE_POLYGON:NewFromPointsArray(ZoneName,PointsArray)
+local self=BASE:Inherit(self,ZONE_POLYGON_BASE:New(ZoneName,PointsArray))
+self:F({ZoneName,self._.Polygon})
+_EVENTDISPATCHER:CreateEventNewZone(self)
+return self
+end
 function ZONE_POLYGON:NewFromGroupName(GroupName)
 local ZoneGroup=GROUP:FindByName(GroupName)
 local GroupPoints=ZoneGroup:GetTaskRoute()
@@ -9530,6 +9540,145 @@ end
 function ZONE_POLYGON:FindByName(ZoneName)
 local ZoneFound=_DATABASE:FindZone(ZoneName)
 return ZoneFound
+end
+function ZONE_POLYGON:Scan(ObjectCategories,UnitCategories)
+self.ScanData={}
+self.ScanData.Coalitions={}
+self.ScanData.Scenery={}
+self.ScanData.Units={}
+local function EvaluateZone(ZoneObject)
+if ZoneObject then
+local ObjectCategory=ZoneObject:getCategory()
+if(ObjectCategory==Object.Category.UNIT and ZoneObject:isExist()and ZoneObject:isActive())or(ObjectCategory==Object.Category.STATIC and ZoneObject:isExist())then
+local CoalitionDCSUnit=ZoneObject:getCoalition()
+local Include=false
+if not UnitCategories then
+Include=true
+else
+local CategoryDCSUnit=ZoneObject:getDesc().category
+for UnitCategoryID,UnitCategory in pairs(UnitCategories)do
+if UnitCategory==CategoryDCSUnit then
+Include=true
+break
+end
+end
+end
+if Include then
+local CoalitionDCSUnit=ZoneObject:getCoalition()
+self.ScanData.Coalitions[CoalitionDCSUnit]=true
+self.ScanData.Units[ZoneObject]=ZoneObject
+self:F2({Name=ZoneObject:getName(),Coalition=CoalitionDCSUnit})
+end
+end
+end
+return true
+end
+local inzoneunits=SET_UNIT:New():FilterZones({self}):FilterOnce()
+local inzonestatics=SET_STATIC:New():FilterZones({self}):FilterOnce()
+inzoneunits:ForEach(
+function(unit)
+local Unit=unit
+local DCS=Unit:GetDCSObject()
+EvaluateZone(DCS)
+end
+)
+inzonestatics:ForEach(
+function(static)
+local Static=static
+local DCS=Static:GetDCSObject()
+EvaluateZone(DCS)
+end
+)
+end
+function ZONE_POLYGON:GetScannedUnits()
+return self.ScanData.Units
+end
+function ZONE_POLYGON:GetScannedSetUnit()
+local SetUnit=SET_UNIT:New()
+if self.ScanData then
+for ObjectID,UnitObject in pairs(self.ScanData.Units)do
+local UnitObject=UnitObject
+if UnitObject:isExist()then
+local FoundUnit=UNIT:FindByName(UnitObject:getName())
+if FoundUnit then
+SetUnit:AddUnit(FoundUnit)
+else
+local FoundStatic=STATIC:FindByName(UnitObject:getName())
+if FoundStatic then
+SetUnit:AddUnit(FoundStatic)
+end
+end
+end
+end
+end
+return SetUnit
+end
+function ZONE_POLYGON:GetScannedSetGroup()
+self.ScanSetGroup=self.ScanSetGroup or SET_GROUP:New()
+self.ScanSetGroup.Set={}
+if self.ScanData then
+for ObjectID,UnitObject in pairs(self.ScanData.Units)do
+local UnitObject=UnitObject
+if UnitObject:isExist()then
+local FoundUnit=UNIT:FindByName(UnitObject:getName())
+if FoundUnit then
+local group=FoundUnit:GetGroup()
+self.ScanSetGroup:AddGroup(group)
+end
+end
+end
+end
+return self.ScanSetGroup
+end
+function ZONE_POLYGON:CountScannedCoalitions()
+local Count=0
+for CoalitionID,Coalition in pairs(self.ScanData.Coalitions)do
+Count=Count+1
+end
+return Count
+end
+function ZONE_POLYGON:CheckScannedCoalition(Coalition)
+if Coalition then
+return self.ScanData.Coalitions[Coalition]
+end
+return nil
+end
+function ZONE_POLYGON:GetScannedCoalition(Coalition)
+if Coalition then
+return self.ScanData.Coalitions[Coalition]
+else
+local Count=0
+local ReturnCoalition=nil
+for CoalitionID,Coalition in pairs(self.ScanData.Coalitions)do
+Count=Count+1
+ReturnCoalition=CoalitionID
+end
+if Count~=1 then
+ReturnCoalition=nil
+end
+return ReturnCoalition
+end
+end
+function ZONE_POLYGON:GetScannedSceneryType(SceneryType)
+return self.ScanData.Scenery[SceneryType]
+end
+function ZONE_POLYGON:GetScannedScenery()
+return self.ScanData.Scenery
+end
+function ZONE_POLYGON:IsAllInZoneOfCoalition(Coalition)
+return self:CountScannedCoalitions()==1 and self:GetScannedCoalition(Coalition)==true
+end
+function ZONE_POLYGON:IsAllInZoneOfOtherCoalition(Coalition)
+return self:CountScannedCoalitions()==1 and self:GetScannedCoalition(Coalition)==nil
+end
+function ZONE_POLYGON:IsSomeInZoneOfCoalition(Coalition)
+return self:CountScannedCoalitions()>1 and self:GetScannedCoalition(Coalition)==true
+end
+function ZONE_POLYGON:IsNoneInZoneOfCoalition(Coalition)
+return self:GetScannedCoalition(Coalition)==nil
+end
+function ZONE_POLYGON:IsNoneInZone()
+return self:CountScannedCoalitions()==0
 end
 do
 ZONE_ELASTIC={
@@ -9631,7 +9780,7 @@ ClassName="ZONE_AIRBASE",
 function ZONE_AIRBASE:New(AirbaseName,Radius)
 Radius=Radius or 4000
 local Airbase=AIRBASE:FindByName(AirbaseName)
-local self=BASE:Inherit(self,ZONE_RADIUS:New(AirbaseName,Airbase:GetVec2(),Radius))
+local self=BASE:Inherit(self,ZONE_RADIUS:New(AirbaseName,Airbase:GetVec2(),Radius,true))
 self._.ZoneAirbase=Airbase
 self._.ZoneVec2Cache=self._.ZoneAirbase:GetVec2()
 if Airbase:IsShip()then
@@ -10757,6 +10906,7 @@ end
 table.sort(self.Index)
 end
 function SET_BASE:AddSet(SetToAdd)
+if not SetToAdd then return self end
 for _,ObjectB in pairs(SetToAdd.Set)do
 self:AddObject(ObjectB)
 end
@@ -10987,9 +11137,22 @@ function SET_BASE:IsIncludeObject(Object)
 self:F3(Object)
 return true
 end
-function SET_BASE:IsInSet(ObjectName)
+function SET_BASE:IsInSet(Object)
 self:F3(Object)
-return true
+local outcome=false
+local name=Object:GetName()
+self:ForEach(
+function(object)
+if object:GetName()==name then
+outcome=true
+end
+end
+)
+return outcome
+end
+function SET_BASE:IsNotInSet(Object)
+self:F3(Object)
+return not self:IsInSet(Object)
 end
 function SET_BASE:GetObjectNames()
 self:F3()
@@ -15432,6 +15595,23 @@ return"Target are located "..self:GetBRText(AngleRadians,Distance,Settings).." f
 end
 return nil
 end
+function COORDINATE:ToStringFromRPShort(ReferenceCoord,ReferenceName,Controllable,Settings)
+self:F2({ReferenceCoord=ReferenceCoord,ReferenceName=ReferenceName})
+local Settings=Settings or(Controllable and _DATABASE:GetPlayerSettings(Controllable:GetPlayerName()))or _SETTINGS
+local IsAir=Controllable and Controllable:IsAirPlane()or false
+if IsAir then
+local DirectionVec3=ReferenceCoord:GetDirectionVec3(self)
+local AngleRadians=self:GetAngleRadians(DirectionVec3)
+local Distance=self:Get2DDistance(ReferenceCoord)
+return self:GetBRText(AngleRadians,Distance,Settings).." from "..ReferenceName
+else
+local DirectionVec3=ReferenceCoord:GetDirectionVec3(self)
+local AngleRadians=self:GetAngleRadians(DirectionVec3)
+local Distance=self:Get2DDistance(ReferenceCoord)
+return self:GetBRText(AngleRadians,Distance,Settings).." from "..ReferenceName
+end
+return nil
+end
 function COORDINATE:ToStringA2G(Controllable,Settings)
 self:F2({Controllable=Controllable and Controllable:GetName()})
 local Settings=Settings or(Controllable and _DATABASE:GetPlayerSettings(Controllable:GetPlayerName()))or _SETTINGS
@@ -18388,8 +18568,9 @@ self.Target=Target
 self.LaserCode=LaserCode
 self.Lasing=true
 local RecceDcsUnit=self.Recce:GetDCSObject()
-self.SpotIR=Spot.createInfraRed(RecceDcsUnit,{x=0,y=2,z=0},Target:GetPointVec3():AddY(1):GetVec3())
-self.SpotLaser=Spot.createLaser(RecceDcsUnit,{x=0,y=2,z=0},Target:GetPointVec3():AddY(1):GetVec3(),LaserCode)
+local relativespot=self.relstartpos or{x=0,y=2,z=0}
+self.SpotIR=Spot.createInfraRed(RecceDcsUnit,relativespot,Target:GetPointVec3():AddY(1):GetVec3())
+self.SpotLaser=Spot.createLaser(RecceDcsUnit,relativespot,Target:GetPointVec3():AddY(1):GetVec3(),LaserCode)
 if Duration then
 self.ScheduleID=self.LaseScheduler:Schedule(self,StopLase,{self},Duration)
 end
@@ -18454,6 +18635,10 @@ return self
 end
 function SPOT:IsLasing()
 return self.Lasing
+end
+function SPOT:SetRelativeStartPosition(position)
+self.relstartpos=position or{x=0,y=2,z=0}
+return self
 end
 end
 MARKEROPS_BASE={
@@ -23221,13 +23406,13 @@ local callnumberminor=string.char(string.byte(callnumber,2))
 local personalized=false
 if IsPlayer and string.find(groupname,"#")then
 if Keepnumber then
-shortcallsign=string.match(groupname,"#(.+)")
+shortcallsign=string.match(groupname,"#(.+)")or"Ghost 111"
 else
-shortcallsign=string.match(groupname,"#%s*([%a]+)")
+shortcallsign=string.match(groupname,"#%s*([%a]+)")or"Ghost"
 end
 personalized=true
 elseif IsPlayer and string.find(self:GetPlayerName(),"|")then
-shortcallsign=string.match(self:GetPlayerName(),"|%s*([%a]+)")
+shortcallsign=string.match(self:GetPlayerName(),"|%s*([%a]+)")or string.match(self:GetPlayerName(),"|%s*([%d]+)")or"Ghost"
 personalized=true
 end
 if(not personalized)and CallsignTranslations and CallsignTranslations[callsignroot]then
@@ -37942,9 +38127,9 @@ function RANGE:_myname(unitname)
 self:F2(unitname)
 local pname="Ghost 1 1"
 local unit=UNIT:FindByName(unitname)
-if unit then
+if unit and unit:IsAlive()then
 local grp=unit:GetGroup()
-if grp then
+if grp and grp:IsAlive()then
 pname=grp:GetCustomCallSign(true,true)
 end
 end
@@ -37960,8 +38145,14 @@ SmokeColor=nil,
 SmokeZone=nil,
 }
 function ZONE_GOAL:New(Zone)
-local self=BASE:Inherit(self,ZONE_RADIUS:New(Zone:GetName(),Zone:GetVec2(),Zone:GetRadius()))
+BASE:I({Zone=Zone})
+local self=BASE:Inherit(self,BASE:New())
+if type(Zone)=="string"then
+self=BASE:Inherit(self,ZONE_POLYGON:NewFromGroupName(Zone))
+else
+self=BASE:Inherit(self,ZONE_RADIUS:New(Zone:GetName(),Zone:GetVec2(),Zone:GetRadius()))
 self:F({Zone=Zone})
+end
 self.Goal=GOAL:New()
 self.SmokeTime=nil
 self:SetSmokeZone(true)
@@ -47975,6 +48166,8 @@ Nmaxmarshal=nil,
 NmaxSection=nil,
 NmaxStack=nil,
 handleai=nil,
+xtVoiceOvers=nil,
+xtVoiceOversAI=nil,
 tanker=nil,
 Corientation=nil,
 Corientlast=nil,
@@ -48112,7 +48305,7 @@ HARD="TOPGUN Graduate",
 }
 AIRBOSS.MenuF10={}
 AIRBOSS.MenuF10Root=nil
-AIRBOSS.version="1.2.1"
+AIRBOSS.version="1.3.0"
 function AIRBOSS:New(carriername,alias)
 local self=BASE:Inherit(self,FSM:New())
 self:F2({carriername=carriername,alias=alias})
@@ -48148,6 +48341,8 @@ self:SetMaxMarshalStacks()
 self:SetMaxSectionSize()
 self:SetMaxFlightsPerStack()
 self:SetHandleAION()
+self:SetExtraVoiceOvers(false)
+self:SetExtraVoiceOversAI(false)
 self:SetAirbossNiceGuy()
 self:SetEmergencyLandings()
 self:SetDespawnOnEngineShutdown(false)
@@ -48176,7 +48371,7 @@ self.landingcoord=COORDINATE:New(0,0,0)
 self.sterncoord=COORDINATE:New(0,0,0)
 self.landingspotcoord=COORDINATE:New(0,0,0)
 if self.carriertype==AIRBOSS.CarrierType.STENNIS then
-self:_InitStennis()
+self:_InitNimitz()
 elseif self.carriertype==AIRBOSS.CarrierType.ROOSEVELT then
 self:_InitNimitz()
 elseif self.carriertype==AIRBOSS.CarrierType.LINCOLN then
@@ -48200,7 +48395,7 @@ self:_InitAmerica()
 elseif self.carriertype==AIRBOSS.CarrierType.JCARLOS then
 self:_InitJcarlos()
 elseif self.carriertype==AIRBOSS.CarrierType.CANBERRA then
-self:_InitJcarlos()
+self:_InitCanberra()
 elseif self.carriertype==AIRBOSS.CarrierType.KUZNETSOV then
 self:_InitStennis()
 else
@@ -48723,6 +48918,14 @@ function AIRBOSS:SetHandleAION()
 self.handleai=true
 return self
 end
+function AIRBOSS:SetExtraVoiceOvers(status)
+self.xtVoiceOvers=status
+return self
+end
+function AIRBOSS:SetExtraVoiceOversAI(status)
+self.xtVoiceOversAI=status
+return self
+end
 function AIRBOSS:SetHandleAIOFF()
 self.handleai=false
 return self
@@ -48773,6 +48976,10 @@ return self
 end
 function AIRBOSS:SetDebugModeOFF()
 self.Debug=false
+return self
+end
+function AIRBOSS:SetFunkManOn(Port,Host)
+self.funkmanSocket=SOCKET:New(Port,Host)
 return self
 end
 function AIRBOSS:GetNextRecoveryTime(InSeconds)
@@ -49192,6 +49399,7 @@ self.carrierparam.wire1=46
 self.carrierparam.wire2=46+12
 self.carrierparam.wire3=46+24
 self.carrierparam.wire4=46+35
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.wire3
 self.Platform.name="Platform 5k"
 self.Platform.Xmin=-UTILS.NMToMeters(22)
 self.Platform.Xmax=nil
@@ -49306,6 +49514,7 @@ self.carrierparam.wire1=55
 self.carrierparam.wire2=67
 self.carrierparam.wire3=79
 self.carrierparam.wire4=92
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.wire3
 end
 function AIRBOSS:_InitForrestal()
 self:_InitNimitz()
@@ -49321,6 +49530,7 @@ self.carrierparam.wire1=44
 self.carrierparam.wire2=54
 self.carrierparam.wire3=64
 self.carrierparam.wire4=74
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.wire3
 end
 function AIRBOSS:_InitHermes()
 self:_InitStennis()
@@ -49336,6 +49546,8 @@ self.carrierparam.wire1=nil
 self.carrierparam.wire2=nil
 self.carrierparam.wire3=nil
 self.carrierparam.wire4=nil
+self.carrierparam.landingspot=69
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.landingspot
 self.BreakLate.name="Late Break"
 self.BreakLate.Xmin=-UTILS.NMToMeters(1)
 self.BreakLate.Xmax=UTILS.NMToMeters(5)
@@ -49360,6 +49572,8 @@ self.carrierparam.wire1=nil
 self.carrierparam.wire2=nil
 self.carrierparam.wire3=nil
 self.carrierparam.wire4=nil
+self.carrierparam.landingspot=69
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.landingspot
 self.BreakLate.name="Late Break"
 self.BreakLate.Xmin=-UTILS.NMToMeters(1)
 self.BreakLate.Xmax=UTILS.NMToMeters(5)
@@ -49384,6 +49598,8 @@ self.carrierparam.wire1=nil
 self.carrierparam.wire2=nil
 self.carrierparam.wire3=nil
 self.carrierparam.wire4=nil
+self.carrierparam.landingspot=57
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.landingspot
 self.BreakLate.name="Late Break"
 self.BreakLate.Xmin=-UTILS.NMToMeters(1)
 self.BreakLate.Xmax=UTILS.NMToMeters(5)
@@ -49408,6 +49624,8 @@ self.carrierparam.wire1=nil
 self.carrierparam.wire2=nil
 self.carrierparam.wire3=nil
 self.carrierparam.wire4=nil
+self.carrierparam.landingspot=59
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.landingspot
 self.BreakLate.name="Late Break"
 self.BreakLate.Xmin=-UTILS.NMToMeters(1)
 self.BreakLate.Xmax=UTILS.NMToMeters(5)
@@ -49432,6 +49650,8 @@ self.carrierparam.wire1=nil
 self.carrierparam.wire2=nil
 self.carrierparam.wire3=nil
 self.carrierparam.wire4=nil
+self.carrierparam.landingspot=89
+self.carrierparam.landingdist=self.carrierparam.sterndist+self.carrierparam.landingspot
 self.BreakLate.name="Late Break"
 self.BreakLate.Xmin=-UTILS.NMToMeters(1)
 self.BreakLate.Xmax=UTILS.NMToMeters(5)
@@ -49441,6 +49661,9 @@ self.BreakLate.LimitXmin=0
 self.BreakLate.LimitXmax=nil
 self.BreakLate.LimitZmin=-UTILS.NMToMeters(0.5)
 self.BreakLate.LimitZmax=nil
+end
+function AIRBOSS:_InitCanberra()
+self:_InitJcarlos()
 end
 function AIRBOSS:SetVoiceOversMarshalByGabriella(mizfolder)
 if mizfolder then
@@ -49946,12 +50169,9 @@ elseif skyhawk then
 alt=UTILS.FeetToMeters(500)
 end
 aoa=aoaac.OnSpeed
-if harrier then
-dist=UTILS.NMToMeters(0.9)
-else
-dist=UTILS.NMToMeters(1.2)
-end
 if goshawk then
+dist=UTILS.NMToMeters(0.9)
+elseif harrier then
 dist=UTILS.NMToMeters(0.9)
 else
 dist=UTILS.NMToMeters(1.1)
@@ -50091,6 +50311,10 @@ if flight.ai then
 self:_RemoveFlightFromMarshalQueue(flight,false)
 self:_LandAI(flight)
 self:_MarshalCallClearedForRecovery(flight.onboard,flight.case)
+if self.xtVoiceOversAI then
+local leader=flight.group:GetUnits()[1]
+self:_CommencingCall(leader,flight.onboard)
+end
 else
 if flight.step~=AIRBOSS.PatternStep.COMMENCING then
 self:_MarshalCallClearedForRecovery(flight.onboard,flight.case)
@@ -50135,9 +50359,9 @@ local group=_group
 local knownflight=self:_GetFlightFromGroupInQueue(group,self.flights)
 local actype=group:GetTypeName()
 if knownflight then
-if knownflight.ai and knownflight.flag==-100 and self.handleai then
+if knownflight.ai and knownflight.flag==-100 and self.handleai and false then
 local putintomarshal=false
-local flight=_DATABASE:GetFlightGroup(groupname)
+local flight=_DATABASE:GetOpsGroup(groupname)
 if flight and flight:IsInbound()and flight.destbase:GetName()==self.carrier:GetName()then
 if flight.ishelo then
 else
@@ -50251,6 +50475,10 @@ self:E(self.lid.."ERROR: cannot get coordinate of flight group.")
 return
 end
 if not self:_InQueue(self.Qmarshal,flight.group)then
+if self.xtVoiceOversAI then
+local leader=flight.group:GetUnits()[1]
+self:_MarshallInboundCall(leader,flight.onboard)
+end
 self:_AddMarshalGroup(flight,nstack)
 end
 local case=flight.case
@@ -50279,7 +50507,7 @@ p0=Carrier:Translate(UTILS.NMToMeters(5),hdg-135):SetAltitude(altitude)
 wp[#wp+1]=pE:WaypointAirTurningPoint(nil,speedTransit,{TaskArrivedHolding},"Entering Case I Marshal Pattern")
 else
 local radial=self:GetRadial(case,false,true)
-p0=p2:Translate(UTILS.NMToMeters(5),radial+90):Translate(UTILS.NMToMeters(5),radial,true)
+p0=p2:Translate(UTILS.NMToMeters(5),radial+90,true):Translate(UTILS.NMToMeters(5),radial,true)
 wp[#wp+1]=p0:WaypointAirTurningPoint(nil,speedTransit,{TaskArrivedHolding},"Entering Case II/III Marshal Pattern")
 end
 else
@@ -52735,8 +52963,7 @@ self.landingcoord:SetAltitude(UTILS.FeetToMeters(120))
 end
 else
 if self.carrierparam.wire3 then
-local w3=self.carrierparam.wire3
-self.landingcoord:Translate(w3,FB,true,true)
+self.landingcoord:Translate(self.carrierparam.wire3,FB,true,true)
 end
 self.landingcoord.y=self.landingcoord.y+2
 end
@@ -52744,25 +52971,8 @@ return self.landingcoord
 end
 function AIRBOSS:_GetLandingSpotCoordinate()
 self.landingspotcoord:UpdateFromCoordinate(self:_GetSternCoord())
-if self.carriertype==AIRBOSS.CarrierType.HERMES then
 local hdg=self:GetHeading()
-self.landingspotcoord:Translate(69,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-elseif self.carriertype==AIRBOSS.CarrierType.INVINCIBLE then
-local hdg=self:GetHeading()
-self.landingspotcoord:Translate(69,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-elseif self.carriertype==AIRBOSS.CarrierType.TARAWA then
-local hdg=self:GetHeading()
-self.landingspotcoord:Translate(57,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-elseif self.carriertype==AIRBOSS.CarrierType.AMERICA then
-local hdg=self:GetHeading()
-self.landingspotcoord:Translate(59,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-elseif self.carriertype==AIRBOSS.CarrierType.JCARLOS then
-local hdg=self:GetHeading()
-self.landingspotcoord:Translate(89,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-elseif self.carriertype==AIRBOSS.CarrierType.CANBERRA then
-local hdg=self:GetHeading()
-self.landingspotcoord:Translate(89,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
-end
+self.landingspotcoord:Translate(self.carrierparam.landingspot,hdg,true,true):SetAltitude(self.carrierparam.deckheight)
 return self.landingspotcoord
 end
 function AIRBOSS:GetHeading(magnetic)
@@ -52781,7 +52991,7 @@ return self:GetHeading(true)
 end
 function AIRBOSS:GetWind(alt,magnetic,coord)
 local cv=coord or self:GetCoordinate()
-local Wdir,Wspeed=cv:GetWind(alt or 15)
+local Wdir,Wspeed=cv:GetWind(alt or 18)
 if magnetic then
 Wdir=Wdir-self.magvar
 if Wdir<0 then
@@ -52797,7 +53007,7 @@ local xc=self.carrier:GetOrientationX()
 local zc=self.carrier:GetOrientationZ()
 xc=UTILS.Rotate2D(xc,-self.carrierparam.rwyangle)
 zc=UTILS.Rotate2D(zc,-self.carrierparam.rwyangle)
-local vw=cv:GetWindWithTurbulenceVec3(alt or 15)
+local vw=cv:GetWindWithTurbulenceVec3(alt or 18)
 local vT=UTILS.VecSubstract(vw,vc)
 local vpa=UTILS.VecDot(vT,xc)
 local vpp=UTILS.VecDot(vT,zc)
@@ -53011,7 +53221,7 @@ local TgrooveUnicorn=Tgroove and(Tgroove>=15.0 and Tgroove<=18.99)or false
 local TgrooveVstolUnicorn=Tgroove and(Tgroove>=60.0 and Tgroove<=65.0)and playerData.actype==AIRBOSS.AircraftCarrier.AV8B or false
 local grade
 local points
-if N==0 and(TgrooveUnicorn or TgrooveVstolUnicorn)then
+if N==0 and(TgrooveUnicorn or TgrooveVstolUnicorn or playerData.case==3)then
 grade="_OK_"
 points=5.0
 G="Unicorn"
@@ -53646,18 +53856,20 @@ mygrade.finalscore=Points
 end
 mygrade.case=playerData.case
 local windondeck=self:GetWindOnDeck()
-mygrade.wind=tostring(UTILS.Round(UTILS.MpsToKnots(windondeck),1))
+mygrade.wind=UTILS.Round(UTILS.MpsToKnots(windondeck),1)
 mygrade.modex=playerData.onboard
 mygrade.airframe=playerData.actype
 mygrade.carriertype=self.carriertype
 mygrade.carriername=self.alias
+mygrade.carrierrwy=self.carrierparam.rwyangle
 mygrade.theatre=self.theatre
-mygrade.mitime=UTILS.SecondsToClock(timer.getAbsTime())
+mygrade.mitime=UTILS.SecondsToClock(timer.getAbsTime(),true)
 mygrade.midate=UTILS.GetDCSMissionDate()
 mygrade.osdate="n/a"
 if os then
 mygrade.osdate=os.date()
 end
+playerData.grade=mygrade
 if playerData.trapon and self.trapsheet then
 self:_SaveTrapSheet(playerData,mygrade)
 end
@@ -54682,6 +54894,40 @@ wait=wait+call.duration
 end
 return wait
 end
+function AIRBOSS:_MarshallInboundCall(unit,modex)
+local vectorCarrier=self:GetCoordinate():GetDirectionVec3(unit:GetCoordinate())
+local bearing=UTILS.Round(unit:GetCoordinate():GetAngleDegrees(vectorCarrier),0)
+local distance=UTILS.Round(UTILS.MetersToNM(unit:GetCoordinate():Get2DDistance(self:GetCoordinate())),0)
+local angels=UTILS.Round(UTILS.MetersToFeet(unit:GetHeight()/1000),0)
+local state=UTILS.Round(self:_GetFuelState(unit)/1000,1)
+local text=string.format("Marshal, %s, marking mom's %d for %d, angels %d, state %.1f",modex,bearing,distance,angels,state)
+self:T(self.lid..text)
+local FS=UTILS.Split(string.format("%.1f",state),".")
+local inboundcall=self:_NewRadioCall(self.MarshalCall.CLICK,unit.UnitName:upper(),text,self.Tmessage,nil,unit.UnitName:upper())
+self:RadioTransmission(self.MarshalRadio,inboundcall)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.MARSHAL,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,modex,nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.MARKINGMOMS,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,tostring(bearing),nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.FOR,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,tostring(distance),nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.ANGELS,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,tostring(angels),nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.STATE,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,FS[1],nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.POINT,nil,nil,nil,nil,true)
+self:_Number2Radio(self.MarshalRadio,FS[2],nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.MarshalRadio.CLICK,nil,nil,nil,nil,true)
+end
+function AIRBOSS:_CommencingCall(unit,modex)
+local text=string.format("%s, commencing",modex)
+self:T(self.lid..text)
+local commencingCall=self:_NewRadioCall(self.MarshalCall.CLICK,unit.UnitName:upper(),text,self.Tmessage,nil,unit.UnitName:upper())
+self:RadioTransmission(self.MarshalRadio,commencingCall)
+self:_Number2Radio(self.MarshalRadio,modex,nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.PilotCall.COMMENCING,nil,nil,nil,nil,true)
+self:RadioTransmission(self.MarshalRadio,self.MarshalRadio.CLICK,nil,nil,nil,nil,true)
+end
 function AIRBOSS:_LSOCallAircraftBall(modex,nickname,fuelstate)
 local text=string.format("%s Ball, %.1f.",nickname,fuelstate)
 self:I(self.lid..text)
@@ -55029,6 +55275,9 @@ local _unit,_playername=self:_GetPlayerUnitAndName(_unitName)
 if _unit and _playername then
 local playerData=self.players[_playername]
 if playerData then
+if self.xtVoiceOvers then
+self:_MarshallInboundCall(_unit,playerData.onboard)
+end
 local inCCA=playerData.unit:IsInZone(self.zoneCCA)
 if inCCA then
 if self:_InQueue(self.Qmarshal,playerData.group)then
@@ -55149,6 +55398,9 @@ local _unit,_playername=self:_GetPlayerUnitAndName(_unitName)
 if _unit and _playername then
 local playerData=self.players[_playername]
 if playerData then
+if self.xtVoiceOvers then
+self:_CommencingCall(_unit,playerData.onboard)
+end
 local text=""
 local cleared=false
 if _unit:IsInZone(self.zoneCCA)then
@@ -56119,6 +56371,40 @@ self:T2({playername,self.playerscores[playername]})
 end
 local text=string.format("Loaded %d player LSO grades from file %s",n,filename)
 self:I(self.lid..text)
+end
+function AIRBOSS:onafterLSOGrade(From,Event,To,playerData,grade)
+if self.funkmanSocket then
+local trapsheet={};trapsheet.X={};trapsheet.Z={};trapsheet.AoA={};trapsheet.Alt={}
+for i=1,#playerData.trapsheet do
+local ts=playerData.trapsheet[i]
+table.insert(trapsheet.X,UTILS.Round(ts.X,1))
+table.insert(trapsheet.Z,UTILS.Round(ts.Z,1))
+table.insert(trapsheet.AoA,UTILS.Round(ts.AoA,2))
+table.insert(trapsheet.Alt,UTILS.Round(ts.Alt,1))
+end
+local result={}
+result.command=SOCKET.DataType.LSOGRADE
+result.name=playerData.name
+result.trapsheet=trapsheet
+result.airframe=grade.airframe
+result.mitime=grade.mitime
+result.midate=grade.midate
+result.wind=grade.wind
+result.carriertype=grade.carriertype
+result.carriername=grade.carriername
+result.carrierrwy=grade.carrierrwy
+result.landingdist=self.carrierparam.landingdist
+result.theatre=grade.theatre
+result.case=playerData.case
+result.Tgroove=grade.Tgroove
+result.wire=grade.wire
+result.grade=grade.grade
+result.points=grade.points
+result.details=grade.details
+self:T(self.lid.."Result onafterLSOGrade")
+self:T(result)
+self.funkmanSocket:SendTable(result)
+end
 end
 RECOVERYTANKER={
 ClassName="RECOVERYTANKER",
@@ -57218,6 +57504,8 @@ altimeterQNH=nil,
 usemarker=nil,
 markerid=nil,
 relHumidity=nil,
+ReportmBar=false,
+TransmitOnlyWithPlayers=false,
 }
 ATIS.Alphabet={
 [1]="Alfa",
@@ -57345,7 +57633,7 @@ RSBNChannel={filename="RSBNChannel.ogg",duration=1.14},
 Zulu={filename="Zulu.ogg",duration=0.62},
 }
 _ATIS={}
-ATIS.version="0.9.8"
+ATIS.version="0.9.10"
 function ATIS:New(AirbaseName,Frequency,Modulation)
 local self=BASE:Inherit(self,FSM:New())
 self.airbasename=AirbaseName
@@ -57368,6 +57656,7 @@ self:SetAltimeterQNH(true)
 self:SetMapMarks(false)
 self:SetRelativeHumidity()
 self:SetQueueUpdateTime()
+self:SetReportmBar(false)
 self:SetStartState("Stopped")
 self:AddTransition("Stopped","Start","Running")
 self:AddTransition("*","Status","*")
@@ -57395,8 +57684,30 @@ end
 self.towerfrequency=freqs
 return self
 end
+function ATIS:SetTransmitOnlyWithPlayers(Switch)
+self.TransmitOnlyWithPlayers=Switch
+if self.msrsQ then
+self.msrsQ:SetTransmitOnlyWithPlayers(Switch)
+end
+return self
+end
 function ATIS:SetActiveRunway(runway)
 self.activerunway=tostring(runway)
+local prefer=nil
+if string.find(string.lower(runway),"l")then
+prefer=true
+elseif string.find(string.lower(runway),"r")then
+prefer=false
+end
+self.airbase:SetActiveRunway(runway,prefer)
+return self
+end
+function ATIS:SetActiveRunwayLanding(runway,preferleft)
+self.airbase:SetActiveRunwayLanding(runway,preferleft)
+return self
+end
+function ATIS:SetActiveRunwayTakeoff(runway,preferleft)
+self.airbase:SetActiveRunwayTakeoff(runway,preferleft)
 return self
 end
 function ATIS:SetRunwayLength()
@@ -57483,6 +57794,18 @@ self.altimeterQNH=false
 end
 return self
 end
+function ATIS:SetReportmBar(switch)
+if switch==true or switch==nil then
+self.ReportmBar=true
+else
+self.ReportmBar=false
+end
+return self
+end
+function ATIS:SetAdditionalInformation(text)
+self.AdditionalInformation=text
+return self
+end
 function ATIS:ReportQNHOnly()
 self.qnhonly=true
 return self
@@ -57556,7 +57879,7 @@ airbase:GetRunwayData(self.runwaym2t,true)
 end
 end
 end
-function ATIS:SetSRS(PathToSRS,Gender,Culture,Voice,Port)
+function ATIS:SetSRS(PathToSRS,Gender,Culture,Voice,Port,GoogleKey)
 if PathToSRS then
 self.useSRS=true
 self.msrs=MSRS:New(PathToSRS,self.frequency,self.modulation)
@@ -57566,7 +57889,9 @@ self.msrs:SetVoice(Voice)
 self.msrs:SetPort(Port)
 self.msrs:SetCoalition(self:GetCoalition())
 self.msrs:SetLabel("ATIS")
+self.msrs:SetGoogle(GoogleKey)
 self.msrsQ=MSRSQUEUE:New("ATIS")
+self.msrsQ:SetTransmitOnlyWithPlayers(self.TransmitOnlyWithPlayers)
 if self.dTQueueCheck<=10 then
 self:SetQueueUpdateTime(90)
 end
@@ -57659,6 +57984,8 @@ local A=(T0/L)*((P/q)^(((-R*L)/(g*M)))-1)
 self:T2(self.lid..string.format("height=%.1f, A=%.1f, T0=%.1f, QFE=%.1f, QNH=%.1f, P=%.1f, Q=%.1f hPa = %.2f",height,A,T0-273.15,qfe,qnh,P/100,Q/100,UTILS.hPa2inHg(Q/100)))
 qnh=Q/100
 end
+local mBarqnh=qnh
+local mBarqfe=qfe
 if self.PmmHg then
 qfe=UTILS.hPa2mmHg(qfe)
 qnh=UTILS.hPa2mmHg(qnh)
@@ -57974,6 +58301,7 @@ self:Transmission(ATIS.Sound.StatuteMiles,0.2)
 end
 end
 alltext=alltext..";\n"..subtitle
+subtitle=""
 local wp=false
 local wpsub=""
 if precepitation==1 then
@@ -58066,6 +58394,7 @@ end
 end
 end
 alltext=alltext..";\n"..subtitle
+subtitle=""
 if self.TDegF then
 if temperature<0 then
 subtitle=string.format("Temperature -%s °F",TEMPERATURE)
@@ -58139,6 +58468,13 @@ subtitle=string.format("Altimeter %s.%s inHg",QNH[1],QNH[2])
 else
 subtitle=string.format("Altimeter: QNH %s.%s, QFE %s.%s inHg",QNH[1],QNH[2],QFE[1],QFE[2])
 end
+end
+end
+if self.ReportmBar and not self.metric then
+if self.qnhonly then
+subtitle=string.format("%s;\nAltimeter %d hPa",subtitle,mBarqnh)
+else
+subtitle=string.format("%s;\nAltimeter: QNH %d, QFE %d hPa",subtitle,mBarqnh,mBarqfe)
 end
 end
 local _ALTIMETER=subtitle
@@ -58364,6 +58700,9 @@ self:Transmission(ATIS.Sound.PRMGChannel,1.0,subtitle)
 self.radioqueue:Number2Transmission(tostring(ndb.frequency),nil,0.5)
 end
 alltext=alltext..";\n"..subtitle
+end
+if self.useSRS and self.AdditionalInformation then
+alltext=alltext..";\n"..self.AdditionalInformation
 end
 subtitle=string.format("Advise on initial contact, you have information %s",NATO)
 if not self.useSRS then
@@ -61947,6 +62286,7 @@ limitmaxdownedpilots=true,
 maxdownedpilots=10,
 allheligroupset=nil,
 topmenuname="CSAR",
+ADFRadioPwr=1000,
 }
 CSAR.AircraftType={}
 CSAR.AircraftType["SA342Mistral"]=2
@@ -61962,7 +62302,7 @@ CSAR.AircraftType["Bell-47"]=2
 CSAR.AircraftType["UH-60L"]=10
 CSAR.AircraftType["AH-64D_BLK_II"]=2
 CSAR.AircraftType["Bronco-OV-10A"]=2
-CSAR.version="1.0.9"
+CSAR.version="1.0.11"
 function CSAR:New(Coalition,Template,Alias)
 local self=BASE:Inherit(self,FSM:New())
 if Coalition and type(Coalition)=="string"then
@@ -62063,6 +62403,7 @@ self.csarUsePara=false
 self.wetfeettemplate=nil
 self.usewetfeet=false
 self.allowbronco=false
+self.ADFRadioPwr=1000
 self.useSRS=false
 self.SRSPath="E:\\Program Files\\DCS-SimpleRadio-Standalone"
 self.SRSchannel=300
@@ -63113,7 +63454,7 @@ if _radioUnit then
 local Frequency=_freq
 local Sound="l10n/DEFAULT/"..self.radioSound
 local vec3=_radioUnit:GetVec3()or _radioUnit:GetPositionVec3()or{x=0,y=0,z=0}
-trigger.action.radioTransmission(Sound,vec3,0,false,Frequency,1000)
+trigger.action.radioTransmission(Sound,vec3,0,false,Frequency,self.ADFRadioPwr or 1000)
 end
 end
 return self
@@ -72685,91 +73026,91 @@ Microsoft={
 },
 Google={
 Standard={
-["en-AU-Standard-A"]='en-AU-Standard-A',
-["en-AU-Standard-B"]='en-AU-Standard-B',
-["en-AU-Standard-C"]='en-AU-Standard-C',
-["en-AU-Standard-D"]='en-AU-Standard-D',
-["en-IN-Standard-A"]='en-IN-Standard-A',
-["en-IN-Standard-B"]='en-IN-Standard-B',
-["en-IN-Standard-C"]='en-IN-Standard-C',
-["en-IN-Standard-D"]='en-IN-Standard-D',
-["en-GB-Standard-A"]='en-GB-Standard-A',
-["en-GB-Standard-B"]='en-GB-Standard-B',
-["en-GB-Standard-C"]='en-GB-Standard-C',
-["en-GB-Standard-D"]='en-GB-Standard-D',
-["en-GB-Standard-F"]='en-GB-Standard-F',
-["en-US-Standard-A"]='en-US-Standard-A',
-["en-US-Standard-B"]='en-US-Standard-B',
-["en-US-Standard-C"]='en-US-Standard-C',
-["en-US-Standard-D"]='en-US-Standard-D',
-["en-US-Standard-E"]='en-US-Standard-E',
-["en-US-Standard-F"]='en-US-Standard-F',
-["en-US-Standard-G"]='en-US-Standard-G',
-["en-US-Standard-H"]='en-US-Standard-H',
-["en-US-Standard-I"]='en-US-Standard-I',
-["en-US-Standard-J"]='en-US-Standard-J',
-["fr-FR-Standard-A"]="fr-FR-Standard-A",
-["fr-FR-Standard-B"]="fr-FR-Standard-B",
-["fr-FR-Standard-C"]="fr-FR-Standard-C",
-["fr-FR-Standard-D"]="fr-FR-Standard-D",
-["fr-FR-Standard-E"]="fr-FR-Standard-E",
-["de-DE-Standard-A"]="de-DE-Standard-A",
-["de-DE-Standard-B"]="de-DE-Standard-B",
-["de-DE-Standard-C"]="de-DE-Standard-C",
-["de-DE-Standard-D"]="de-DE-Standard-D",
-["de-DE-Standard-E"]="de-DE-Standard-E",
-["de-DE-Standard-F"]="de-DE-Standard-F",
-["es-ES-Standard-A"]="es-ES-Standard-A",
-["es-ES-Standard-B"]="es-ES-Standard-B",
-["es-ES-Standard-C"]="es-ES-Standard-C",
-["es-ES-Standard-D"]="es-ES-Standard-D",
-["it-IT-Standard-A"]="it-IT-Standard-A",
-["it-IT-Standard-B"]="it-IT-Standard-B",
-["it-IT-Standard-C"]="it-IT-Standard-C",
-["it-IT-Standard-D"]="it-IT-Standard-D",
+["en_AU_Standard_A"]='en-AU-Standard-A',
+["en_AU_Standard_B"]='en-AU-Standard-B',
+["en_AU_Standard_C"]='en-AU-Standard-C',
+["en_AU_Standard_D"]='en-AU-Standard-D',
+["en_IN_Standard_A"]='en-IN-Standard-A',
+["en_IN_Standard_B"]='en-IN-Standard-B',
+["en_IN_Standard_C"]='en-IN-Standard-C',
+["en_IN_Standard_D"]='en-IN-Standard-D',
+["en_GB_Standard_A"]='en-GB-Standard-A',
+["en_GB_Standard_B"]='en-GB-Standard-B',
+["en_GB_Standard_C"]='en-GB-Standard-C',
+["en_GB_Standard_D"]='en-GB-Standard-D',
+["en_GB_Standard_F"]='en-GB-Standard-F',
+["en_US_Standard_A"]='en-US-Standard-A',
+["en_US_Standard_B"]='en-US-Standard-B',
+["en_US_Standard_C"]='en-US-Standard-C',
+["en_US_Standard_D"]='en-US-Standard-D',
+["en_US_Standard_E"]='en-US-Standard-E',
+["en_US_Standard_F"]='en-US-Standard-F',
+["en_US_Standard_G"]='en-US-Standard-G',
+["en_US_Standard_H"]='en-US-Standard-H',
+["en_US_Standard_I"]='en-US-Standard-I',
+["en_US_Standard_J"]='en-US-Standard-J',
+["fr_FR_Standard_A"]="fr-FR-Standard-A",
+["fr_FR_Standard_B"]="fr-FR-Standard-B",
+["fr_FR_Standard_C"]="fr-FR-Standard-C",
+["fr_FR_Standard_D"]="fr-FR-Standard-D",
+["fr_FR_Standard_E"]="fr-FR-Standard-E",
+["de_DE_Standard_A"]="de-DE-Standard-A",
+["de_DE_Standard_B"]="de-DE-Standard-B",
+["de_DE_Standard_C"]="de-DE-Standard-C",
+["de_DE_Standard_D"]="de-DE-Standard-D",
+["de_DE_Standard_E"]="de-DE-Standard-E",
+["de_DE_Standard_F"]="de-DE-Standard-F",
+["es_ES_Standard_A"]="es-ES-Standard-A",
+["es_ES_Standard_B"]="es-ES-Standard-B",
+["es_ES_Standard_C"]="es-ES-Standard-C",
+["es_ES_Standard_D"]="es-ES-Standard-D",
+["it_IT_Standard_A"]="it-IT-Standard-A",
+["it_IT_Standard_B"]="it-IT-Standard-B",
+["it_IT_Standard_C"]="it-IT-Standard-C",
+["it_IT_Standard_D"]="it-IT-Standard-D",
 },
 Wavenet={
-["en-AU-Wavenet-A"]='en-AU-Wavenet-A',
-["en-AU-Wavenet-B"]='en-AU-Wavenet-B',
-["en-AU-Wavenet-C"]='en-AU-Wavenet-C',
-["en-AU-Wavenet-D"]='en-AU-Wavenet-D',
-["en-IN-Wavenet-A"]='en-IN-Wavenet-A',
-["en-IN-Wavenet-B"]='en-IN-Wavenet-B',
-["en-IN-Wavenet-C"]='en-IN-Wavenet-C',
-["en-IN-Wavenet-D"]='en-IN-Wavenet-D',
-["en-GB-Wavenet-A"]='en-GB-Wavenet-A',
-["en-GB-Wavenet-B"]='en-GB-Wavenet-B',
-["en-GB-Wavenet-C"]='en-GB-Wavenet-C',
-["en-GB-Wavenet-D"]='en-GB-Wavenet-D',
-["en-GB-Wavenet-F"]='en-GB-Wavenet-F',
-["en-US-Wavenet-A"]='en-US-Wavenet-A',
-["en-US-Wavenet-B"]='en-US-Wavenet-B',
-["en-US-Wavenet-C"]='en-US-Wavenet-C',
-["en-US-Wavenet-D"]='en-US-Wavenet-D',
-["en-US-Wavenet-E"]='en-US-Wavenet-E',
-["en-US-Wavenet-F"]='en-US-Wavenet-F',
-["en-US-Wavenet-G"]='en-US-Wavenet-G',
-["en-US-Wavenet-H"]='en-US-Wavenet-H',
-["en-US-Wavenet-I"]='en-US-Wavenet-I',
-["en-US-Wavenet-J"]='en-US-Wavenet-J',
-["fr-FR-Wavenet-A"]="fr-FR-Wavenet-A",
-["fr-FR-Wavenet-B"]="fr-FR-Wavenet-B",
-["fr-FR-Wavenet-C"]="fr-FR-Wavenet-C",
-["fr-FR-Wavenet-D"]="fr-FR-Wavenet-D",
-["fr-FR-Wavenet-E"]="fr-FR-Wavenet-E",
-["de-DE-Wavenet-A"]="de-DE-Wavenet-A",
-["de-DE-Wavenet-B"]="de-DE-Wavenet-B",
-["de-DE-Wavenet-C"]="de-DE-Wavenet-C",
-["de-DE-Wavenet-D"]="de-DE-Wavenet-D",
-["de-DE-Wavenet-E"]="de-DE-Wavenet-E",
-["de-DE-Wavenet-F"]="de-DE-Wavenet-F",
-["es-ES-Wavenet-B"]="es-ES-Wavenet-B",
-["es-ES-Wavenet-C"]="es-ES-Wavenet-C",
-["es-ES-Wavenet-D"]="es-ES-Wavenet-D",
-["it-IT-Wavenet-A"]="it-IT-Wavenet-A",
-["it-IT-Wavenet-B"]="it-IT-Wavenet-B",
-["it-IT-Wavenet-C"]="it-IT-Wavenet-C",
-["it-IT-Wavenet-D"]="it-IT-Wavenet-D",
+["en_AU_Wavenet_A"]='en-AU-Wavenet-A',
+["en_AU_Wavenet_B"]='en-AU-Wavenet-B',
+["en_AU_Wavenet_C"]='en-AU-Wavenet-C',
+["en_AU_Wavenet_D"]='en-AU-Wavenet-D',
+["en_IN_Wavenet_A"]='en-IN-Wavenet-A',
+["en_IN_Wavenet_B"]='en-IN-Wavenet-B',
+["en_IN_Wavenet_C"]='en-IN-Wavenet-C',
+["en_IN_Wavenet_D"]='en-IN-Wavenet-D',
+["en_GB_Wavenet_A"]='en-GB-Wavenet-A',
+["en_GB_Wavenet_B"]='en-GB-Wavenet-B',
+["en_GB_Wavenet_C"]='en-GB-Wavenet-C',
+["en_GB_Wavenet_D"]='en-GB-Wavenet-D',
+["en_GB_Wavenet_F"]='en-GB-Wavenet-F',
+["en_US_Wavenet_A"]='en-US-Wavenet-A',
+["en_US_Wavenet_B"]='en-US-Wavenet-B',
+["en_US_Wavenet_C"]='en-US-Wavenet-C',
+["en_US_Wavenet_D"]='en-US-Wavenet-D',
+["en_US_Wavenet_E"]='en-US-Wavenet-E',
+["en_US_Wavenet_F"]='en-US-Wavenet-F',
+["en_US_Wavenet_G"]='en-US-Wavenet-G',
+["en_US_Wavenet_H"]='en-US-Wavenet-H',
+["en_US_Wavenet_I"]='en-US-Wavenet-I',
+["en_US_Wavenet_J"]='en-US-Wavenet-J',
+["fr_FR_Wavenet_A"]="fr-FR-Wavenet-A",
+["fr_FR_Wavenet_B"]="fr-FR-Wavenet-B",
+["fr_FR_Wavenet_C"]="fr-FR-Wavenet-C",
+["fr_FR_Wavenet_D"]="fr-FR-Wavenet-D",
+["fr_FR_Wavenet_E"]="fr-FR-Wavenet-E",
+["de_DE_Wavenet_A"]="de-DE-Wavenet-A",
+["de_DE_Wavenet_B"]="de-DE-Wavenet-B",
+["de_DE_Wavenet_C"]="de-DE-Wavenet-C",
+["de_DE_Wavenet_D"]="de-DE-Wavenet-D",
+["de_DE_Wavenet_E"]="de-DE-Wavenet-E",
+["de_DE_Wavenet_F"]="de-DE-Wavenet-F",
+["es_ES_Wavenet_B"]="es-ES-Wavenet-B",
+["es_ES_Wavenet_C"]="es-ES-Wavenet-C",
+["es_ES_Wavenet_D"]="es-ES-Wavenet-D",
+["it_IT_Wavenet_A"]="it-IT-Wavenet-A",
+["it_IT_Wavenet_B"]="it-IT-Wavenet-B",
+["it_IT_Wavenet_C"]="it-IT-Wavenet-C",
+["it_IT_Wavenet_D"]="it-IT-Wavenet-D",
 },
 },
 }
@@ -73006,7 +73347,7 @@ port=port or self.port
 label=label or self.Label
 modus=modus:gsub("0","AM")
 modus=modus:gsub("1","FM")
-local command=string.format('"%s\\%s" -f %s -m %s -c %s -p %s -n "%s" -v "%.1f"',path,exe,freqs,modus,coal,port,label,volume)
+local command=string.format('"%s\\%s" -f "%s" -m "%s" -c %s -p %s -n "%s" -v "%.1f"',path,exe,freqs,modus,coal,port,label,volume)
 if voice then
 command=command..string.format(" --voice=\"%s\"",tostring(voice))
 else
@@ -73058,7 +73399,24 @@ self:_CheckRadioQueue()
 end
 return self
 end
+function MSRSQUEUE:SetTransmitOnlyWithPlayers(Switch)
+self.TransmitOnlyWithPlayers=Switch
+if Switch==false or Switch==nil then
+if self.PlayerSet then
+self.PlayerSet:FilterStop()
+end
+self.PlayerSet=nil
+else
+self.PlayerSet=SET_CLIENT:New():FilterStart()
+end
+return self
+end
 function MSRSQUEUE:NewTransmission(text,duration,msrs,tstart,interval,subgroups,subtitle,subduration,frequency,modulation)
+if self.TransmitOnlyWithPlayers then
+if self.PlayerSet and self.PlayerSet:CountAlive()==0 then
+return self
+end
+end
 if not text then
 self:E(self.lid.."ERROR: No text specified.")
 return nil
@@ -77269,6 +77627,18 @@ __na=true
 end
 if __na then
 BASE:I("Check <DCS install folder>/Scripts/MissionScripting.lua and comment out the lines with sanitizeModule(''). Use at your own risk!)")
+end
+BASE.ServerName="Unknown"
+if lfs and loadfile then
+local serverfile=lfs.writedir()..'Config/serverSettings.lua'
+if UTILS.FileExists(serverfile)then
+loadfile(serverfile)()
+if cfg and cfg.name then
+BASE.ServerName=cfg.name
+end
+end
+BASE.ServerName=BASE.ServerName or"Unknown"
+BASE:I("Server Name: "..tostring(BASE.ServerName))
 end
 BASE:TraceOnOff(false)
 env.info('*** MOOSE INCLUDE END *** ')
