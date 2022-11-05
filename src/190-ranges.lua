@@ -11,15 +11,19 @@ for index, rangeconfig in ipairs(RangeConfig) do
         compteur = compteur + 1
         env.info('creation Range : '.. rangeconfig.name..'...')
         RangesArray[compteur] = {
-            customconfig = rangeconfig
+            customconfig = rangeconfig,
+            RangeRootMenu = {},
+            SubRangeMenus = {},
         }
         if (rangeconfig.benefit_coalition == coalition.side.BLUE) then
-            local radioMenuForRange   =  MENU_COALITION:New( coalition.side.BLUE, rangeconfig.name , mainRadioMenuForRangesBlue)
-            for index, subRangeConfig in ipairs(rangeconfig.subRange) do
-                local radioMenuSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subRangeConfig.name,   radioMenuForRange)
+            RangesArray[compteur].RangeRootMenu = MENU_COALITION:New( coalition.side.BLUE, rangeconfig.name , mainRadioMenuForRangesBlue)
+            local radioMenuForRange = RangesArray[compteur].RangeRootMenu
+            for indexsubRange, subRangeConfig in ipairs(rangeconfig.subRange) do
+                RangesArray[compteur].SubRangeMenus[indexsubRange] = MENU_COALITION:New(rangeconfig.benefit_coalition, subRangeConfig.name, radioMenuForRange)
+                local radioMenuSubRange = RangesArray[compteur].SubRangeMenus[indexsubRange]
                 if (subRangeConfig.subsubRange ~= nil) then
-                    for index, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
-                        local radioMenuSubSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name,   radioMenuSubRange)
+                    for indexSubSubRange, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
+                        local radioMenuSubSubRange = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name, radioMenuSubRange)
                         addSubRangeRadioMenus(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
                     end
                 else
@@ -28,12 +32,12 @@ for index, rangeconfig in ipairs(RangeConfig) do
             end
             AddWholeRangeCoalitionCommandMenus(radioMenuForRange, rangeconfig)
         else
-            local radioMenuForRange   =  MENU_COALITION:New( coalition.side.RED, rangeconfig.name , mainRadioMenuForRangesRed)
+            local radioMenuForRange = MENU_COALITION:New( coalition.side.RED, rangeconfig.name , mainRadioMenuForRangesRed)
             for index, subRangeConfig in ipairs(rangeconfig.subRange) do
-                local radioMenuSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subRangeConfig.name,   radioMenuForRange)
+                local radioMenuSubRange = MENU_COALITION:New(rangeconfig.benefit_coalition, subRangeConfig.name, radioMenuForRange)
                 if (subRangeConfig.subsubRange ~= nil) then
                     for index, subsubRangeConfig in ipairs(subRangeConfig.subsubRange) do
-                        local radioMenuSubSubRange     = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name,   radioMenuSubRange)
+                        local radioMenuSubSubRange = MENU_COALITION:New(rangeconfig.benefit_coalition, subsubRangeConfig.name, radioMenuSubRange)
                         addSubRangeRadioMenus(radioMenuSubSubRange, rangeconfig, subsubRangeConfig)
                     end
                 else

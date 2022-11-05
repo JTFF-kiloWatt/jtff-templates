@@ -617,10 +617,9 @@ for index, skynetconfig in ipairs(SkynetConfig) do
                 hard = false,
                 extreme = false,
             },
-            IADSNetworkRunning = false
+            IADSNetworkRunning = false,
+            radioMenuForSkynet = MENU_MISSION:New(skynetconfig.name , mainRadioMenuForSkynet)
         }
-        local radioMenuForSkynet = nil
-        radioMenuForSkynet =  MENU_MISSION:New(skynetconfig.name , mainRadioMenuForSkynet)
-        manageIADSNetworkMenu(radioMenuForSkynet, skynetconfig, compteur)
+        manageIADSNetworkMenu(IADSArray[compteur].radioMenuForSkynet, skynetconfig, compteur)
     end
 end

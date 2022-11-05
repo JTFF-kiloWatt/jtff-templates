@@ -33,12 +33,12 @@ AirBossConfig = {
             marshall = 127.5,
             lso = 127.4
         },
-        infintepatrol = true,
+        infinitepatrol = true,
         controlarea = 65,
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
-        difficulty = AIRBOSS.Difficulty.NORMAL,
+        difficulty = AIRBOSS.Difficulty.HARD,
         menurecovery = {
             enable = true,
             duration = 30,
@@ -121,12 +121,12 @@ AirBossConfig = {
             marshall = 126.5,
             lso = 126.4
         },
-        infintepatrol = true,
+        infinitepatrol = true,
         controlarea = 65,
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
-        difficulty = AIRBOSS.Difficulty.NORMAL,
+        difficulty = AIRBOSS.Difficulty.HARD,
         menurecovery = {
             enable = true,
             duration = 30,
@@ -177,12 +177,12 @@ AirBossConfig = {
             marshall = 251.95,
             lso = 251.85
         },
-        infintepatrol = true,
+        infinitepatrol = true,
         controlarea = 50,
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
-        difficulty = AIRBOSS.Difficulty.NORMAL,
+        difficulty = AIRBOSS.Difficulty.HARD,
         menurecovery = {
             enable = true,
             duration = 30,
@@ -193,6 +193,10 @@ AirBossConfig = {
         releayunit = {
             marshall = 'MarshallRelay-3',
             lso = 'LSORelay-3',
+        },
+        voices = {
+            marshall = 'Gabriella', --Gabriella , FF or Raynor
+            lso = 'Raynor' --FF or Raynor
         },
         singlecarrier = false,
         operationsstatspath = "C:/airboss-stats",

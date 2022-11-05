@@ -11,6 +11,10 @@ TNT 737 - 3242
 
 
 Naval Ops:
-* CVN71 - 71X - ICLS11 - DL4=336.10Mhz
+* CVN71 - 71X - ICLS11 - DL4=336.00Mhz
 * AIRBOSS Activé : https://flightcontrol-master.github.io/MOOSE_DOCS/Documentation/Ops.Airboss.html
-* Shell-1-1 - Basket - 104Y - FL80
+* Shell-1-1 - Basket - 100Y - FL80
+
+* LHA-1 - 51X - ICLS20
+* AIRBOSS Activé : https://flightcontrol-master.github.io/MOOSE_DOCS/Documentation/Ops.Airboss.html
+* Shell-7-1 - Basket - 101Y - FL80

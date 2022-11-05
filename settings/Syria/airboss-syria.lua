@@ -33,7 +33,7 @@ AirBossConfig = {
             marshall = 127.5,
             lso = 127.4
         },
-        infintepatrol = true,
+        infinitepatrol = true,
         controlarea = 65,
         recoverycase = 1,
         maxpatterns = 5,
@@ -120,7 +120,7 @@ AirBossConfig = {
             marshall = 126.5,
             lso = 126.4
         },
-        infintepatrol = true,
+        infinitepatrol = true,
         controlarea = 65,
         recoverycase = 1,
         maxpatterns = 5,

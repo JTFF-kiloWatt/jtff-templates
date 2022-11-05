@@ -1,10 +1,30 @@
 -- *****************************************************************************
 -- *                           Mission functions                               *
 -- *****************************************************************************
+
+
 --
 -- Generic Spawn object functions
 --
 env.info('JTFF-SHAREDLIB: shared library loading...')
+
+DEBUG_MSG = false
+DEBUG_SQ_MSG = false
+DEBUG_DETECT_MSG = false
+
+spawnStandardDelay = 15
+
+sead = SEAD:New({})
+map_marker = {}
+
+AAMAxRange = {
+    MAX_RANGE = 0,
+    NEZ_RANGE = 1,
+    HALF_WAY_RMAX_NEZ = 2,
+    TARGET_THREAT_EST = 3,
+    RANDOM_RANGE = 4,
+}
+
 
 function debug_msg(message)
     if DEBUG_MSG then
@@ -212,33 +232,32 @@ function taskTankerEscort(param)
     EscortGroup:OptionRTBBingoFuel(true)
     local randomCoord = EscortGroup
             :GetCoordinate()
-            :GetRandomCoordinateInRadius( 50000, 30000 )
+            :GetRandomCoordinateInRadius( UTILS.NMToMeters(30), UTILS.NMToMeters(20) )
     randomCoord.y = 8000
     --randomCoord:MarkToAll('rejointe '..EscortGroup.GroupName)
-    local escortTask = EscortGroup:TaskEscort(
-            GROUP:FindByName(recoveryTankerObject.tanker.GroupName),
-            POINT_VEC3:New(0, 10, 150):GetVec3(),
-            20,
-            40 * 1800,
-            { 'Air' }
-    )
-    local randomWaypoint = randomCoord:WaypointAirTurningPoint(
-            COORDINATE.WaypointAltType.BARO,
-            500,
-            {escortTask},
-            'escort-start'
-    )
     EscortGroup:Route(
             {
-                EscortGroup:GetCoordinate():WaypointAir(
+                randomCoord:WaypointAirTurningPoint(
                         COORDINATE.WaypointAltType.BARO,
-                        COORDINATE.WaypointType.TurningPoint,
-                        COORDINATE.WaypointAction.TurningPoint,
-                        500
+                        500,
+                        {},
+                        'rejoin'
                 ),
-                randomWaypoint
-            },
-            1
+                randomCoord:GetRandomCoordinateInRadius( UTILS.NMToMeters(15), UTILS.NMToMeters(10) ):WaypointAirTurningPoint(
+                        COORDINATE.WaypointAltType.BARO,
+                        500,
+                        {
+                            EscortGroup:TaskEscort(
+                                    GROUP:FindByName(recoveryTankerObject.tanker.GroupName),
+                                    POINT_VEC3:New(0, 10, 150):GetVec3(),
+                                    20,
+                                    UTILS.NMToMeters(40),
+                                    { 'Air' }
+                            )
+                        },
+                        'escort-start'
+                )
+            }
     )
     env.info('Escort group spawned : '.. EscortGroup.GroupName..'. Escorting '..recoveryTankerObject.tanker.GroupName)
 end
@@ -595,22 +614,33 @@ end
 
 function SpawnRangesDelay(param)
     --parameters :
-    --           1 : parent Radion Menu
+    --           1 : parent Radio Menu
     --           2 : Root range config Object
     --           3 : subRange config Object
     --           4 : delay in s before sub (or subsub) range spawn
     --           5 : function calling me (No Idea why we need that)
     --           6 : boolean for sound warning play
+    --           7 : boolean for message warning
     local rangeConfig = param[2]
     local subRangeConfig = param[3]
-    local delay = param[4] or 10
+    local delay = param[4] or spawnStandardDelay
     local myfunc = param[5]
-    if ( param[6] ) then
-        sound2Bip:ToAll()
+    local sound_warning = true
+    if (type(param[6]) ~= nil) then
+        sound_warning = param[6]
     end
+    local message_warning = true
+    if (type(param[7]) ~= nil) then
+        message_warning = param[7]
+    end
+    if ( sound_warning ) then
+    sound2Bip:ToAll()
+    end
+    if ( message_warning ) then
     MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToAll()
+    end
     TIMER:New(SpawnRanges, param):Start(delay)
-end
+    end
 
 function SpawnWholeRangesDelay(param)
     --parameters :
@@ -619,10 +649,19 @@ function SpawnWholeRangesDelay(param)
     --           3 : delay in s before sub (or subsub) range spawn
     --           4 : function calling me (No Idea why we need that)
     --           5 : boolean for sound warning play
+    --           6 : boolean for message warning
     local parentRangeMenu = param[1]
     local rangeConfig = param[2]
-    local delay = param[3] or 10
+    local delay = param[3] or spawnStandardDelay
     local myfunc = param[4]
+    local sound_warning = true
+    if (type(param[5]) ~= nil) then
+        sound_warning = param[5]
+    end
+    local message_warning = true
+    if (type(param[6]) ~= nil) then
+        message_warning = param[6]
+    end
     parentRangeMenu:RemoveSubMenus()
     if (rangeConfig.subRange) then
         sound2Bip:ToAll()
@@ -639,10 +678,30 @@ function SpawnWholeRangesDelay(param)
                             subsubRangeConfig.name,
                             radioMenuSubRange
                     )
-                    SpawnRangesDelay({radioMenuSubSubRange,rangeConfig,subsubRangeConfig,delay,myfunc,false})
+                    SpawnRangesDelay(
+                            {
+                                radioMenuSubSubRange,
+                                rangeConfig,
+                                subsubRangeConfig,
+                                delay,
+                                myfunc,
+                                sound_warning,
+                                message_warning
+                            }
+                    )
                 end
             else
-                SpawnRangesDelay({radioMenuSubRange,rangeConfig,subRangeConfig,delay,myfunc, false})
+                SpawnRangesDelay(
+                        {
+                            radioMenuSubRange,
+                            rangeConfig,
+                            subRangeConfig,
+                            delay,
+                            myfunc,
+                            sound_warning,
+                            message_warning
+                        }
+                )
             end
         end
         local CommandZoneDetroy = MENU_COALITION_COMMAND:New(
@@ -659,6 +718,11 @@ function SpawnWholeRangesDelay(param)
 end
 
 function SpawnRanges(param)
+    --parameters :
+    --           1 : parent Radio Menu
+    --           2 : Root range config Object
+    --           3 : subRange config Object
+
     local radioCommandSubRange = param[1]
     local rangeConfig = param[2]
     local rangeName = rangeConfig.name
@@ -759,7 +823,7 @@ function SpawnRanges(param)
     local CommandZoneList = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "List Units",
             radioCommandSubRange, giveListOfUnitsAliveInGroup, {groupsToSpawn, rangeConfig.benefit_coalition, 5})
     MESSAGE:NewType(string.format("Units in range %s(%s) in place", rangeName, subRangeName), MESSAGE.Type.Information)
-           :ToBlue()
+           :ToCoalition(rangeConfig.benefit_coalition)
     markGroupOnMap({groupsToSpawn, rangeConfig.benefit_coalition})
 end
 
@@ -825,8 +889,7 @@ function addSubRangeRadioMenus(radioCommandSubRange, rangeConfig, subRangeConfig
                 rangeConfig,
                 subRangeConfig,
                 spawnStandardDelay,
-                addSubRangeRadioMenus,
-                true
+                addSubRangeRadioMenus
             }
     )
 end
@@ -900,22 +963,8 @@ function getSoundFilesPrefix()
     return strPrefix
 end
 
-DEBUG_MSG = false
-DEBUG_SQ_MSG = false
-DEBUG_DETECT_MSG = false
 
-spawnStandardDelay = 15
-
-sead = SEAD:New({})
-map_marker = {}
 soundFilesPrefix = getSoundFilesPrefix()
 
-AAMAxRange = {
-    MAX_RANGE = 0,
-    NEZ_RANGE = 1,
-    HALF_WAY_RMAX_NEZ = 2,
-    TARGET_THREAT_EST = 3,
-    RANDOM_RANGE = 4,
-}
 
 env.info('JTFF-SHAREDLIB: shared library loaded succesfully')

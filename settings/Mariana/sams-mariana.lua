@@ -1,2 +1,1 @@
-SamsConfig = {
-}
+SamsConfig = {}

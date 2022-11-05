@@ -1,15 +1,20 @@
--- *****************************************************************************
--- *                         RAT settings                                      *
--- *****************************************************************************
+-- AVAILABLE GROUPS :
+    -- EL AL 757 #IFF:1562UN
+    -- AirChina 330 #IFF:1563UN
+    -- Cathay 747 #IFF:1564UN
+    -- Quantas 747 #IFF:3212UN
+    -- DHL 757 #IFF:7316UN
+    -- MEA 320 #IFF:2631UN
+    -- TNT 737 #IFF:3242UN
+
 RATConfig = {
     {
         name = 'civil',
         enable = true,
-        maximum_aircrafts = 5,
         aircrafts_groupconfigs = {
             {
-                templatename = 'B757 #IFF:1562UN',
-                minimun_spawns = 1,
+                templatename = 'EL AL 757 #IFF:1562UN',
+                spawns = 1,
                 flightlevel = 330,
                 speed = 480,
                 inactive_timer = 1200,
@@ -18,16 +23,16 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-North'
+                        AIRBASE.MarianaIslands.Saipan_Intl
                     },
                     arrival = {
-                        AIRBASE.MarianaIslands.Saipan_Intl
+                        'zone_rat_north_east'
                     }
                 }
             },
             {
-                templatename = 'A330 #IFF:1563UN',
-                minimun_spawns = 0,
+                templatename = 'AirChina 330 #IFF:1563UN',
+                spawns = 1,
                 flightlevel = 290,
                 speed = 468,
                 inactive_timer = 1200,
@@ -36,16 +41,16 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        AIRBASE.MarianaIslands.Saipan_Intl
+                        AIRBASE.MarianaIslands.Antonio_B_Won_Pat_Intl
                     },
                     arrival = {
-                        'zone-RAT-North'
+                        'zone_rat_south_east'
                     }
                 }
             },
             {
-                templatename = 'B747 #IFF:1564UN',
-                minimun_spawns = 1,
+                templatename = 'Cathay 747 #IFF:1564UN',
+                spawns = 1,
                 flightlevel = 340,
                 speed = 460,
                 inactive_timer = 1200,
@@ -54,17 +59,16 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        AIRBASE.MarianaIslands.Saipan_Intl
+                        'zone_rat_south_west'
                     },
                     arrival = {
-                        'zone-RAT-SouthEast',
-                        'zone-RAT-South'
+                        'zone_rat_north_east'
                     }
                 }
             },
             {
-                templatename = 'B747 #IFF:3212UN',
-                minimun_spawns = 0,
+                templatename = 'Quantas 747 #IFF:3212UN',
+                spawns = 1,
                 flightlevel = 310,
                 speed = 466,
                 inactive_timer = 600,
@@ -73,17 +77,16 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-North'
+                        AIRBASE.MarianaIslands.Antonio_B_Won_Pat_Intl
                     },
                     arrival = {
-                        AIRBASE.MarianaIslands.Saipan_Intl,
-                        'zone-RAT-South'
+                        'zone_rat_north_center'
                     }
                 }
             },
             {
-                templatename = 'B757 #IFF:7316UN',
-                minimun_spawns = 1,
+                templatename = 'DHL 757 #IFF:7316UN',
+                spawns = 1,
                 flightlevel = 290,
                 speed = 470,
                 inactive_timer = 1200,
@@ -95,15 +98,13 @@ RATConfig = {
                         AIRBASE.MarianaIslands.Saipan_Intl
                     },
                     arrival = {
-                        'zone-RAT-North',
-                        'zone-RAT-South',
-                        'zone-RAT-SouthEast'
+                        'zone_rat_north_center'
                     }
                 }
             },
             {
-                templatename = 'A320 #IFF:2631UN',
-                minimun_spawns = 0,
+                templatename = 'MEA 320 #IFF:2631UN',
+                spawns = 0,
                 flightlevel = 360,
                 speed = 480,
                 inactive_timer = 600,
@@ -112,17 +113,16 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-SouthEast'
+                        'zone_rat_south_east'
                     },
                     arrival = {
-                        AIRBASE.MarianaIslands.Saipan_Intl,
-                        'zone-RAT-South'
+                        'zone_rat_south_west'
                     }
                 }
             },
             {
-                templatename = 'B737 #IFF:3242UN',
-                minimun_spawns = 1,
+                templatename = 'TNT 737 #IFF:3242UN',
+                spawns = 1,
                 flightlevel = 335,
                 speed = 490,
                 inactive_timer = 600,
@@ -131,10 +131,10 @@ RATConfig = {
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        AIRBASE.MarianaIslands.Saipan_Intl
+                        'zone_rat_north_west'
                     },
                     arrival = {
-                        'zone-RAT-North'
+                        'zone_rat_south_center'
                     }
                 }
             }
@@ -142,32 +142,8 @@ RATConfig = {
     },
     {
         name = 'military',
-        enable = true,
-        maximum_aircrafts = 2,
-        aircrafts_groupconfigs = {
-            {
-                templatename = 'A400M #IFF:2734FR',
-                minimun_spawns = 2,
-                flightlevel = 150,
-                speed = 400,
-                inactive_timer = 600,
-                liveries = { "French - F-JTFF","French - F-RBAA", "French - F-RBAO", "UK 406" },
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                commute = true,
-                airbases_names = {
-                    departure = {
-                        AIRBASE.MarianaIslands.Andersen_AFB,
-                    },
-                    arrival = {
-                        AIRBASE.MarianaIslands.Rota_Intl,
-                        AIRBASE.MarianaIslands.Tinian_Intl,
-                        AIRBASE.MarianaIslands.Saipan_Intl,
-                    }
-                }
-            }
-        }
+        enable = false,
+        aircrafts_groupconfigs = {}
     }
 }
 

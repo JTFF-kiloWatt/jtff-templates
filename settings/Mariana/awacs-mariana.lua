@@ -3,24 +3,24 @@ AwacsConfig = {
         enable = true,
         autorespawn = true,
         airspawn = false,
-        patternUnit = 'CSG-1 Escorte-5',
+        patternUnit = 'CSG-9 Escort-7',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-2-1',
+        baseUnit = 'CSG-9 CVN-71',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
         groupName = 'WIZARD #IFF:4773FR',
         airboss_recovery = true,
-        escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 120,
+        escortgroupname = 'FA-18C ESCORT #IFF:7322FR',
+        missionmaxduration = 240,
         altitude = 28000,
         speed = 380,
-        freq = 377.800,
-        fuelwarninglevel=45,
+        freq = 265.800,
+        fuelwarninglevel = 20,
         racetrack = {
-            front = 80,
-            back = -20
+            front = 50,
+            back = -10
         },
         tacan = {
-            channel = 100,
+            channel = 130,
             morse = 'WZD',
         },
         modex = 705,
@@ -34,57 +34,30 @@ AwacsConfig = {
         enable = true,
         autorespawn = true,
         airspawn = false,
-        patternUnit = 'sea-anchor-1-1',
-        benefit_coalition = coalition.side.BLUE,
+        patternUnit = 'awacs-anchor-1',
+        benefit_coalition = coalition.side.RED,
         baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'DARKSTAR #IFF:4772FR',
         airboss_recovery = false,
-        escortgroupname = 'F-15C CAP #IFF:7321FR',
-        missionmaxduration = 165,
-        altitude = 35000,
-        speed = 402,
+        escortgroupname = 'F-15C ESCORT #IFF:7321FR',
+        missionmaxduration = 240,
+        altitude = 33000,
+        speed = 410,
         freq = 265.8,
-        fuelwarninglevel=25,
+        fuelwarninglevel = 20,
         racetrack = {
-            front = 80,
-            back = 0
+            front = 25,
+            back = 50
+        },
+        tacan = {
+            channel = 131,
+            morse = 'DRK',
         },
         modex = 11,
         callsign = {
             alias = 'Darkstar',
             name = CALLSIGN.AWACS.Darkstar,
-            number = 1
-        }
-    },
-    {
-        enable = true,
-        autorespawn = true,
-        airspawn = true,
-        patternUnit = 'sea-anchor-5-1',
-        benefit_coalition = coalition.side.RED,
-        baseUnit = 'CSG-1 CVN-2-1',
-        terminalType = AIRBASE.TerminalType.OpenMedOrBig,
-        groupName = 'Avion-17',
-        airboss_recovery = false,
-        --escortgroupname = 'REDNavyCAP-6',
-        missionmaxduration = 120,
-        altitude = 32000,
-        speed = 380,
-        freq = 377,
-        fuelwarninglevel=45,
-        racetrack = {
-            front = 150,
-            back = 0
-        },
-        tacan = {
-            channel = 114,
-            morse = '104',
-        },
-        modex = 012,
-        callsign = {
-            alias = '104',
-            name = '104',
             number = 1
         }
     }

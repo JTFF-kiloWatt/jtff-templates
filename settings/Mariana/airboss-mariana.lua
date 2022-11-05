@@ -1,19 +1,19 @@
 AirBossConfig = {
     {
         enable = true,
-        carriername = 'CSG-1 CVN-71-1',
-        alias = 'roosevelt',
+        carriername = 'CSG-9 CVN-71',
+        alias = 'CVN-71 Roosevelt',
         coalition = coalition.side.BLUE,
         enable_menumarkzones = true,
         enable_menusmokezones = true,
         enable_niceguy = true,
         handleAI = true,
-        recoverytanker = 'nanny-1 #IFF:4775FR',
+        recoverytanker = 'CSG-9 Nanny #IFF:4775FR',
         recoveryops = {
             mode = 'cyclic',
             cyclic = {
                 event_duration_minutes = 60,
-                event_ia_reserved_minutes = 15,
+                event_ia_reserved_minutes = 10,
             }
         },
         tacan = {
@@ -26,7 +26,7 @@ AirBossConfig = {
             morse = 'RSVLSO',
         },
         dl4 = {
-            freq = 336.000,
+            freq = 307.850,
         },
         freq = {
             base = 127.3,
@@ -38,20 +38,20 @@ AirBossConfig = {
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
-        difficulty = AIRBOSS.Difficulty.NORMAL,
+        difficulty = AIRBOSS.Difficulty.HARD,
         menurecovery = {
             enable = true,
             duration = 30,
             windondeck = 30,
             offset = 0,
-            uturn = true
+            uturn = false
         },
         releayunit = {
-            marshall = 'MarshallRelay-1',
-            lso = 'LSORelay-1',
+            marshall = 'CSG-9 Escort-1',
+            lso = 'CSG-9 Escort-2',
         },
         voices = {
-            marshall = 'Gabriella', --Gabriella , FF or Raynor
+            marshall = 'Raynor', --Gabriella , FF or Raynor
             lso = 'FF' --FF or Raynor
         },
         singlecarrier = false,
@@ -60,19 +60,19 @@ AirBossConfig = {
     },
     {
         enable = true,
-        carriername = 'CSG-2 LHA1-1-1',
-        alias = 'tarawa',
+        carriername = 'ESG-1 LHA-1',
+        alias = 'LHA-1 Tarawa',
         coalition = coalition.side.BLUE,
         enable_menumarkzones = true,
         enable_menusmokezones = true,
         enable_niceguy = true,
         handleAI = true,
-        recoverytanker = 'nanny-2 #IFF:4776FR',
+        recoverytanker = 'ESG-1 Nanny #IFF:4776FR',
         recoveryops = {
             mode = 'cyclic',
             cyclic = {
                 event_duration_minutes = 60,
-                event_ia_reserved_minutes = 5,
+                event_ia_reserved_minutes = 10,
             }
         },
         tacan = {
@@ -94,22 +94,24 @@ AirBossConfig = {
         recoverycase = 1,
         maxpatterns = 5,
         maxstacks = 8,
-        difficulty = AIRBOSS.Difficulty.NORMAL,
+        difficulty = AIRBOSS.Difficulty.HARD,
         menurecovery = {
             enable = true,
             duration = 30,
             windondeck = 15,
             offset = 0,
-            uturn = true
+            uturn = false
         },
         releayunit = {
-            marshall = 'MarshallRelay-2',
-            lso = 'LSORelay-2',
+            marshall = 'ESG-1 Escort-1',
+            lso = 'ESG-1 Escort-2',
+        },
+        voices = {
+            marshall = 'Gabriella', --Gabriella , FF or Raynor
+            lso = 'Raynor' --FF or Raynor
         },
         singlecarrier = false,
         operationsstatspath = "C:/airboss-stats",
         operationstrapsheetpath = "C:/airboss-trapsheets"
     }
 }
-
-

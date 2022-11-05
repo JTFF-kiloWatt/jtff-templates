@@ -133,7 +133,9 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetICLS(airbossconfig.icls.channel, airbossconfig.icls.morse)
         objAirboss:SetLSORadio(airbossconfig.freq.lso)
         objAirboss:SetMarshalRadio(airbossconfig.freq.marshall)
-        objAirboss:SetPatrolAdInfinitum(airbossconfig.infintepatrol)
+        if (airbossconfig.infinitepatrol) then
+            objAirboss:SetPatrolAdInfinitum(true)
+        end
         objAirboss:SetCarrierControlledArea(airbossconfig.controlarea)
         objAirboss:SetStaticWeather(true)
         objAirboss:SetRespawnAI(false)

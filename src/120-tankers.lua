@@ -84,7 +84,7 @@ for index, tankerconfig in ipairs(TankersConfig) do
                     --self.escortGroupObject:Destroy(nil, 5)
                 end
             end
-            trigger.action.outText('Tanker is RTB : '..(self.customconfig.groupName)..'...', 45)
+            --trigger.action.outText('Tanker is RTB : '..(self.customconfig.groupName)..'...', 45)
         end
         function objTanker:OnEventKill(event)
             if self.customconfig.escortgroupname then
@@ -93,6 +93,7 @@ for index, tankerconfig in ipairs(TankersConfig) do
             end
         end
         function objTanker:OnAfterStatus(from, event, to)
+            self.tanker:OptionRestrictBurner(true)
             if ((self.customconfig.escortgroupname) and (self.escortGroupObject)) then
                 if not(GROUP:FindByName(self.escortGroupObject.GroupName)) then
                     env.info('Respawning escort Group '..self.escortGroupObject.GroupName)
@@ -377,7 +378,7 @@ function triggerOnDemandTanker(type, askedDuration, askedFL, askedSpeed, askedAn
                 end
                 map_marker[TankerGroup:GetName()] = askedAnchorCoord:MarkToCoalition(
                         string.format(
-                                'OnDemand Tanker %s - TCN %i\nFL %i at %i knots\nFreq %i MHz\nOn station for %i minutes\nRacetrack : %i ° for %i nm',
+                                'OnDemand Tanker %s - TCN %i\nFL %i at %i knots\nFreq %.2f MHz\nOn station for %i minutes\nRacetrack : %i ° for %i nm',
                                 OnDemandTanker.type,
                                 OnDemandTanker.tacan.channel,
                                 UTILS.Round(OnDemandTanker.altitude / 100 , 0),

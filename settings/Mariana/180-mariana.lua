@@ -1,27 +1,39 @@
 tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
-        "tx2",
+        "tx1",
         nil,
         nil,
         nil,
-        GROUP:FindByName("sea-anchor-2"):GetCoordinate(),
+        GROUP:FindByName("tanker-anchor-1"):GetCoordinate(),
         nil,
         nil
 )
+
+tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
+        "tx7",
+        nil,
+        nil,
+        nil,
+        GROUP:FindByName("tanker-anchor-2"):GetCoordinate(),
+        nil,
+        nil
+)
+
+tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
+        "ar2",
+        nil,
+        nil,
+        nil,
+        GROUP:FindByName("tanker-anchor-1"):GetCoordinate(),
+        nil,
+        nil
+)
+
 tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
         "ar6",
         nil,
         nil,
         nil,
-        GROUP:FindByName("sea-anchor-3"):GetCoordinate(),
-        nil,
-        nil
-)
-tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
-        "sh3",
-        nil,
-        nil,
-        nil,
-        GROUP:FindByName("sea-anchor-4"):GetCoordinate(),
+        GROUP:FindByName("tanker-anchor-2"):GetCoordinate(),
         nil,
         nil
 )
