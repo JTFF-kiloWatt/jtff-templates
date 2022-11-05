@@ -4,34 +4,34 @@ const fs = require("fs");
 const path = require("path");
 const prompt = require('prompt');
 
-fs.mkdirSync(config.general.missionFolder,{ recursive: true });
+fs.mkdirSync(config.general.missionFolder, { recursive: true });
 if (fs.existsSync([
     config.general.missionFolder,
     "/",
     path.parse(process.env.npm_config_mission).name
 ].join(""))) {
     fs.rmSync([
-            config.general.missionFolder,
-            "/",
-            path.parse(process.env.npm_config_mission).name
-        ].join(""),
+        config.general.missionFolder,
+        "/",
+        path.parse(process.env.npm_config_mission).name
+    ].join(""),
         { recursive: true }
     );
 }
 fs.mkdirSync([
-        config.general.missionFolder,
-        "/",
-        path.parse(process.env.npm_config_mission).name,
-        "/settings"
-    ].join(""),
+    config.general.missionFolder,
+    "/",
+    path.parse(process.env.npm_config_mission).name,
+    "/settings"
+].join(""),
     { recursive: true }
 );
 fs.mkdirSync([
-        config.general.missionFolder,
-        "/",
-        path.parse(process.env.npm_config_mission).name,
-        "/src"
-    ].join(""),
+    config.general.missionFolder,
+    "/",
+    path.parse(process.env.npm_config_mission).name,
+    "/src"
+].join(""),
     { recursive: true }
 );
 
@@ -122,12 +122,12 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
         }
     });
     fs.writeFileSync([
-            config.general.missionFolder,
-            "/",
-            path.parse(process.env.npm_config_mission).name,
-            "/",
-            path.basename(process.env.npm_config_mission)
-        ].join(""),
+        config.general.missionFolder,
+        "/",
+        path.parse(process.env.npm_config_mission).name,
+        "/",
+        path.basename(process.env.npm_config_mission)
+    ].join(""),
         inputZip);
 
 
@@ -271,12 +271,12 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             }
         });
         fs.writeFileSync([
-                config.general.missionFolder,
-                "/",
-                path.parse(process.env.npm_config_mission).name,
-                "/",
-                path.basename(process.env.npm_config_mission)
-            ].join(""),
+            config.general.missionFolder,
+            "/",
+            path.parse(process.env.npm_config_mission).name,
+            "/",
+            path.basename(process.env.npm_config_mission)
+        ].join(""),
             inputZip);
         settingsArray.push(
             {
@@ -361,12 +361,12 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             }
         });
         fs.writeFileSync([
-                config.general.missionFolder,
-                "/",
-                path.parse(process.env.npm_config_mission).name,
-                "/",
-                path.basename(process.env.npm_config_mission)
-            ].join(""),
+            config.general.missionFolder,
+            "/",
+            path.parse(process.env.npm_config_mission).name,
+            "/",
+            path.basename(process.env.npm_config_mission)
+        ].join(""),
             inputZip);
         settingsArray.push(
             {
@@ -441,11 +441,11 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
         ].join(""));
 
         jtffci.mizUpdateLuaFile(zip, [
-                config.general.missionFolder,
-                "/",
-                path.parse(process.env.npm_config_mission).name,
-                "/src/180-mission.lua"
-            ].join("")
+            config.general.missionFolder,
+            "/",
+            path.parse(process.env.npm_config_mission).name,
+            "/src/180-mission.lua"
+        ].join("")
         );
         const inputZip = await zip.generateAsync({
             type: 'nodebuffer',
@@ -456,12 +456,12 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             }
         });
         fs.writeFileSync([
-                config.general.missionFolder,
-                "/",
-                path.parse(process.env.npm_config_mission).name,
-                "/",
-                path.basename(process.env.npm_config_mission)
-            ].join(""),
+            config.general.missionFolder,
+            "/",
+            path.parse(process.env.npm_config_mission).name,
+            "/",
+            path.basename(process.env.npm_config_mission)
+        ].join(""),
             inputZip);
         tuple = jtffci.injectScripts(
             missionObject['trig'],
@@ -496,12 +496,12 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             }
         });
         fs.writeFileSync([
-                config.general.missionFolder,
-                "/",
-                path.parse(process.env.npm_config_mission).name,
-                "/",
-                path.basename(process.env.npm_config_mission)
-            ].join(""),
+            config.general.missionFolder,
+            "/",
+            path.parse(process.env.npm_config_mission).name,
+            "/",
+            path.basename(process.env.npm_config_mission)
+        ].join(""),
             inputZip);
         settingsArray.push(
             {
@@ -591,7 +591,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             "/",
             path.basename(process.env.npm_config_mission)
         ].join(""),
-        {mission: missionObject}
+        { mission: missionObject }
     );
     await jtffci.mizInjectMapResourceFile(
         [
@@ -601,7 +601,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
             "/",
             path.basename(process.env.npm_config_mission)
         ].join(""),
-        {mapResource: mapResourceObject}
+        { mapResource: mapResourceObject }
     );
     console.log('...Done...');
     process.exit(0);

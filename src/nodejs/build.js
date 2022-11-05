@@ -11,7 +11,7 @@ config.missionTemplates.forEach(async missionTemplate => {
         missionTemplate.theatre,
         ".miz"
     ].join(""), [
-        config.general.missionFolder+'/'+config.general.missionPrefix,
+        config.general.missionFolder + '/' + config.general.missionPrefix,
         '_',
         missionTemplate.theatre,
         '_',
@@ -19,11 +19,11 @@ config.missionTemplates.forEach(async missionTemplate => {
         '_',
         jtffci.displayVersion(jtffci.getVersion()),
         ".miz"
-    ].join(""),missionTemplate.theatre);
+    ].join(""), missionTemplate.theatre);
     publicationConfig = {
         theatre: missionTemplate.theatre,
         mizFiles: [
-            config.general.missionFolder+'/'+config.general.missionPrefix,
+            config.general.missionFolder + '/' + config.general.missionPrefix,
             '_',
             missionTemplate.theatre,
             '_',
@@ -34,5 +34,5 @@ config.missionTemplates.forEach(async missionTemplate => {
         ].join(""),
         gdriveFolder: missionTemplate.destFolderId
     };
-    fs.writeFileSync(config.general.missionFolder+'/'+missionTemplate.theatre+'.pub.json', JSON.stringify(publicationConfig, null, 4));
+    fs.writeFileSync(config.general.missionFolder + '/' + missionTemplate.theatre + '.pub.json', JSON.stringify(publicationConfig, null, 4));
 });
