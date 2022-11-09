@@ -39,7 +39,7 @@ function detectShitHotBreak(objAirboss)
                     -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
                     --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
                     local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
-                    HypeMan.sendBotMessage(sh_message_to_discord)
+                    GemMan:SendText(sh_message_to_discord)
                     Play_SH_Sound:ToAll()
                     client_in_zone_flag:Set(1)
                     client_performing_sh:Set(1)
@@ -329,10 +329,10 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             if playerData.wire == 1 then
                 myGrade.points = myGrade.points -1.00
                 local onewire_to_discord = ('**'..player_name..' almost had a rampstrike with that 1-wire!**')
-                HypeMan.sendBotMessage(onewire_to_discord)
+                GemMan:SendText(onewire_to_discord)
             end
             self:_SaveTrapSheet(playerData, myGrade)
-            HypeMan.sendBotTable(myGrade)
+            --HypeMan.sendBotTable(myGrade)
 
             --TODO reactivate the timer.schedule maybe ?
             --timer.scheduleFunction(

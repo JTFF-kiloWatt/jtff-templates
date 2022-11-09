@@ -199,7 +199,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
         missionObject['trigrules'],
         mapResourceObject,
         'Load Libraries',
-        ['010-root_menus.lua', '020-mission_functions.lua', 'hypeman.lua', 'Hercules_Cargo.lua'],
+        ['010-root_menus.lua', '020-mission_functions.lua', 'gemman.lua', 'Hercules_Cargo.lua'],
         16,
         '0xffff00ff'
     );
@@ -210,7 +210,7 @@ prompt.get(prompt_properties, async function (prompt_err, prompt_result) {
     let settingsArray = [];
     settingsArray.push(
         {
-            file: "settings-hypeman.lua",
+            file: "settings-gemman.lua",
         },
     );
     // injection de la gestion des Set_Clients
