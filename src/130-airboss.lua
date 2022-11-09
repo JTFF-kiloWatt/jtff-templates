@@ -149,6 +149,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetMaxSectionSize(4)
         objAirboss:SetMaxMarshalStacks(airbossconfig.maxstacks)
         objAirboss:SetDefaultPlayerSkill(airbossconfig.difficulty) -- other options EASY / HARD
+        objAirboss:SetFunkManOn(10043, "127.0.0.1")
         if airbossconfig.wirecorrection then
             objAirboss:SetMPWireCorrection(airbossconfig.wirecorrection)
         else
