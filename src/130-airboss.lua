@@ -18,9 +18,9 @@ function detectShitHotBreak(objAirboss)
                 local player_alt = MooseClient:GetAltitude()
                 local player_type = MooseClient:GetTypeName()
 
-                player_alt_feet = math.floor((player_alt * ( 3.28 / 10)))*10
+                local player_alt_feet = math.floor((player_alt * ( 3.28 / 10)))*10
 
-                player_velocity_round = math.floor((player_velocity/10))*10
+                local player_velocity_round = math.floor((player_velocity/10))*10
 
                 local Play_SH_Sound = USERSOUND:New( "AIRBOSS/Airboss Soundfiles/GreatBallsOfFire.ogg" )
                 --trigger.action.outText(player_name..' altitude is '..player_alt, 5)
@@ -39,7 +39,11 @@ function detectShitHotBreak(objAirboss)
                     -- Requirements for Shit Hot break are velocity >475 knots and less than 213 meters (700')
                     --trigger.action.outText(player_name..' performing a Sierra Hotel Break!', 10)
                     local sh_message_to_discord = ('**'..player_name..' is performing a Sierra Hotel Break at '..player_velocity_round..' knots and '..player_alt_feet..' feet!**')
-                    HypeMan.sendBotMessage(sh_message_to_discord)
+                    GemMan:SendTable({
+                        command="moose_text",
+                        text=sh_message_to_discord,
+                        msg_type='lso'
+                    })
                     Play_SH_Sound:ToAll()
                     client_in_zone_flag:Set(1)
                     client_performing_sh:Set(1)
@@ -145,6 +149,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetMaxSectionSize(4)
         objAirboss:SetMaxMarshalStacks(airbossconfig.maxstacks)
         objAirboss:SetDefaultPlayerSkill(airbossconfig.difficulty) -- other options EASY / HARD
+        objAirboss:SetFunkManOn(10043, "127.0.0.1")
         if airbossconfig.wirecorrection then
             objAirboss:SetMPWireCorrection(airbossconfig.wirecorrection)
         else
@@ -329,10 +334,14 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             if playerData.wire == 1 then
                 myGrade.points = myGrade.points -1.00
                 local onewire_to_discord = ('**'..player_name..' almost had a rampstrike with that 1-wire!**')
-                HypeMan.sendBotMessage(onewire_to_discord)
+                GemMan:SendTable({
+                    command="moose_text",
+                    text=onewire_to_discord,
+                    msg_type='lso'
+                })
             end
             self:_SaveTrapSheet(playerData, myGrade)
-            HypeMan.sendBotTable(myGrade)
+            --HypeMan.sendBotTable(myGrade)
 
             --TODO reactivate the timer.schedule maybe ?
             --timer.scheduleFunction(
