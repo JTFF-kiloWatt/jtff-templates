@@ -242,21 +242,6 @@ for index, airbossconfig in ipairs(AirBossConfig) do
             )
         end
         objAirboss.customconfig = airbossconfig
-        --airbossCVN:Load(nil, "Greenie Board.csv")
-        --airbossCVN:SetAutoSave(nil, "Greenie Board.csv")
-
-        -- create fake recovery window at the end of the mission play
-        --local window1 = airbossCVN:AddRecoveryWindow("15:00", "16:30", 3, 30, true, 20, false)
-        --local window2 = airbossCVN:AddRecoveryWindow("18:00", "20:30", 3, 30, true, 20, false)
-        --objAirboss:AddRecoveryWindow(
-        --        60*45,
-        --        60*(airbossconfig.menurecovery.duration+45),
-        --        airbossconfig.recoverycase,
-        --        airbossconfig.menurecovery.offset,
-        --        true,
-        --        airbossconfig.menurecovery.windondeck,
-        --        airbossconfig.menurecovery.uturn
-        --)
 
         function objAirboss:OnAfterLSOGrade(From, Event, To, playerData, myGrade)
 
@@ -341,7 +326,50 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 })
             end
             self:_SaveTrapSheet(playerData, myGrade)
-            --HypeMan.sendBotTable(myGrade)
+
+            if self.funkmanSocket then
+
+                -- Extract used info for FunkMan. We need to be careful with the amount of data send via UDP socket.
+                local trapsheet={} ; trapsheet.X={} ; trapsheet.Z={} ; trapsheet.AoA={} ; trapsheet.Alt={}
+
+                -- Loop over trapsheet and extract used values.
+                for i = 1, #playerData.trapsheet do
+                    local ts=playerData.trapsheet[i] --#AIRBOSS.GrooveData
+                    table.insert(trapsheet.X, UTILS.Round(ts.X, 1))
+                    table.insert(trapsheet.Z, UTILS.Round(ts.Z, 1))
+                    table.insert(trapsheet.AoA, UTILS.Round(ts.AoA, 2))
+                    table.insert(trapsheet.Alt, UTILS.Round(ts.Alt, 1))
+                end
+
+                local result={}
+                result.command=SOCKET.DataType.LSOGRADE
+                result.name=playerData.name
+                result.trapsheet=trapsheet
+                result.airframe=myGrade.airframe
+                result.modex=myGrade.modex
+                result.mitime=myGrade.mitime
+                result.midate=myGrade.midate
+                result.wind=myGrade.wind
+                result.carriertype=myGrade.carriertype
+                result.carriername=myGrade.carriername
+                result.carrierrwy=myGrade.carrierrwy
+                result.landingdist=self.carrierparam.landingdist
+                result.theatre=myGrade.theatre
+                result.case=playerData.case
+                result.Tgroove=myGrade.Tgroove
+                result.wire=myGrade.wire
+                result.grade=myGrade.grade
+                result.points=myGrade.points
+                result.details=myGrade.details
+                result.finalscore=myGrade.finalscore or myGrade.points
+
+                -- Debug info.
+                self:T(self.lid.."Result onafterLSOGrade")
+                self:T(result)
+
+                -- Send result.
+                self.funkmanSocket:SendTable(result)
+            end
 
             --TODO reactivate the timer.schedule maybe ?
             --timer.scheduleFunction(
