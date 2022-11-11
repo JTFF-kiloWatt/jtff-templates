@@ -111,8 +111,10 @@ async function mizUpdate(mizPath, copyPath, strTheatreSettings) {
     mizUpdateSrcLuaFiles(zip);
     mizUpdateLibLuaFiles(zip);
     if (strTheatreSettings === null) {
-        console.log("no theatre specified ! TODO inject fake settings");
+        // TODO: Inject fake data
+        console.log("NO THEATRE SPECIFIED. RADIO PRESETS WILL NOT BE AVAILABLE !");
     } else {
+        await mizUpdateRadioPresets(zip, strTheatreSettings);
         mizUpdateSettingsLuaFiles(zip, strTheatreSettings);
     }
     await mizUpdateSoundFolders(zip);
@@ -226,6 +228,51 @@ function mizUpdateLibLuaFiles(zip) {
     };
 }
 
+async function mizUpdateRadioPresets(zip, theatre) {
+    const mission_object = await getMissionObjectFromZip(zip);
+    for (let file of fs.readdirSync('resources/radios').filter(file => file.endsWith(".lua"))) {
+        const file_data = fs.readFileSync('resources/radios/' + file).toString();
+        const lua_string = file_data.substring(0, file_data.indexOf("radio_descriptor_table =") - 1);
+        const radio_descriptor_table = parse("return {" + lua_string + "}").descriptor;
+
+        if (radio_descriptor_table["theatre"] != theatre)
+            continue;
+
+        console.log('updating radio presets (aircraft: ' + radio_descriptor_table["aircraft"] + ', group_name: ' + radio_descriptor_table["group_name"] + ') in ' + theatre + ' mission');
+        const dcs_radio_presets = file_data.substring(file_data.indexOf("radio_descriptor_table =") + 24);
+
+        for (const coalition_key in mission_object.coalition) {
+            const coalition = mission_object.coalition[coalition_key];
+            for (const country_list_key in coalition) {
+                if (country_list_key != "country") continue;
+                const country_list = coalition[country_list_key];
+                for (const country_key in country_list) {
+                    const country = country_list[country_key];
+                    for (const plane_key in country["plane"]) {
+                        const plane = country["plane"][plane_key];
+                        for (const group_key in plane) {
+                            const group = plane[group_key];
+                            if (group["name"].match(radio_descriptor_table["group_name"]) == null) continue;
+                            for (const unit_key in group) {
+                                if (unit_key != "units") continue;
+                                const unit = group[unit_key];
+                                for (const sub_unit_key in unit) {
+                                    const sub_unit = unit[sub_unit_key];
+                                    if (sub_unit["skill"] != "Client") continue;
+                                    if (sub_unit["type"] != radio_descriptor_table["aircraft"]) continue;
+                                    // GROUP FOUND, SET RADIOS
+                                    sub_unit["Radio"] = parse("return " + dcs_radio_presets)
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    };
+    mizUpdateMissionDataFile(zip, {mission: mission_object});
+}
+
 function mizUpdateSettingsLuaFiles(zip, strTheatre) {
     for (let file of fs.readdirSync('settings/' + strTheatre).filter(file => file.endsWith(".lua"))) {
         console.log('updating settings/' + strTheatre + '/' + file + ' file in miz file');
@@ -275,6 +322,11 @@ async function copyMiz(srcMizPath, dstMizPath) {
 
 async function getMissionObjectFromMiz(MizPath) {
     let luaTable = 'return { \n' + await mizOpenMissionData(await mizOpen(MizPath)) + ' }';
+    return parse(luaTable).mission;
+}
+
+async function getMissionObjectFromZip(zip) {
+    let luaTable = 'return { \n' + await mizOpenMissionData(zip) + ' }';
     return parse(luaTable).mission;
 }
 
@@ -426,6 +478,7 @@ module.exports = {
     publishMizFiles: publishMizFiles,
     uploadMizFiles: uploadMizFiles,
     getMissionObjectFromMiz: getMissionObjectFromMiz,
+    getMissionObjectFromZip: getMissionObjectFromZip,
     getMapResourceObjectFromMiz: getMapResourceObjectFromMiz,
     mizInjectMissionDataFile: mizInjectMissionDataFile,
     mizInjectMapResourceFile: mizInjectMapResourceFile,
