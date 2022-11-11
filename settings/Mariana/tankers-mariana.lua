@@ -1,15 +1,15 @@
 TankersConfig = {
     {
         enable = true,
-        autorespawn = true,
-        patternUnit = 'CSG-1 Escorte-5',
+        autorespawn = false,
+        patternUnit = 'CSG-1 Escorte-1',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-2-1',
+        baseUnit = 'CSG-1 CVN-71-1',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
         groupName = 'nanny-1 #IFF:4775FR',
         airboss_recovery = true,
         --escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 105,
+        missionmaxduration = 180,
         altitude = 8000,
         speed = 320,
         tacan = {
@@ -17,9 +17,9 @@ TankersConfig = {
             morse = 'SHL',
         },
         freq = 264.250,
-        fuelwarninglevel = 35,
+        fuelwarninglevel = 10,
         racetrack = {
-            front = 40,
+            front = 20,
             back = -10
         },
         modex = 102,
@@ -31,7 +31,37 @@ TankersConfig = {
     },
     {
         enable = true,
-        autorespawn = true,
+        autorespawn = false,
+        patternUnit = 'Ticonderoga',
+        benefit_coalition = coalition.side.BLUE,
+        baseUnit = 'CSG-1 CVN-71-1',
+        terminalType = AIRBASE.TerminalType.OpenMedOrBig,
+        groupName = 'nanny-2 #IFF:4776FR',
+        airboss_recovery = true,
+        --escortgroupname = 'jolly_hornet #IFF:7323FR',
+        missionmaxduration = 180,
+        altitude = 15000,
+        speed = 320,
+        tacan = {
+            channel = 105,
+            morse = 'SHL',
+        },
+        freq = 264.350,
+        fuelwarninglevel = 10,
+        racetrack = {
+            front = 10,
+            back = 0
+        },
+        modex = 103,
+        callsign = {
+            alias = 'Shell',
+            name = CALLSIGN.Tanker.Shell,
+            number = 2
+        }
+    },
+    {
+        enable = false,
+        autorespawn = false,
         patternUnit = 'CSG-2 LHA1-1-3',
         benefit_coalition = coalition.side.BLUE,
         baseUnit = 'CSG-1 CVN-2-1',
@@ -65,7 +95,7 @@ OnDemandTankersConfig = {
     {
         enable = true,
         type = "tx2",
-        benefit_coalition = coalition.side.BLUE,
+        benefit_coalition = coalition.side.RED,
         baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'TEXACO 2-1 #IFF:4274FR',
@@ -77,8 +107,8 @@ OnDemandTankersConfig = {
             morse = 'TEX',
         },
         orbit = {
-            heading = 90,
-            length = 50,
+            heading = 243,
+            length = 30,
         },
         freq = 317.5,
         modex = 012,
@@ -92,7 +122,7 @@ OnDemandTankersConfig = {
     {
         enable = true,
         type = "ar6",
-        benefit_coalition = coalition.side.BLUE,
+        benefit_coalition = coalition.side.RED,
         baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'ARCO 6-1 #IFF:7541FR',
@@ -104,8 +134,8 @@ OnDemandTankersConfig = {
             morse = 'ARC',
         },
         orbit = {
-            heading = 21,
-            length = 40,
+            heading = 243,
+            length = 30,
         },
         freq = 276.2,
         modex = 015,
@@ -119,7 +149,7 @@ OnDemandTankersConfig = {
     {
         enable = true,
         type = "sh3",
-        benefit_coalition = coalition.side.BLUE,
+        benefit_coalition = coalition.side.RED,
         baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'SHELL 3-1 #IFF:7367FR',
@@ -131,8 +161,8 @@ OnDemandTankersConfig = {
             morse = 'SHK',
         },
         orbit = {
-            heading = 090,
-            length = 50,
+            heading = 243,
+            length = 30,
         },
         freq = 276.2,
         modex = 016,

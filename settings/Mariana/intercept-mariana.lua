@@ -1,6 +1,6 @@
 InterceptConfig = {
     {
-        enable = true,
+        enable = false,
         benefitCoalition = coalition.side.BLUE,
         name = 'Civilian traffic',
         type = 'civil',
@@ -11,7 +11,7 @@ InterceptConfig = {
         }
     },
     {
-        enable = true,
+        enable = false,
         benefitCoalition = coalition.side.BLUE,
         name = 'China AF',
         type = 'fighter',
@@ -23,7 +23,7 @@ InterceptConfig = {
         }
     },
     {
-        enable = true,
+        enable = false,
         benefitCoalition = coalition.side.BLUE,
         name = 'Russian Tactical bombers',
         type = 'fastbomber',

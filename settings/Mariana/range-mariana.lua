@@ -36,7 +36,7 @@ RangeConfig = {
 TrainingRangeConfig = {
     {
         name = "Faralon de Medilina",
-        enable = true,
+        enable = false,
         instructionradio = {
             unitname = "Tour",
             freq = 251.75,

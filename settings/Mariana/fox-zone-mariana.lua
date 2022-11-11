@@ -1,7 +1,7 @@
 FoxRangesConfig= {
     {
         name = 'West',
-        enable = true,
+        enable = false,
         safeZoneName = 'red_west_engage_zone',
         launchZoneName = 'red_west_engage_zone',
         --safeZoneGroupName = 'engage zone Red',
@@ -13,7 +13,7 @@ FoxRangesConfig= {
     },
     {
         name = 'East',
-        enable = true,
+        enable = false,
         safeZoneName = 'red_east_engage_zone',
         launchZoneName = 'red_east_engage_zone',
         --safeZoneGroupName = 'engage zone Red',

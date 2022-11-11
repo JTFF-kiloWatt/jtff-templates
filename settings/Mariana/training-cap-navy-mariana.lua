@@ -1,6 +1,6 @@
 TrainingCAPConfig = {
     {
-        enable = true,
+        enable = false,
         coalitionCAP = coalition.side.RED,
         name = 'West',
         --patrolZoneGroupName = 'CAP zone Red',
@@ -30,7 +30,7 @@ TrainingCAPConfig = {
         }
     },
     {
-        enable = true,
+        enable = false,
         coalitionCAP = coalition.side.RED,
         name = 'East',
         --patrolZoneGroupName = 'CAP zone Red',

@@ -1,23 +1,22 @@
 AwacsConfig = {
     {
         enable = true,
-        autorespawn = true,
+        autorespawn = false,
         airspawn = false,
-        patternUnit = 'CSG-1 Escorte-5',
+        patternUnit = 'Ticonderoga',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-2-1',
+        baseUnit = 'CSG-1 CVN-71-1',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
         groupName = 'WIZARD #IFF:4773FR',
         airboss_recovery = true,
-        escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 120,
+        missionmaxduration = 180,
         altitude = 28000,
         speed = 380,
         freq = 377.800,
-        fuelwarninglevel=45,
+        fuelwarninglevel=25,
         racetrack = {
-            front = 80,
-            back = -20
+            front = 10,
+            back = 0,
         },
         tacan = {
             channel = 100,
@@ -31,8 +30,8 @@ AwacsConfig = {
         }
     },
     {
-        enable = true,
-        autorespawn = true,
+        enable = false,
+        autorespawn = false,
         airspawn = false,
         patternUnit = 'sea-anchor-1-1',
         benefit_coalition = coalition.side.BLUE,
@@ -59,12 +58,12 @@ AwacsConfig = {
     },
     {
         enable = true,
-        autorespawn = true,
+        autorespawn = false,
         airspawn = true,
         patternUnit = 'sea-anchor-5-1',
         benefit_coalition = coalition.side.RED,
-        baseUnit = 'CSG-1 CVN-2-1',
-        terminalType = AIRBASE.TerminalType.OpenMedOrBig,
+        baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
+        terminalType = AIRBASE.TerminalType.Runway,
         groupName = 'Avion-17',
         airboss_recovery = false,
         --escortgroupname = 'REDNavyCAP-6',
@@ -72,15 +71,15 @@ AwacsConfig = {
         altitude = 32000,
         speed = 380,
         freq = 377,
-        fuelwarninglevel=45,
+        fuelwarninglevel=25,
         racetrack = {
-            front = 150,
-            back = 0
+            front = 15,
+            back = 15
         },
-        tacan = {
-            channel = 114,
-            morse = '104',
-        },
+        -- tacan = {
+        --     channel = 114,
+        --     morse = '104',
+        -- },
         modex = 012,
         callsign = {
             alias = '104',

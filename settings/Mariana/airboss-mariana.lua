@@ -12,8 +12,8 @@ AirBossConfig = {
         recoveryops = {
             mode = 'cyclic',
             cyclic = {
-                event_duration_minutes = 60,
-                event_ia_reserved_minutes = 15,
+                event_duration_minutes = 80,
+                event_ia_reserved_minutes = 10,
             }
         },
         tacan = {
@@ -54,12 +54,12 @@ AirBossConfig = {
             marshall = 'Gabriella', --Gabriella , FF or Raynor
             lso = 'FF' --FF or Raynor
         },
-        singlecarrier = false,
+        singlecarrier = true,
         operationsstatspath = "C:/airboss-stats",
         operationstrapsheetpath = "C:/airboss-trapsheets"
     },
     {
-        enable = true,
+        enable = false,
         carriername = 'CSG-2 LHA1-1-1',
         alias = 'tarawa',
         coalition = coalition.side.BLUE,

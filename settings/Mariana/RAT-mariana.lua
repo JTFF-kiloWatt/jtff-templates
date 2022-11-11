@@ -4,7 +4,7 @@
 RATConfig = {
     {
         name = 'civil',
-        enable = true,
+        enable = false,
         maximum_aircrafts = 5,
         aircrafts_groupconfigs = {
             {
@@ -142,7 +142,7 @@ RATConfig = {
     },
     {
         name = 'military',
-        enable = true,
+        enable = false,
         maximum_aircrafts = 2,
         aircrafts_groupconfigs = {
             {
