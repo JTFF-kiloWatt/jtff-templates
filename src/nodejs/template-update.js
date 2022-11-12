@@ -31,11 +31,11 @@ config.missionTemplates.map(async missionTemplate => {
         ].join(""));
     }
     fs.renameSync([
-            missionTemplate.prefix,
-            '_',
-            missionTemplate.theatre,
-            "-new.miz"
-        ].join(""),
+        missionTemplate.prefix,
+        '_',
+        missionTemplate.theatre,
+        "-new.miz"
+    ].join(""),
         [
             missionTemplate.prefix,
             '_',
