@@ -9,7 +9,7 @@ RATConfig = {
         aircrafts_groupconfigs = {
             {
                 templatename = 'ETHIAD 320#IFF:7116UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 290,
                 speed = 450,
                 inactive_timer = 1200,
@@ -27,7 +27,7 @@ RATConfig = {
             },
             {
                 templatename = 'FED EX #IFF:7316UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 370,
                 speed = 500,
                 inactive_timer = 600,
@@ -45,7 +45,7 @@ RATConfig = {
             },
             {
                 templatename = 'IRON MAIDEN 747 #IFF:7377UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 335,
                 speed = 490,
                 inactive_timer = 1200,
@@ -63,7 +63,7 @@ RATConfig = {
             },
             {
                 templatename = 'KLM 747 #IFF:3212UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 480,
                 inactive_timer = 360,
@@ -81,7 +81,7 @@ RATConfig = {
             },
             {
                 templatename = 'Quatar #IFF:2631UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 350,
                 speed = 480,
                 inactive_timer = 600,
@@ -99,7 +99,7 @@ RATConfig = {
             },
             {
                 templatename = 'UPS 737 #IFF:2361UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 310,
                 speed = 466,
                 inactive_timer = 600,
@@ -117,7 +117,7 @@ RATConfig = {
             },
             {
                 templatename = 'EL AL  SP 757 #IFF:1562UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 330,
                 speed = 466,
                 inactive_timer = 600,
@@ -135,7 +135,7 @@ RATConfig = {
             },
             {
                 templatename = 'UAE 380°3 #IFF:3932UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 430,
                 inactive_timer = 600,
@@ -153,7 +153,7 @@ RATConfig = {
             },
             {
                 templatename = 'Aeroflot A330 #IFF:2251UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 300,
                 speed = 500,
                 inactive_timer = 340,
@@ -171,7 +171,7 @@ RATConfig = {
             },
             {
                 templatename = 'SINGAPOUR A330 #IFF:1582UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 515,
                 inactive_timer = 500,
@@ -189,7 +189,7 @@ RATConfig = {
             },
             {
                 templatename = 'CATHAY747#IFF:5156UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 340,
                 speed = 515,
                 inactive_timer = 500,

@@ -11,9 +11,11 @@ RATConfig = {
     {
         name = 'civil',
         enable = true,
+        maximum_aircrafts = 5,
         aircrafts_groupconfigs = {
             {
                 templatename = 'EL AL 757 #IFF:1562UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 330,
                 speed = 480,
@@ -32,6 +34,7 @@ RATConfig = {
             },
             {
                 templatename = 'AirChina 330 #IFF:1563UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 290,
                 speed = 468,
@@ -50,6 +53,7 @@ RATConfig = {
             },
             {
                 templatename = 'Cathay 747 #IFF:1564UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 340,
                 speed = 460,
@@ -68,6 +72,7 @@ RATConfig = {
             },
             {
                 templatename = 'Quantas 747 #IFF:3212UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 310,
                 speed = 466,
@@ -86,6 +91,7 @@ RATConfig = {
             },
             {
                 templatename = 'DHL 757 #IFF:7316UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 290,
                 speed = 470,
@@ -104,6 +110,7 @@ RATConfig = {
             },
             {
                 templatename = 'MEA 320 #IFF:2631UN',
+                minimun_spawns = 0,
                 spawns = 0,
                 flightlevel = 360,
                 speed = 480,
@@ -122,6 +129,7 @@ RATConfig = {
             },
             {
                 templatename = 'TNT 737 #IFF:3242UN',
+                minimun_spawns = 0,
                 spawns = 1,
                 flightlevel = 335,
                 speed = 490,

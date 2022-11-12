@@ -5,7 +5,7 @@ RATConfig = {
     {
         name = 'civil',
         enable = true,
-        maximum_aircrafts = 10,
+        maximum_aircrafts = 5,
         aircrafts_groupconfigs = {
             {
                 templatename = 'B757 #IFF:1562UN',
@@ -28,7 +28,7 @@ RATConfig = {
             },
             {
                 templatename = 'A320 #IFF:7116UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 290,
                 speed = 468,
                 inactive_timer = 600,
@@ -67,7 +67,7 @@ RATConfig = {
             },
             {
                 templatename = 'B737 #IFF:2361UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 310,
                 speed = 466,
                 inactive_timer = 600,
@@ -162,7 +162,7 @@ RATConfig = {
             },
             {
                 templatename = 'B757 #IFF:7316UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 370,
                 speed = 500,
                 inactive_timer = 600,
@@ -181,7 +181,7 @@ RATConfig = {
             },
             {
                 templatename = 'A320 #IFF:2631UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 350,
                 speed = 480,
                 inactive_timer = 600,
@@ -200,7 +200,7 @@ RATConfig = {
             },
             {
                 templatename = 'B737 #IFF:2376UN',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 360,
                 speed = 500,
                 inactive_timer = 600,
@@ -238,7 +238,7 @@ RATConfig = {
             },
             {
                 templatename = 'B757 #IFF:0254FR',
-                minimun_spawns = 1,
+                minimun_spawns = 0,
                 flightlevel = 330,
                 speed = 470,
                 inactive_timer = 600,
