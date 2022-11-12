@@ -230,13 +230,13 @@ function mizUpdateLibLuaFiles(zip) {
 
 async function mizUpdateRadioPresets(zip, theatre) {
     const mission_object = await getMissionObjectFromZip(zip);
-    for (let file of fs.readdirSync('resources/radios').filter(file => file.endsWith(".lua"))) {
-        const file_data = fs.readFileSync('resources/radios/' + file).toString();
+    for (let file of fs.readdirSync('resources/radios/' + theatre).filter(file => file.endsWith(".lua"))) {
+        const file_data = fs.readFileSync('resources/radios/' + theatre + '/' + file).toString();
         const lua_string = file_data.substring(0, file_data.indexOf("radio_descriptor_table =") - 1);
         const radio_descriptor_table = parse("return {" + lua_string + "}").descriptor;
 
-        if (radio_descriptor_table["theatre"] != theatre)
-            continue;
+        // if (radio_descriptor_table["theatre"] != theatre)
+        //     continue;
 
         console.log('updating radio presets (aircraft: ' + radio_descriptor_table["aircraft"] + ', group_name: ' + radio_descriptor_table["group_name"] + ') in ' + theatre + ' mission');
         const dcs_radio_presets = file_data.substring(file_data.indexOf("radio_descriptor_table =") + 24);

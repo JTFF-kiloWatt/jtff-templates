@@ -1,7 +1,6 @@
 descriptor = {
     aircraft = "FA-18C_hornet",
     group_name = "([vV][fF][aA]*)",
-    theatre = "PersianGulf"
 }
 
 radio_descriptor_table = {

@@ -1,7 +1,6 @@
 descriptor = {
     aircraft = "M-2000C",
     group_name = "(2(.?)*5)",
-    theatre = "Mariana"
 }
 
 radio_descriptor_table = {

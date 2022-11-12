@@ -1,7 +1,6 @@
 descriptor = {
-    aircraft = "F-14B",
+    aircraft = "F-14A-135-GR",
     group_name = "([vV][fF](.?)*84)",
-    theatre = "PersianGulf"
 }
 
 radio_descriptor_table = {
@@ -21,9 +20,9 @@ radio_descriptor_table = {
             [7] = 261,      -- SILVER 2
             [8] = 261.5,    -- SILVER 3
             [9] = 317.5,    -- OLIVE 2
-            [10] = 251.1,      -- Al Dafrah Ground
-            [11] = 251.2,      -- Al Dafrah Tower
-            [12] = 251.3,      -- Al Dafrah Approach
+            [10] = 360.2,    -- Incirlik Ground
+            [11] = 360.3,    -- Incirlik Tower
+            [12] = 360.4,    -- Incirlik Approach
             [13] = 270.1,   -- BLACK 3
             [14] = 260,     -- ORANGE 1
             [15] = 274.5,   -- BRONZE 2
