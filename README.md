@@ -21,7 +21,7 @@ It's still a highly WIP but it may help you get onboard with mission scripting J
 ## prerequisites
 
 you must have installed on your computer :
-* DCSWorld with a version >= 2.7 : https://www.digitalcombatsimulator.com/upload/iblock/d4f/DCS_World_OpenBeta_web.exe
+* DCSWorld with a version >= 2.8 : https://www.digitalcombatsimulator.com/upload/iblock/d4f/DCS_World_OpenBeta_web.exe
 * Git for windows version >=2.0 : https://github.com/git-for-windows/git/releases/download/v2.35.1.windows.2/Git-2.35.1.2-64-bit.exe
 * NodeJs version >=16.0: https://nodejs.org/dist/v16.14.0/node-v16.14.0-x64.msi
 * A code editor like :
