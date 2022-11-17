@@ -18,11 +18,11 @@ jobs:
       - name: 'set RC version'
         if: startsWith(github.ref, 'refs/heads/release/')
         run: |
-          npm run jtff-version ${{ fromJson(steps.getConfig.outputs.config).general.missionVersion }}$GITHUB_RUN_NUMBER
+          npm run version ${{ fromJson(steps.getConfig.outputs.config).general.missionVersion }}$GITHUB_RUN_NUMBER
       - name: 'set snapshot version'
         if: startsWith(github.ref, 'refs/heads/develop')
         run: |
-          npm run jtff-version ${{ fromJson(steps.getConfig.outputs.config).general.missionVersion }}$GITHUB_RUN_NUMBER
+          npm run version ${{ fromJson(steps.getConfig.outputs.config).general.missionVersion }}$GITHUB_RUN_NUMBER
       - name: 'build missions'
         run: |
           npm run build
@@ -30,17 +30,17 @@ jobs:
         env:
           GDRIVE_TOKEN_CACHE_JSON: ${{ secrets.GDRIVE_TOKEN_CACHE_JSON }}
         run: |
-          npm run jtff-publish
+          npm run gdrive-upload
       - name: 'upload generated files to JTFF DCS Server'
         env:
           JTFF_FTP_SECRET_JSON: ${{ secrets.JTFF_FTP_SECRET_JSON }}
         run: |
-          npm run jtff-upload
+          npm run ftp-upload
       - name: 'upload generated files to VF84 DCS Server'
         env:
           JTFF_FTP_SECRET_JSON: ${{ secrets.VF84_FTP_SECRET_JSON }}
         run: |
-          npm run jtff-upload
+          npm run ftp-upload
       - name: 'Discord notification'
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
