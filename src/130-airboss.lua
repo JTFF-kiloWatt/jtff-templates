@@ -84,6 +84,47 @@ function forceCarrierDefCon4(params)
     cvGroup:OptionROE(ENUMS.ROE.WeaponFree):OptionAlarmStateRed()
 end
 
+function getCaseTypeFromWeather()
+    local weather = env.mission.weather
+    local clouds = weather.clouds
+    -- local static = weather.atmosphere_type == 0
+    local visibility = weather.visibility.distance
+    -- local turbulence = weather.groundTurbulence
+    local dust = nil
+    if weather.enable_dust == true then
+        dust = weather.dust_density
+    end
+    local fog = nil
+    if weather.enable_fog == true then
+        fog = weather.fog
+    end
+
+    -- debug_msg(string.format("visibility : %i | cloud : base %i density %i | fog %i,%i | dust %i", visibility, clouds.base, clouds.density, fog.thickness, fog.visibility, dust))
+    local minVisibility = visibility
+    if (weather.enable_fog and fog.thickness > 0) then
+        minVisibility = math.min(minVisibility,fog.visibility)
+    end
+    if (weather.enable_dust) then
+        minVisibility = math.min(minVisibility,dust)
+    end
+
+    if (minVisibility > UTILS.NMToMeters(5)) then
+        if (clouds.base > UTILS.FeetToMeters(3000)) then
+            debug_msg("CASE I weather")
+            return 1
+        elseif (clouds.base > UTILS.FeetToMeters(1000)) then
+            debug_msg("CASE II weather")
+            return 2
+        else
+            debug_msg("CASE III weather")
+            return 3
+        end
+    else
+        debug_msg("CASE III weather")
+        return 3
+    end
+end
+
 AIRBOSSArray = {}
 compteur = 0
 MenuCoalitionCSGCommandsBlue = MENU_COALITION:New(coalition.side.BLUE, "CSG Commands", MenuCoalitionBlue)
@@ -143,7 +184,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
         objAirboss:SetCarrierControlledArea(airbossconfig.controlarea)
         objAirboss:SetStaticWeather(true)
         objAirboss:SetRespawnAI(false)
-        objAirboss:SetRecoveryCase(airbossconfig.recoverycase)
+        objAirboss:SetRecoveryCase(getCaseTypeFromWeather())
         objAirboss:SetEmergencyLandings(true)
         objAirboss:SetMaxLandingPattern(airbossconfig.maxpatterns)
         objAirboss:SetMaxSectionSize(4)
@@ -402,11 +443,15 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                         else
                             if ((timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*1/3, 0)) >= (self:GetCoordinate():GetSunrise(true) + 30*60)) then
                                 --debut du prochain recovery apres l aube aeronavale
-                                self:SetRecoveryCase(self.customconfig.recoverycase)
-                                if self.customconfig.recoverycase == 3 then
+                                self:SetRecoveryCase(getCaseTypeFromWeather())
+                                if self.defaultcase == 1 then
+                                    self:SetMaxSectionSize(4)
+                                elseif self.defaultcase == 2 then
+                                    self:SetMaxSectionSize(2)
+                                elseif self.defaultcase == 3 then
                                     self:SetMaxSectionSize(1)
                                 else
-                                    self:SetMaxSectionSize(4)
+                                    self:SetMaxSectionSize(1)
                                 end
                             end
                         end
@@ -431,11 +476,18 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                     else
                         if ((timer.getAbsTime() + UTILS.Round(self.customconfig.recoveryops.cyclic.event_duration_minutes*60*1/3, 0)) >= (self:GetCoordinate():GetSunrise(true) + 30*60)) then
                             --debut du prochain recovery apres l aube aeronavale
-                            self:SetRecoveryCase(self.customconfig.recoverycase)
-                            if self.customconfig.recoverycase == 3 then
+                            self:SetRecoveryCase(getCaseTypeFromWeather())
+                            if self.defaultcase == 1 then
+                                self:MessageToMarshal('Good visibility : Case I', self.customconfig.alias, "", 45, false, 0)
+                                self:SetMaxSectionSize(4)
+                            elseif self.defaultcase == 2 then
+                                self:MessageToMarshal('Bad visibility in altitude : Case II', self.customconfig.alias, "", 45, false, 0)
+                                self:SetMaxSectionSize(2)
+                            elseif self.defaultcase == 3 then
+                                self:MessageToMarshal('Bad visibility : Case III', self.customconfig.alias, "", 45, false, 0)
                                 self:SetMaxSectionSize(1)
                             else
-                                self:SetMaxSectionSize(4)
+                                self:SetMaxSectionSize(1)
                             end
                         end
                     end
@@ -482,11 +534,18 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 AIRBOSSArray[compteur]:SetMaxSectionSize(1)
             else
                 if ((timer.getAbsTime() + UTILS.Round(airbossconfig.recoveryops.cyclic.event_duration_minutes*60/3, 0)) >= (AIRBOSSArray[compteur]:GetCoordinate():GetSunrise(true) + 30*60)) then
-                    AIRBOSSArray[compteur]:SetRecoveryCase(airbossconfig.recoverycase)
-                    if airbossconfig.recoverycase == 3 then
+                    AIRBOSSArray[compteur]:SetRecoveryCase(getCaseTypeFromWeather())
+                    if AIRBOSSArray[compteur].defaultcase == 1 then
+                        AIRBOSSArray[compteur]:MessageToMarshal('Good visibility : Case I', AIRBOSSArray[compteur].customconfig.alias, "", 45, false, 0)
+                        AIRBOSSArray[compteur]:SetMaxSectionSize(4)
+                    elseif AIRBOSSArray[compteur].defaultcase == 2 then
+                        AIRBOSSArray[compteur]:MessageToMarshal('Bad visibility in altitude : Case II', AIRBOSSArray[compteur].customconfig.alias, "", 45, false, 0)
+                        AIRBOSSArray[compteur]:SetMaxSectionSize(2)
+                    elseif AIRBOSSArray[compteur].defaultcase == 3 then
+                        AIRBOSSArray[compteur]:MessageToMarshal('Bad visibility : Case III', AIRBOSSArray[compteur].customconfig.alias, "", 45, false, 0)
                         AIRBOSSArray[compteur]:SetMaxSectionSize(1)
                     else
-                        AIRBOSSArray[compteur]:SetMaxSectionSize(4)
+                        AIRBOSSArray[compteur]:SetMaxSectionSize(1)
                     end
                 end
             end
@@ -516,10 +575,7 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                 if (airbossconfig.recoveryops.alpha) then
                     if (airbossconfig.recoveryops.alpha.recoveries) then
                         for alphaindex, alphaevent in ipairs(airbossconfig.recoveryops.alpha.recoveries) do
-                            local effectiveeventcase = airbossconfig.recoverycase or 1
-                            if (alphaevent.recovery_case) then
-                                effectiveeventcase = alphaevent.recovery_case
-                            end
+                            local effectiveeventcase = getCaseTypeFromWeather()
                             if (env.mission.start_time +
                                     ( ( alphaevent.recovery_start_minutes +
                                             alphaevent.recovery_duration_minutes ) * 60
