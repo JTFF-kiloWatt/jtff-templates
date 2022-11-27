@@ -85,20 +85,20 @@ function forceCarrierDefCon4(params)
 end
 
 function getCaseTypeFromWeather(CVNCoordinates, recovery_start, recovery_stop)
-    if (type(CVNCoordinates) ~= nil) then
+    if (CVNCoordinates) then
         if ((timer.getAbsTime() >= (CVNCoordinates:GetSunset(true) - 30*60)) or (timer.getAbsTime() <= (CVNCoordinates:GetSunrise(true) + 30*60))) then
             --Navy Night conditions
             debug_msg("CASE III weather : Navy Night")
             return 3
         end
-        if (type(recovery_stop) ~= nil) then
+        if (recovery_stop) then
             if (recovery_stop > (CVNCoordinates:GetSunset(true) - 30*60)) then
                 --recovery_stop after Navy SunSet
                 debug_msg("CASE III weather : Recovery ending after Navy SunSet")
                 return 3
             end
         end
-        if (type(recovery_start) ~= nil) then
+        if (recovery_start) then
             if (recovery_start < (CVNCoordinates:GetSunrise(true) + 30*60)) then
                 --recover_start before Navy SunRise
                 debug_msg("CASE III weather : Recovery starting before Navy SunRise")
