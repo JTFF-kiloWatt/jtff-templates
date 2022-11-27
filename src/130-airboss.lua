@@ -94,7 +94,7 @@ function getCaseTypeFromWeather(CVNCoordinates, recovery_start, recovery_stop)
         if (type(recovery_stop) ~= nil) then
             if (recovery_stop > (CVNCoordinates:GetSunset(true) - 30*60)) then
                 --recovery_stop after Navy SunSet
-                debug_msg("CASE III weather : Recovery ending after Navy SunRise")
+                debug_msg("CASE III weather : Recovery ending after Navy SunSet")
                 return 3
             end
         end
