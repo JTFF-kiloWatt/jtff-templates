@@ -73,7 +73,7 @@ TankersConfig = {
         altitude = 25000,
         speed = 420,
         tacan = {
-            channel = 101,
+            channel = 106,
             morse = 'TEX',
         },
         racetrack = {
