@@ -252,7 +252,11 @@ function activateGCI(param)
     Detection = DETECTION_AREAS:New( DetectionSetGroup, 30000 )
     A2ADispatcher = AI_A2A_DISPATCHER:New( Detection )
     A2ADispatcher:SetEngageRadius() -- 100000 is the default value.
-    A2ADispatcher:SetGciRadius(100000)
+    if (iadsConfig.gci_engage_radius) then
+        A2ADispatcher:SetGciRadius(iadsConfig.gci_engage_radius)
+    else
+        A2ADispatcher:SetGciRadius()
+    end
     CCCPBorderZone = ZONE_POLYGON:New( iadsConfig.gci_border , GROUP:FindByName( iadsConfig.gci_border ) )
     A2ADispatcher:SetBorderZone( CCCPBorderZone )
 
@@ -265,6 +269,7 @@ function activateGCI(param)
         A2ADispatcher:SetSquadron( gci_group_name,    gci_group.airport, gci_group.templatePrefixes, gci_group.numberOfAircraftAvailable )
         A2ADispatcher:SetSquadronGci( gci_group_name, 1000, 3000 )
     end
+    MESSAGE:NewType(string.format("IADS - GCI of %s is activated", iadsConfig.name), MESSAGE.Type.Information):ToCoalition(iadsConfig.benefit_coalition)
 end
 
 function activateSkynet(param)
