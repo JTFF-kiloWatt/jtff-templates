@@ -94,6 +94,7 @@ SkynetConfig = {
             }
         },
         gci_border = "IRAN-BORDER",
+        gci_engage_radius = 200000,
         gci = {
             {
                 airport = AIRBASE.PersianGulf.Bandar_Abbas_Intl,
@@ -101,11 +102,11 @@ SkynetConfig = {
                 numberOfAircraftAvailable = 8
             }, {
                 airport = AIRBASE.PersianGulf.Bandar_e_Jask_airfield,
-                templatePrefixes = { "F1" },
+                templatePrefixes = { "F4" },
                 numberOfAircraftAvailable = 3
             }, {
                 airport = AIRBASE.PersianGulf.Bandar_Lengeh,
-                templatePrefixes = { "F4", "F1" },
+                templatePrefixes = { "F1" },
                 numberOfAircraftAvailable = 5
             }
         }
