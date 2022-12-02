@@ -52,7 +52,7 @@ OnDemandAwacsConfig = {
             number = 1
         },
         orbit = {
-            heading = 090,
+            heading = 000,
             length = 20,
         },
     },

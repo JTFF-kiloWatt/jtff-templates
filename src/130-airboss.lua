@@ -582,17 +582,17 @@ for index, airbossconfig in ipairs(AirBossConfig) do
                         for alphaindex, alphaevent in ipairs(airbossconfig.recoveryops.alpha.recoveries) do
                             local effectiveeventcase = getCaseTypeFromWeather(
                                     AIRBOSSArray[compteur]:GetCoordinate(),
-                                    timer.getAbsTime() + UTILS.SecondsToClock(env.mission.start_time + (alphaevent.recovery_start_minutes * 60) ),
-                                    timer.getAbsTime() + UTILS.SecondsToClock(env.mission.start_time + (( alphaevent.recovery_start_minutes + alphaevent.recovery_duration_minutes ) * 60))
+                                    UTILS.Round(env.mission.start_time + (alphaevent.recovery_start_minutes * 60) ,0),
+                                    UTILS.Round(env.mission.start_time + (( alphaevent.recovery_start_minutes + alphaevent.recovery_duration_minutes ) * 60),0)
                             )
-                            if self.defaultcase == 1 then
-                                self:SetMaxSectionSize(4)
-                            elseif self.defaultcase == 2 then
-                                self:SetMaxSectionSize(2)
-                            elseif self.defaultcase == 3 then
-                                self:SetMaxSectionSize(1)
+                            if AIRBOSSArray[compteur].defaultcase == 1 then
+                                AIRBOSSArray[compteur]:SetMaxSectionSize(4)
+                            elseif AIRBOSSArray[compteur].defaultcase == 2 then
+                                AIRBOSSArray[compteur]:SetMaxSectionSize(2)
+                            elseif AIRBOSSArray[compteur].defaultcase == 3 then
+                                AIRBOSSArray[compteur]:SetMaxSectionSize(1)
                             else
-                                self:SetMaxSectionSize(1)
+                                AIRBOSSArray[compteur]:SetMaxSectionSize(1)
                             end
                             AIRBOSSArray[compteur]:AddRecoveryWindow(
                                     UTILS.SecondsToClock(env.mission.start_time + (alphaevent.recovery_start_minutes * 60) ),

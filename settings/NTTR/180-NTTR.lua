@@ -1,5 +1,25 @@
 -- NTTR Range and Target by 476vFG
 
+awacsOnDemandArray[#awacsOnDemandArray+1] = triggerOnDemandAwacs(
+        "fo1",
+        nil,
+        nil,
+        nil,
+        UNIT:FindByName("anchor-focus"):GetCoordinate(),
+        nil,
+        nil
+)
+awacsOnDemandArray[#awacsOnDemandArray+1] = triggerOnDemandAwacs(
+        "wz1",
+        nil,
+        nil,
+        nil,
+        UNIT:FindByName("anchor-wizard"):GetCoordinate(),
+        nil,
+        nil
+)
+
+
 --=======================================================================================================
 --================================    Environment variables    ==========================================
 --=======================================================================================================

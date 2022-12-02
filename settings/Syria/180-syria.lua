@@ -15,7 +15,7 @@ tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
         nil,
         nil,
         nil,
-        GROUP:FindByName("sea-anchor-3"):GetCoordinate(),
+        GROUP:FindByName("sea-anchor-1"):GetCoordinate(),
         nil,
         nil
 )
@@ -28,6 +28,17 @@ tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
         nil,
         nil
 )
+
+awacsOnDemandArray[#awacsOnDemandArray+1] = triggerOnDemandAwacs(
+        "ds1",
+        nil,
+        nil,
+        nil,
+        GROUP:FindByName("sea-anchor-1"):GetCoordinate(),
+        nil,
+        nil
+)
+
 
 -- -----------------------------------------------------------------------------
 -- |  Fire on derricks
