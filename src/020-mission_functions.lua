@@ -262,6 +262,46 @@ function taskTankerEscort(param)
     env.info('Escort group spawned : '.. EscortGroup.GroupName..'. Escorting '..recoveryTankerObject.tanker.GroupName)
 end
 
+function taskGroupEscort(param)
+    local GroupToEscortObject = param[1]
+    local EscortingGroup = param[2]
+    EscortingGroup:OptionAlarmStateRed()
+    EscortingGroup:OptionROEReturnFire()
+    --EscortGroup:TraceOn()
+    EscortingGroup:OptionRTBAmmo(true)
+    EscortingGroup:OptionRTBBingoFuel(true)
+    local randomCoord = EscortingGroup
+            :GetCoordinate()
+            :GetRandomCoordinateInRadius( UTILS.NMToMeters(20), UTILS.NMToMeters(15) )
+    randomCoord.y = UTILS.FeetToMeters(15000)
+    --randomCoord:MarkToAll('rejointe '..EscortGroup.GroupName)
+    EscortingGroup:Route(
+            {
+                randomCoord:WaypointAirTurningPoint(
+                        COORDINATE.WaypointAltType.BARO,
+                        500,
+                        {},
+                        'rejoin'
+                ),
+                randomCoord:GetRandomCoordinateInRadius( UTILS.NMToMeters(20), UTILS.NMToMeters(15) ):WaypointAirTurningPoint(
+                        COORDINATE.WaypointAltType.BARO,
+                        500,
+                        {
+                            EscortingGroup:TaskEscort(
+                                    GROUP:FindByName(GroupToEscortObject.GroupName),
+                                    POINT_VEC3:New(0, 10, 150):GetVec3(),
+                                    20,
+                                    UTILS.NMToMeters(40),
+                                    { 'Air' }
+                            )
+                        },
+                        'escort-start'
+                )
+            }
+    )
+    env.info('Escort group spawned : '.. EscortingGroup.GroupName..'. Escorting '.. GroupToEscortObject.GroupName)
+end
+
 function spawnRecoveryTankerEscort(escortSpawnObject,customconfig)
     if (customconfig.airspawn) then
         return escortSpawnObject

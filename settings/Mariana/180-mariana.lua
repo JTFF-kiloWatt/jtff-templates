@@ -37,3 +37,12 @@ tankersOnDemandArray[#tankersOnDemandArray+1] = triggerOnDemandTanker(
         nil,
         nil
 )
+awacsOnDemandArray[#awacsOnDemandArray+1] = triggerOnDemandAwacs(
+        "ds1",
+        nil,
+        nil,
+        nil,
+        GROUP:FindByName("awacs-anchor-1"):GetCoordinate(),
+        nil,
+        nil
+)

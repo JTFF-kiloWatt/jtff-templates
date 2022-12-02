@@ -28,31 +28,32 @@ AwacsConfig = {
             name = CALLSIGN.AWACS.Wizard,
             number = 1
         }
-    },
+    }
+}
+
+OnDemandAwacsConfig = {
+    --DarkStar 1 E3
     {
         enable = true,
-        autorespawn = true,
-        airspawn = false,
-        patternUnit = 'awacs-anchor',
+        type = "ds1",
         benefit_coalition = coalition.side.BLUE,
         baseUnit = AIRBASE.PersianGulf.Al_Dhafra_AB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'DARKSTAR #IFF:4772FR',
-        airboss_recovery = false,
         missionmaxduration = 240,
         altitude = 35000,
         speed = 402,
         freq = 265.8,
         fuelwarninglevel=25,
-        racetrack = {
-            front = 15,
-            back = 0
-        },
         modex = 11,
         callsign = {
             alias = 'Darkstar',
             name = CALLSIGN.AWACS.Darkstar,
             number = 1
-        }
-    }
+        },
+        orbit = {
+            heading = 000,
+            length = 20,
+        },
+    },
 }

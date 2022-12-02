@@ -30,12 +30,14 @@ AwacsConfig = {
             number = 1
         }
     },
+}
+
+OnDemandAwacsConfig = {
+    --DarkStar 1 E3
     {
         enable = true,
-        autorespawn = true,
-        airspawn = false,
-        patternUnit = 'awacs-anchor-1',
-        benefit_coalition = coalition.side.RED,
+        type = "ds1",
+        benefit_coalition = coalition.side.BLUE,
         baseUnit = AIRBASE.MarianaIslands.Andersen_AFB,
         terminalType = AIRBASE.TerminalType.OpenBig,
         groupName = 'DARKSTAR #IFF:4772FR',
@@ -46,10 +48,6 @@ AwacsConfig = {
         speed = 410,
         freq = 265.8,
         fuelwarninglevel = 20,
-        racetrack = {
-            front = 25,
-            back = 50
-        },
         tacan = {
             channel = 131,
             morse = 'DRK',
@@ -59,6 +57,10 @@ AwacsConfig = {
             alias = 'Darkstar',
             name = CALLSIGN.AWACS.Darkstar,
             number = 1
-        }
-    }
+        },
+        orbit = {
+            heading = 090,
+            length = 75,
+        },
+    },
 }

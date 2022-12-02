@@ -25,3 +25,12 @@
 --        nil,
 --        nil
 --)
+awacsOnDemandArray[#awacsOnDemandArray+1] = triggerOnDemandAwacs(
+        "ds1",
+        nil,
+        nil,
+        nil,
+        GROUP:FindByName("awacs-anchor"):GetCoordinate(),
+        nil,
+        nil
+)
