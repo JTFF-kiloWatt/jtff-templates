@@ -232,8 +232,8 @@ function taskTankerEscort(param)
     EscortGroup:OptionRTBBingoFuel(true)
     local randomCoord = EscortGroup
             :GetCoordinate()
-            :GetRandomCoordinateInRadius( UTILS.NMToMeters(30), UTILS.NMToMeters(20) )
-    randomCoord.y = 8000
+            :GetRandomCoordinateInRadius( UTILS.NMToMeters(20), UTILS.NMToMeters(15) )
+    randomCoord.y = UTILS.FeetToMeters(15000)
     --randomCoord:MarkToAll('rejointe '..EscortGroup.GroupName)
     EscortGroup:Route(
             {
@@ -243,7 +243,7 @@ function taskTankerEscort(param)
                         {},
                         'rejoin'
                 ),
-                randomCoord:GetRandomCoordinateInRadius( UTILS.NMToMeters(15), UTILS.NMToMeters(10) ):WaypointAirTurningPoint(
+                randomCoord:GetRandomCoordinateInRadius( UTILS.NMToMeters(20), UTILS.NMToMeters(15) ):WaypointAirTurningPoint(
                         COORDINATE.WaypointAltType.BARO,
                         500,
                         {
@@ -674,13 +674,13 @@ function SpawnRangesDelay(param)
         message_warning = param[7]
     end
     if ( sound_warning ) then
-    sound2Bip:ToAll()
+        sound2Bip:ToAll()
     end
     if ( message_warning ) then
-    MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToAll()
+        MESSAGE:NewType(string.format("Warning, Range Units %s(%s) will spawn in %d sec", rangeConfig.name, subRangeConfig.name, delay), MESSAGE.Type.Update):ToAll()
     end
     TIMER:New(SpawnRanges, param):Start(delay)
-    end
+end
 
 function SpawnWholeRangesDelay(param)
     --parameters :

@@ -4,232 +4,312 @@
 RATConfig = {
     {
         name = 'civil',
-        enable = true,
-        maximum_aircrafts = 10,
+        enable = false,
+        maximum_aircrafts = 4,
         aircrafts_groupconfigs = {
             {
-                templatename = 'ETHIAD 320#IFF:7116UN',
-                minimun_spawns = 0,
-                flightlevel = 290,
+                templatename = { 'RAT_A320' },
+                minimun_spawns = 1,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                liveries = { "Aeroflot", "Aeroflot 1", "Air Asia", "Air Berlin", "Air Berlin FFO", "Air Berlin OLT",
+                    "Air Berlin retro", "Air France", "Air Moldova", "Airbus Neo", "Al Maha", "Alaska Modern", "Alitalia",
+                    "Allegiant", "American Airlines", "British Airways", "Brussels airlines Tintin", "Cebu Pacific",
+                    "Clean", "Condor", "Delta Airlines", "Easy Jet", "Easy Jet Berlin", "Easy Jet w", "Edelweiss",
+                    "Emirates", "Etihad", "Eurowings", "Eurowings BVB09", "Eurowings Europa Park", "FAB", "Fly Georgia",
+                    "Fly Niki", "Frontier", "German Wings", "Gulf Air", "Iberia", "Iran Air", "Israir B", "Israir W",
+                    "Jet Blue NY", "JetBlue", "jetBlue FDNY", "Kish Air", "Kuwait Airways", "Lufthansa", "Lufthansa New",
+                    "MEA", "MRTT Canada", "MRTT Luftwaffe", "Qatar", "RAF MPA", "RAF VIP", "Republique Francaise", "S7",
+                    "SAS", "Saudi Gulf", "Saudia", "Small Planet", "Spirit", "Star Alliance", "SWISS", "Thomas Cook",
+                    "Tunis Air", "Turkish Airlines", "United", "Ural Airlines", "US Airways", "Vietnam Airlines",
+                    "Virgin", "Virgin Atlantic A_320_Rosie Lee_EI-EZW", "Volaris", "WiZZ", "WiZZ Budapest", "WOW",
+                    "Yemenia" },
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-ouest'
+                    },
+                    arrival = {
+                        'zone-RAT-est'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_A330' },
+                minimun_spawns = 1,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                liveries = { "Aer Lingus", "Aeroflot", "Air Canada", "Air China", "Air Tahiti Nui", "AirAsia", "Airbus",
+                    "BOURKHAN", "Brussels Airline", "Cathay Pacific", "CEBU Pacific", "China Eastern", "Clean", "DELTA",
+                    "DragonAir", "Edelweiss", "Egypt Air", "Emirates", "ETIHAD", "EVA", "FIJI", "FinnAir", "FrenchBlue",
+                    "FrenchMRTT042", "Garude Indunesia", "GulfAir", "Hainan Airlines", "Iberia", "IRoI", "KLM",
+                    "LAN Airways", "Lion Air PK-LEG", "LTU", "Lufthansa", "McRondForce", "NWA", "nwaold", "Olympic",
+                    "OmanAir", "Orbit", "Philipines", "Qantas", "Qatar", "RAF Voyager", "Singapore", "Skyteam",
+                    "Srilankan", "Star Aliance", "Swiss", "Thomas Cook", "Turkish Airlines", "US Airways",
+                    "Virgin Atlantic", "WorldTrave" },
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-est'
+                    },
+                    arrival = {
+                        'zone-RAT-ouest'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_A380' },
+                minimun_spawns = 1,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                liveries = { "Air France", "Ana Honululu", "BA", "China Southern", "Clean", "Emirates",
+                    "Emirates _United  for  Wildlife", "KA", "LH", "LHF", "Qantas Airways", "QTR", "SA", "TA" },
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-ouest'
+                    },
+                    arrival = {
+                        'zone-RAT-est'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_B727' },
+                minimun_spawns = 2,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                liveries = { "AEROFLOT", "Air France", "Alaska", "Alitalia", "American Airlines", "AsemanAir", "Clean",
+                    "Delta Airlines", "Delta Airlines OLD", "Emirates", "FedEx", "Hapag Lloyd", "IraqAir", "Lufthansa",
+                    "Lufthansa Oberhausen Old", "Northwest", "OmanAir", "Pan Am", "SaudiArabian", "Singapore Airlines",
+                    "Southwest", "UNITED", "UNITED Old", "ZERO G" },
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-est'
+                    },
+                    arrival = {
+                        'zone-RAT-ouest'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_B737' },
+                minimun_spawns = 1,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                liveries = { "Air Algerie", "Air Berlin", "Air France", "AirArabian", "airBaltic", "Airzena", "AM",
+                    "Amazon Prime", "American Classic", "American Modern", "American_Airlines", "British Airways", "C40s",
+                    "Clean", "Delta Modern", "Disney", "EA", "easyJet", "EGYPTAIR_SU-AYK", "EL AL", "FINNAIR", "flyAdeal",
+                    "GulfAir", "HARIBO", "Israir", "JA", "Jet2", "kulula", "LH", "Lufthansa BA", "Lufthansa KR", "OLD_BA",
+                    "OMAN AIR", "P8 RAF", "P8 USN", "PakistanInt", "PAN AM", "Polskie Linie Lotnicze LOT", "QANTAS",
+                    "RAAF No. 11 Sqn", "RAAF No. 11 Sqn A47-001", "RAAF No. 11 Sqn A47-002", "RAAF No. 11 Sqn A47-003",
+                    "RAAF No. 11 Sqn A47-004", "RAAF No. 11 Sqn A47-005", "RAAF No. 11 Sqn A47-006",
+                    "RAAF No. 11 Sqn A47-007", "RAAF No. 11 Sqn A47-008", "RAAF No. 11 Sqn A47-009",
+                    "RAAF No. 11 Sqn A47-010", "RAAF No. 11 Sqn A47-011", "RAAF No. 11 Sqn A47-012",
+                    "RAAF No. 11 Sqn A47-013", "RAAF No. 11 Sqn A47-014", "RAAF No. 2 Sqn", "RAAF No. 2 Sqn A30-001",
+                    "RAAF No. 2 Sqn A30-001 100 Years", "RAAF No. 2 Sqn A30-002", "RAAF No. 2 Sqn A30-003",
+                    "RAAF No. 2 Sqn A30-004", "RAAF No. 2 Sqn A30-005", "RAAF No. 2 Sqn A30-006",
+                    "RAAF No. 2 Sqn A30-006 100 Years", "RYANAIR", "SaudiArabian", "SouthWest Lone Star",
+                    "Southwest Modern", "Swoop", "ThomsonFly", "TNT", "Ukraine Airlines", "United Modern", "United_Retro",
+                    "UPS", "WestJet Retro" },
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-ouest'
+                    },
+                    arrival = {
+                        'zone-RAT-est'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_B747' },
+                minimun_spawns = 1,
                 speed = 450,
                 inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
+                liveries = { "AF", "AF-One", "AI", "CP", "EL AL Modern", "IM", "JASDF 20-1101", "JASDF 20-1102", "KLM",
+                    "KLM Modern", "Korean Air B-747", "Korean Air Cargo", "LH", "NW", "PA", "QA", "TA",
+                    "Virgin Atlantic 747_Barbarella_G-VROM", "Virgin Atlantic Modern" },
                 airbases_names = {
                     departure = {
-                        'zone-RAT-East'
+                        'zone-RAT-est'
                     },
                     arrival = {
-                        AIRBASE.PersianGulf.Dubai_Intl
+                        'zone-RAT-ouest'
                     }
                 }
             },
             {
-                templatename = 'FED EX #IFF:7316UN',
-                minimun_spawns = 0,
-                flightlevel = 370,
-                speed = 500,
-                inactive_timer = 600,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        'zone-RAT-East'
-                    },
-                    arrival = {
-                        AIRBASE.PersianGulf.Abu_Dhabi_International_Airport
-                    }
-                }
-            },
-            {
-                templatename = 'IRON MAIDEN 747 #IFF:7377UN',
-                minimun_spawns = 0,
-                flightlevel = 335,
-                speed = 490,
+                templatename = { 'RAT_B757' },
+                minimun_spawns = 1,
+                speed = 450,
                 inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
+                liveries = { "AA", "AirArabia", "American Airlines_ Generic (Silver Mica)",
+                    "American Airlines_One World (Metallic)", "American Airlines_One World (Silver Mica)", "BA", "C-32",
+                    "Delta", "DHL", "easyJet", "EL AL", "EL AL Special", "FedEx", "GulfAir", "Korean Air", "OmanAir",
+                    "Pakistan1", "Pakistan2", "SaudiArabian", "Swiss", "Thomson", "United_Retro" },
                 airbases_names = {
                     departure = {
-                        AIRBASE.PersianGulf.Dubai_Intl
+                        'zone-RAT-ouest'
                     },
                     arrival = {
-                        'zone-RAT-West'
+                        'zone-RAT-est'
                     }
                 }
             },
             {
-                templatename = 'KLM 747 #IFF:3212UN',
-                minimun_spawns = 0,
-                flightlevel = 360,
-                speed = 480,
-                inactive_timer = 360,
+                templatename = { 'RAT_DC10' },
+                minimun_spawns = 1,
+                speed = 450,
+                inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
+                liveries = { "SWISSAIR HB-IHL", "SWISSAIR HB-IMC", "SWISSAIR HB-IPF" },
                 airbases_names = {
                     departure = {
-                        AIRBASE.PersianGulf.Dubai_Intl
+                        'zone-RAT-est'
                     },
                     arrival = {
-                        'zone-RAT-East'
+                        'zone-RAT-ouest'
                     }
                 }
             },
             {
-                templatename = 'Quatar #IFF:2631UN',
-                minimun_spawns = 0,
-                flightlevel = 350,
-                speed = 480,
-                inactive_timer = 600,
+                templatename = { 'RAT_Yak40' },
+                minimun_spawns = 1,
+                speed = 450,
+                inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
+                liveries = { "Aeroflot", "Algeria GLAM", "Georgian Airlines", "Olympic Airways", "Ukranian" },
                 airbases_names = {
                     departure = {
-                        'zone-RAT-East'
+                        'zone-RAT-ouest'
                     },
                     arrival = {
-                        AIRBASE.PersianGulf.Dubai_Intl
+                        'zone-RAT-est'
                     }
                 }
             },
             {
-                templatename = 'UPS 737 #IFF:2361UN',
-                minimun_spawns = 0,
-                flightlevel = 310,
-                speed = 466,
-                inactive_timer = 600,
+                templatename = { 'RAT_An26B' },
+                minimun_spawns = 1,
+                speed = 450,
+                inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
+                liveries = { "Abkhazian AF", "Aeroflot", "China PLAAF", "Georgian AF", "RF Air Force", "RF Navy",
+                    "Ukraine AF" },
                 airbases_names = {
                     departure = {
-                        AIRBASE.PersianGulf.Abu_Dhabi_International_Airport
+                        'zone-RAT-est'
                     },
                     arrival = {
-                        'zone-RAT-West'
-                    }
-                }
-            },
-            {
-                templatename = 'EL AL  SP 757 #IFF:1562UN',
-                minimun_spawns = 0,
-                flightlevel = 330,
-                speed = 466,
-                inactive_timer = 600,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        'zone-RAT-West'
-                    },
-                    arrival = {
-                        AIRBASE.PersianGulf.Dubai_Intl
-                    }
-                }
-            },
-            {
-                templatename = 'UAE 380°3 #IFF:3932UN',
-                minimun_spawns = 0,
-                flightlevel = 360,
-                speed = 430,
-                inactive_timer = 600,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        AIRBASE.PersianGulf.Dubai_Intl
-                    },
-                    arrival = {
-                        'zone-RAT-West'
-                    }
-                }
-            },
-            {
-                templatename = 'Aeroflot A330 #IFF:2251UN',
-                minimun_spawns = 0,
-                flightlevel = 300,
-                speed = 500,
-                inactive_timer = 340,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        AIRBASE.PersianGulf.Abu_Dhabi_International_Airport
-                    },
-                    arrival = {
-                        'zone-RAT-West'
-                    }
-                }
-            },
-            {
-                templatename = 'SINGAPOUR A330 #IFF:1582UN',
-                minimun_spawns = 0,
-                flightlevel = 340,
-                speed = 515,
-                inactive_timer = 500,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        AIRBASE.PersianGulf.Abu_Dhabi_International_Airport
-                    },
-                    arrival = {
-                        'zone-RAT-East'
-                    }
-                }
-            },
-            {
-                templatename = 'CATHAY747#IFF:5156UN',
-                minimun_spawns = 0,
-                flightlevel = 340,
-                speed = 515,
-                inactive_timer = 500,
-                allow_immortal = false,
-                allow_invisible = false,
-                atcmessage_enable = false,
-                airbases_names = {
-                    departure = {
-                        'zone-RAT-West'
-                    },
-                    arrival = {
-                        'zone-RAT-East'
+                        'zone-RAT-ouest'
                     }
                 }
             },
         }
     },
     {
-        name = 'military',
-        enable = true,
+        name = 'iranien',
+        enable = false,
+        maximum_aircrafts = 4,
         aircrafts_groupconfigs = {
             {
-                templatename = 'LUFTWAFE 320 #IFF:5616UN',
+                templatename = { 'RAT_C130', 'RAT_H-6J' },
                 minimun_spawns = 1,
-                flightlevel = 290,
-                speed = 470,
+                flightlevel = 150,
+                speed = 450,
                 inactive_timer = 1200,
                 allow_immortal = false,
-                allow_invisible = false,
+                allow_invisible = true,
                 atcmessage_enable = false,
                 airbases_names = {
                     departure = {
-                        'zone-RAT-West'
+                        'zone-RAT-nord-ouest', 'zone-RAT-nord-est'
                     },
                     arrival = {
-                        AIRBASE.PersianGulf.Dubai_Intl
+                        'zone-RAT-sud'
                     }
                 }
             },
+            {
+                templatename = { 'RAT_Su24', 'RAT_F14A' },
+                minimun_spawns = 1,
+                flightlevel = 250,
+                speed = 450,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-nord-ouest', 'zone-RAT-nord-est'
+                    },
+                    arrival = {
+                        'zone-RAT-sud'
+                    }
+                }
+            }
+        }
+    },
+    {
+        name = 'coalition',
+        enable = false,
+        maximum_aircrafts = 4,
+        aircrafts_groupconfigs = {
+            {
+                templatename = { 'RAT_A400M', 'RAT_C5', 'RAT_Hercules' },
+                minimun_spawns = 1,
+                flightlevel = 200,
+                speed = 450,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-est'
+                    },
+                    arrival = {
+                        'zone-RAT-ouest'
+                    }
+                }
+            },
+            {
+                templatename = { 'RAT_AirForceOne' },
+                minimun_spawns = 1,
+                flightlevel = 290,
+                speed = 450,
+                inactive_timer = 1200,
+                allow_immortal = false,
+                allow_invisible = true,
+                atcmessage_enable = false,
+                airbases_names = {
+                    departure = {
+                        'zone-RAT-est'
+                    },
+                    arrival = {
+                        'zone-RAT-ouest'
+                    }
+                }
+            }
         }
     }
 }
-

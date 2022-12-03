@@ -1,16 +1,15 @@
 TankersConfig = {
-    --Shell 1 CVN71
+    --Shell 1 S3 CVN73
     {
         enable = true,
         autorespawn = true,
-        patternUnit = 'Escorte CSG-1 CVN-71-1',
+        patternUnit = 'Escort CVN_73 Perry',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-71-1',
+        baseUnit = 'washington',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
         groupName = 'nanny-1 #IFF:4775FR',
         airboss_recovery = true,
-        --escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 105,
+        missionmaxduration = 160,
         altitude = 8000,
         speed = 320,
         tacan = {
@@ -20,28 +19,27 @@ TankersConfig = {
         freq = 264.250,
         fuelwarninglevel = 35,
         racetrack = {
-            front = 40,
+            front = 15,
             back = -10
         },
         modex = 102,
         callsign = {
-            alias = 'Shell1',
+            alias = 'Shell',
             name = CALLSIGN.Tanker.Shell,
             number = 1
         }
     },
-    --Shell 2 CVN 73
+    --Shell 2 S3 CVN71
     {
         enable = true,
         autorespawn = true,
-        patternUnit = 'Escorte CSG-1 CVN-73-1',
+        patternUnit = 'Escort CVN_71 Perry',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-73-1',
+        baseUnit = 'roosevelt',
         terminalType = AIRBASE.TerminalType.OpenMedOrBig,
         groupName = 'nanny-2 #IFF:4776FR',
         airboss_recovery = true,
-        --escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 105,
+        missionmaxduration = 130,
         altitude = 8000,
         speed = 320,
         tacan = {
@@ -51,47 +49,46 @@ TankersConfig = {
         freq = 264.250,
         fuelwarninglevel = 35,
         racetrack = {
-            front = 40,
+            front = 15,
             back = -10
         },
         modex = 102,
         callsign = {
-            alias = 'Shell2',
+            alias = 'Shell',
             name = CALLSIGN.Tanker.Shell,
             number = 2
         }
     },
-    --Shell 7 LHA1
+    --Texaco 1
     {
         enable = true,
         autorespawn = true,
-        patternUnit = 'CSG-2 LHA1-3',
+        patternUnit = 'texaco-anchor',
         benefit_coalition = coalition.side.BLUE,
-        baseUnit = 'CSG-1 CVN-73-1',
-        terminalType = AIRBASE.TerminalType.OpenMedOrBig,
-        groupName = 'nanny-3 #IFF:4777FR',
-        airboss_recovery = true,
-        --escortgroupname = 'jolly_hornet #IFF:7323FR',
-        missionmaxduration = 105,
-        altitude = 8000,
-        speed = 320,
+        baseUnit = AIRBASE.PersianGulf.Al_Dhafra_AB,
+        terminalType = AIRBASE.TerminalType.OpenBig,
+        groupName = 'TEXACO 1-1 #IFF:4274FR',
+        airboss_recovery = false,
+        missionmaxduration = 180,
+        altitude = 25000,
+        speed = 420,
         tacan = {
             channel = 106,
-            morse = 'SH7',
+            morse = 'TEX',
         },
-        freq = 264.350,
-        fuelwarninglevel = 35,
         racetrack = {
-            front = 30,
-            back = -10
+            front = 15,
+            back = 15
         },
-        modex = 105,
+        fuelwarninglevel = 15,
+        freq = 317.5,
+        modex = 012,
         callsign = {
-            alias = 'Shell',
-            name = CALLSIGN.Tanker.Shell,
-            number = 7
+            alias = 'Texaco',
+            name = CALLSIGN.Tanker.Texaco,
+            number = 1
         }
-    },
+    }
 }
 
 

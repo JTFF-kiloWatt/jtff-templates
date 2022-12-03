@@ -1,29 +1,28 @@
 AtisConfig = {
     {
         enable = false,
-        airfield = AIRBASE.PersianGulf.Al_Dhafra_AB,
+        airfield = AIRBASE.Syria.Incirlik,
         radio = {
             freq = 270.1,
             power = 100,
             modulation = radio.modulation.AM,
-            relayunit = 'ATISRelay-1',
+            relayunit = 'ATISRelay-1-1',
             tower = {
-                251.1,
-                251.2,
-                251.3,
-                126.5,
-            }
+                360.1,
+                360.2,
+                360.3,
+                122.1}
         },
         active = {
-            number = '13',
+            number = '05',
             side = 'L'
         },
         tacan = {
-            channel = 96
+            channel = 21
         },
         ils = {
-            freq = 111.1,
-            runway = '13L'
+            freq = 109.3,
+            runway = '05'
         },
         srs = {
             path = "C:\\SRS"
