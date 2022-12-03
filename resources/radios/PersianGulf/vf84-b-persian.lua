@@ -1,6 +1,6 @@
 descriptor = {
     aircraft = "F-14B",
-    group_name = "([vV][fF](.?)*84)",
+    group_name = "^VF-84",
 }
 
 radio_descriptor_table = {
