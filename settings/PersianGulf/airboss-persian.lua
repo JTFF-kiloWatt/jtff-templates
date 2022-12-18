@@ -1,7 +1,7 @@
 AirBossConfig = {
     {
         enable = true,
-        carriername = 'washington',
+        carriername = 'CARRIER Washington 251.750',
         alias = 'washington',
         coalition = coalition.side.BLUE,
         enable_menumarkzones = false,
@@ -59,7 +59,7 @@ AirBossConfig = {
     },
     {
         enable = true,
-        carriername = 'roosevelt',
+        carriername = 'CARRIER Roosevelt 251.850',
         alias = 'roosevelt',
         coalition = coalition.side.BLUE,
         enable_menumarkzones = false,
