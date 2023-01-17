@@ -776,6 +776,54 @@ function SpawnRanges(param)
     local redAlert = subRangeConfig.redAlert
 
     debug_msg(string.format("SpawnRanges : Range %s - Targets %s", rangeName, subRangeName))
+    if (staticsToSpawn ~= nil)then
+        for index, staticToSpawn in ipairs(staticsToSpawn) do
+            local spawnStatic = nil
+            if (staticToSpawn.name ~= nil) then
+                local staticNameToSpawn = string.format("%s", staticToSpawn.name)
+                spawnStatic = SPAWNSTATIC:NewFromStatic(staticNameToSpawn)
+                if (staticToSpawn.coalition ~= nil) then
+                    if (staticToSpawn.coalition == coalition.side.BLUE) then
+                        spawnStatic = SPAWNSTATIC:NewFromStatic(staticNameToSpawn, country.id.CJTF_BLUE)
+                    elseif (staticToSpawn.coalition == coalition.side.RED) then
+                        spawnStatic = SPAWNSTATIC:NewFromStatic(staticNameToSpawn, country.id.CJTF_RED)
+                    else
+                        spawnStatic = SPAWNSTATIC:NewFromStatic(staticNameToSpawn, country.id.UN_PEACEKEEPERS)
+                    end
+                end
+                local x = staticToSpawn.x
+                local y = staticToSpawn.y
+                local heading = staticToSpawn.heading
+                local name = string.format("%s_%s_%i", subRangeName, staticNameToSpawn,index)
+                debug_msg(string.format("Static to spawn %s at %i,%i -> %s", staticNameToSpawn, x, y, name))
+                spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+            elseif (staticToSpawn.type ~= nil and staticToSpawn.category ~= nil) then
+                local staticTypeToSpawn = string.format("%s", staticToSpawn.type)
+                local staticCategoryToSpawn = string.format("%s", staticToSpawn.category)
+                spawnStatic = SPAWNSTATIC:NewFromType(staticTypeToSpawn, staticCategoryToSpawn)
+                if (staticToSpawn.coalition ~= nil) then
+                    if (staticToSpawn.coalition == coalition.side.BLUE) then
+                        spawnStatic = SPAWNSTATIC:NewFromType(staticTypeToSpawn, staticCategoryToSpawn, country.id.CJTF_BLUE)
+                    elseif (staticToSpawn.coalition == coalition.side.RED) then
+                        spawnStatic = SPAWNSTATIC:NewFromType(staticTypeToSpawn, staticCategoryToSpawn, country.id.CJTF_RED)
+                    else
+                        spawnStatic = SPAWNSTATIC:NewFromType(staticTypeToSpawn, staticCategoryToSpawn, country.id.UN_PEACEKEEPERS)
+                    end
+                end
+                local x = staticToSpawn.x
+                local y = staticToSpawn.y
+                local heading = staticToSpawn.heading
+                local name = string.format("%s_%s_%i", subRangeName, staticTypeToSpawn, index)
+                debug_msg(string.format("Static type to spawn %s at %i,%i -> %s", staticTypeToSpawn, x, y, name))
+                spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+            else
+                debug_msg(string.format("Static to spawn has no name or type!"))
+            end
+        end
+    else
+        debug_msg(string.format("No static in %s", subRangeName))
+    end
+
     for i = 1, #groupsToSpawn do
         local groupNameToSpawn = string.format("%s", groupsToSpawn[i])
         if (GROUP:FindByName(groupNameToSpawn) ~= nil) then
@@ -815,22 +863,6 @@ function SpawnRanges(param)
             debug_msg(string.format("GROUP to spawn %s not found in mission", groupNameToSpawn))
         end
     end
-
-    if (staticsToSpawn ~= nil)then
-        for index, staticToSpawn in ipairs(staticsToSpawn) do
-            local staticNameToSpawn = string.format("%s", staticToSpawn.name)
-            local spawnStatic = SPAWNSTATIC:NewFromStatic(staticNameToSpawn)
-            local x = staticToSpawn.x
-            local y = staticToSpawn.y
-            local heading = staticToSpawn.heading
-            local name = string.format("%s_%s_%i", subRangeName, staticNameToSpawn,index)
-            debug_msg(string.format("Static to spawn %s at %i,%i -> %s", staticNameToSpawn, x, y, name))
-            spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
-        end
-    else
-        debug_msg(string.format("No static in %s", subRangeName))
-    end
-
 
     radioCommandSubRange:RemoveSubMenus()
     local CommandZoneDetroy = MENU_COALITION_COMMAND:New(rangeConfig.benefit_coalition, "Delete", radioCommandSubRange,
