@@ -156,6 +156,33 @@ RangeConfig = {
         benefit_coalition = coalition.side.BLUE,
         subRange = {
             {
+                name = "Al Dhafra AFB",
+                groupsToSpawn = {
+                    "USA AL Dafra", "USA AL Dafra-1", "Al Dahfra FR GR-1",
+                },
+                staticsToSpawn = {
+                    { type = "E-3A", category = "Planes", x = -00210602, y = -00174985, heading = 128, coalition = coalition.side.BLUE },
+                    { type = "F-117A", category = "Planes", x = -00210293, y = -00174797, heading = 344, coalition = coalition.side.BLUE },
+                    { type = "F-117A", category = "Planes", x = -00210328, y = -00175057, heading = 307, coalition = coalition.side.BLUE },
+                    { type = "F-117A", category = "Planes", x = -00210066, y = -00175087, heading = 10, coalition = coalition.side.BLUE },
+                    { type = "C-5", category = "Planes", x = -00209490, y = -00174356, heading = 175, coalition = coalition.side.BLUE },
+                    { type = "KC-135", category = "Planes", x = -00211349, y = -00171765, heading = 127, coalition = coalition.side.BLUE },
+                    { type = "E-3A", category = "Planes", x = -00211266, y = -00172169, heading = 37, coalition = coalition.side.BLUE },
+                    { type = "E-3A", category = "Planes", x = -00211336, y = -00172077, heading = 37, coalition = coalition.side.BLUE },
+                    { type = "SA342M", category = "Helicopters", x = -00212201, y = -00174593, heading = 37, coalition = coalition.side.BLUE },
+                    { type = "SA342M", category = "Helicopters", x = -00212186, y = -00174599, heading = 37, coalition = coalition.side.BLUE },
+                    { type = "KC_10_Extender", category = "Planes", x = -00211491, y = -00171688, heading = 308, coalition = coalition.side.BLUE },
+                    { type = "B2_Spirit", category = "Planes", x = -00210085, y = -00174661, heading = 80, coalition = coalition.side.BLUE },
+                    { type = "B2_Spirit", category = "Planes", x = -00210047, y = -00174715, heading = 80, coalition = coalition.side.BLUE },
+                    { type = "tente_desert", category = "Fortifications", x = -00212269, y = -00174446, heading = 130, coalition = coalition.side.BLUE },
+                    { type = "tente_desert", category = "Fortifications", x = -00212265, y = -00174452, heading = 130, coalition = coalition.side.BLUE },
+                    { type = "tente_desert", category = "Fortifications", x = -00212276, y = -00174472, heading = 217, coalition = coalition.side.BLUE }
+                },
+                holdFire = false,
+                AI = true,
+                redAlert = true
+            },
+            {
                 name = "Hatta",
                 groupsToSpawn = {
                     "Hatta Patrol", "Hatta AAA", "Hatta Infantry", "Hatta compounds", "Hatta Technicals", "Hatta bunkers", 
@@ -283,8 +310,7 @@ RangeConfig = {
                     { type = "FARP_T", category = "Heliport", x = 00283024, y = 00142259, heading = 36, coalition = coalition.side.BLUE },
                     { type = "FARP_T", category = "Heliport", x = 00283046, y = 00142226, heading = 36, coalition = coalition.side.BLUE },
                     { type = "FARP_T", category = "Heliport", x = 00282998, y = 00142236, heading = 216, coalition = coalition.side.BLUE },
-                    { type = "FARP_T", category = "Heliport", x = 00283020, y = 00142206, heading = 216, coalition = coalition.side.BLUE },
-                    
+                    { type = "FARP_T", category = "Heliport", x = 00283020, y = 00142206, heading = 216, coalition = coalition.side.BLUE }
                 },
                 holdFire = false,
                 AI = true,
