@@ -356,6 +356,35 @@ function destroyGroup(group_name)
             end )
 end
 
+function destroyStatic(staticToDelete, subRangeName, index)
+    if (staticToDelete.name ~= nil) then
+        local staticNameToDelete = string.format("%s", staticToDelete.name)
+        if (subRangeName ~= nil and index ~= nil) then
+            staticNameToDelete = string.format("%s_%s_%i", subRangeName, staticToDelete.name, index)
+        end
+        local staticUnitToDelete = STATIC:FindByName(staticNameToDelete, false)
+        if (staticUnitToDelete ~= nil) then
+            debug_msg(string.format("Delete static %s", staticUnitToDelete:GetDCSObject():getName()))
+            staticUnitToDelete:Destroy()
+        end
+    elseif (staticToDelete.type ~= nil and staticToDelete.category ~= nil and index ~= nil) then
+        local staticNameToDelete = string.format("%s_%s_%i", subRangeName, staticToDelete.type, index)
+        local staticUnitToDelete = STATIC:FindByName(staticNameToDelete, false)
+        if (staticUnitToDelete ~= nil) then
+            debug_msg(string.format("Delete Static %s", staticUnitToDelete:GetDCSObject():getName()))
+            staticUnitToDelete:Destroy()
+        end
+    else
+        debug_msg(string.format("Static to delete has no name or type!"))
+    end
+end
+
+function destroyStatics(staticsToDelete, subRangeName)
+    for index, staticToDelete in ipairs(staticsToDelete) do
+        destroyStatic(staticToDelete, subRangeName, index)
+    end
+end
+
 function deleteSubRangeUnits(param)
     --parameters :
     --           1 : groups to be destroyed
@@ -371,6 +400,15 @@ function deleteSubRangeUnits(param)
     for i = 1, #groupsToSpawn do
         destroyGroup(groupsToSpawn[i])
     end
+
+    local subRangeName = subRangeConfig.name
+    local staticsToDelete = subRangeConfig.staticsToSpawn
+    if (staticsToDelete ~= nil)then
+        destroyStatics(staticsToDelete, subRangeName)
+    else
+        debug_msg(string.format("No static in %s", subRangeName))
+    end
+
     MESSAGE:NewType(string.format("Remove the site : %s-%s", rangeConfig.name, subRangeConfig.name),
             MESSAGE.Type.Information):ToBlue()
     if (not(blnMute)) then
@@ -795,8 +833,8 @@ function SpawnRanges(param)
                 local y = staticToSpawn.y
                 local heading = staticToSpawn.heading
                 local name = string.format("%s_%s_%i", subRangeName, staticNameToSpawn,index)
-                debug_msg(string.format("Static to spawn %s at %i,%i -> %s", staticNameToSpawn, x, y, name))
-                spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+                local static = spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+                debug_msg(string.format("Static to spawn %s at %i,%i -> %s", static:GetDCSObject():getTypeName(), x, y, static:GetDCSObject():getName()))
             elseif (staticToSpawn.type ~= nil and staticToSpawn.category ~= nil) then
                 local staticTypeToSpawn = string.format("%s", staticToSpawn.type)
                 local staticCategoryToSpawn = string.format("%s", staticToSpawn.category)
@@ -814,8 +852,8 @@ function SpawnRanges(param)
                 local y = staticToSpawn.y
                 local heading = staticToSpawn.heading
                 local name = string.format("%s_%s_%i", subRangeName, staticTypeToSpawn, index)
-                debug_msg(string.format("Static type to spawn %s at %i,%i -> %s", staticTypeToSpawn, x, y, name))
-                spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+                local static = spawnStatic:SpawnFromPointVec2( POINT_VEC2:New( x, y ), heading, name )
+                debug_msg(string.format("Static type to spawn %s at %i,%i -> %s", static:GetDCSObject():getTypeName(), x, y, static:GetDCSObject():getName()))
             else
                 debug_msg(string.format("Static to spawn has no name or type!"))
             end
